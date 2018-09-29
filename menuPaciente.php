@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  
+	<?php 
+		// Inicia sessões 
+		session_start(); 
+ 
+		// Verifica se existe os dados da sessão de login 
+		if(!isset($_SESSION["id_usuario"]) || !isset($_SESSION["nome_usuario"])) { 
+			// Usuário não logado! Redireciona para a página de login 
+			header("Location: loginPaciente.html"); 
+			exit; 
+		} 
+	?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">

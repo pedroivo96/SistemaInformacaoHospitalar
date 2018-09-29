@@ -5,59 +5,193 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bootstrap 4, from LayoutIt!</title>
+    <title>Cadastro</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+	
+	<script>
+	
+		function check_pass() {
+		
+			var senha = document.getElementById('senha').value;
+			var senhanovamente = document.getElementById('senhanovamente').value;
+			
+			if(senha.length == 0 || senhanovamente.length == 0){
+				document.getElementById('senhaNaoIguais').style.display = "block";
+			}
+			else{
+				if (document.getElementById('senha').value ==
+					document.getElementById('senhanovamente').value) {
+					document.getElementById('submit').disabled = false;
+					document.getElementById('senhaNaoIguais').style.display = "none";
+				} else {
+					document.getElementById('submit').disabled = true;
+					document.getElementById('senhaNaoIguais').style.display = "block";
+				}
+			}
+		}
+	
+	</script>
 
   </head>
   <body>
 
     <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
+	<div class="row mb-5 mt-5">
+		<div class="col-md-12 border" align="center">
+			<h5 class="display-4">Cadastro</h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-4">
 		</div>
 		<div class="col-md-4">
-			<form role="form">
+			<form role="form" method="post" action="cadastrarPaciente.php">
+			
+				<p class="h3">1. Informações pessoais</p>
+			
 				<div class="form-group">
-					 
 					<label for="exampleInputEmail1">
-						Email address
+						CPF
 					</label>
-					<input type="email" class="form-control" id="exampleInputEmail1">
+					<input type="text" class="form-control" id="cpf" name="cpf">
 				</div>
+				
 				<div class="form-group">
-					 
-					<label for="exampleInputPassword1">
-						Password
+					<label for="exampleInputEmail1">
+						RG
 					</label>
-					<input type="password" class="form-control" id="exampleInputPassword1">
+					<input type="text" class="form-control" id="rg" name="rg">
 				</div>
+				
 				<div class="form-group">
-					 
-					<label for="exampleInputFile">
-						File input
+					<label for="exampleInputEmail1">
+						Nome completo
 					</label>
-					<input type="file" class="form-control-file" id="exampleInputFile">
-					<p class="help-block">
-						Example block-level help text here.
-					</p>
+					<input type="text" class="form-control" id="nomecompleto" name="nomecompleto">
 				</div>
-				<div class="checkbox">
-					 
-					<label>
-						<input type="checkbox"> Check me out
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Data de nascimento
 					</label>
-				</div> 
-				<button type="submit" class="btn btn-primary">
-					Submit
+					<input type="text" class="form-control" id="datanascimento" name="datanascimento">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Sexo
+					</label>
+					<input type="text" class="form-control" id="sexo" name="sexo">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Nome da mãe
+					</label>
+					<input type="text" class="form-control" id="nomemae" name="nomemae">
+				</div>
+				
+				<p class="h3">2. Naturalidade</p>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Município
+					</label>
+					<input type="text" class="form-control" id="naturalidademunicipio" name="naturalidademunicipio">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Estado
+					</label>
+					<input type="text" class="form-control" id="naturalidadeestado" name="naturalidadeestado">
+				</div>
+				
+				<p class="h3">3. Endereço</p>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Via
+					</label>
+					<input type="text" class="form-control" id="enderecovia" name="enderecovia">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Número
+					</label>
+					<input type="text" class="form-control" id="endereconumero" name="endereconumero">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Complemento
+					</label>
+					<input type="text" class="form-control" id="enderecocomplemento" name="enderecocomplemento">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Bairro/Distrito
+					</label>
+					<input type="text" class="form-control" id="enderecobairrodistrito" name="enderecobairrodistrito">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Município
+					</label>
+					<input type="text" class="form-control" id="enderecomunicipio" name="enderecomunicipio">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Estado
+					</label>
+					<input type="text" class="form-control" id="enderecoestado" name="enderecoestado">
+				</div>
+				
+				<p class="h3">4. Informações de acesso ao sistema</p>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						E-mail
+					</label>
+					<input type="text" class="form-control" id="email" name="email">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Nome de usuário
+					</label>
+					<input type="text" class="form-control" id="nomeusuario" name="nomeusuario">
+				</div>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Senha
+					</label>
+					<input type="text" class="form-control" id="senha" name="senha" onkeyup="check_pass();">
+				</div>
+				
+				<label for="senhaNovamente" class="text-danger" id="senhaNaoIguais">
+					As senhas não conferem
+				</label>
+				
+				<div class="form-group">
+					<label for="exampleInputEmail1">
+						Digite sua senha novamente
+					</label>
+					<input type="text" class="form-control" id="senhanovamente" name="senhanovamente" onkeyup="check_pass();">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block mb-5" id="submit" disabled>
+					Cadastrar
 				</button>
 			</form>
 		</div>
