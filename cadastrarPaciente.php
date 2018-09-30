@@ -111,7 +111,7 @@
 					  $_SESSION['enderecoestado']         = $enderecoestado;
 					  $_SESSION['nomeusuario']            = $nomeusuario;
 					  $_SESSION['email']                  = $email;
-					  header("Location: menuPaciente.html");
+					  header("Location: menuPaciente.php");
             }else{
                 echo '<div class="alert alert-danger">
 						<strong>Erro no cadastro!</strong> Falha no banco de dados.

@@ -7,7 +7,7 @@
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
-		if(!isset($_SESSION["id_usuario"]) || !isset($_SESSION["nome_usuario"])) { 
+		if(!isset($_SESSION["nomeusuario"]) || !isset($_SESSION["cpf"])) { 
 			// Usuário não logado! Redireciona para a página de login 
 			header("Location: loginPaciente.html"); 
 			exit; 
@@ -40,31 +40,50 @@
 			
 			<dl class="row">
 				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9">Pedro Ivo Soares Barbosa</dd>
+				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
 
-				<dt class="col-sm-3">Data de nascimento</dt>
-				<dd class="col-sm-9">18/05/96</dd>
+				<dt class="col-sm-3">CPF</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
 				
-				<dt class="col-sm-3">Algo aleatório</dt>
-				<dd class="col-sm-9">
-					<p>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</p>
-					<p>Donec id elit non mi porta gravida at eget metus.</p>
-				</dd>
-
-				<dt class="col-sm-3">Malesuada porta</dt>
-				<dd class="col-sm-9">Etiam porta sem malesuada magna mollis euismod.</dd>
-
-				<dt class="col-sm-3 text-truncate">Truncated term is truncated</dt>
-				<dd class="col-sm-9">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd>
-
-				<dt class="col-sm-3">Nesting</dt>
-				<dd class="col-sm-9">
+				<dt class="col-sm-3">RG</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
 				
-					<dl class="row">
-						<dt class="col-sm-4">Nested definition list</dt>
-						<dd class="col-sm-8">Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc.</dd>
-					</dl>
-				</dd>
+				<dt class="col-sm-3">Sexo</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['sexo']; ?></dd>
+				
+				<dt class="col-sm-3">Nome da mãe</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['nomemae']; ?></dd>
+				
+				<dt class="col-sm-3">Município de nascimento</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['naturalidademunicipio']; ?></dd>
+				
+				<dt class="col-sm-3">Estado de nascimento</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['naturalidadeestado']; ?></dd>
+				
+				<dt class="col-sm-3">Via</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['enderecovia']; ?></dd>
+				
+				<dt class="col-sm-3">Número</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['endereconumero']; ?></dd>
+				
+				<dt class="col-sm-3">Complemento</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['enderecocomplemento']; ?></dd>
+				
+				<dt class="col-sm-3">Distrito/Bairro</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['enderecobairrodistrito']; ?></dd>
+				
+				<dt class="col-sm-3">Município</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['enderecomunicipio']; ?></dd>
+				
+				<dt class="col-sm-3">Estado</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['enderecoestado']; ?></dd>
+				
+				<dt class="col-sm-3">Nome de usuário</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
+				
+				<dt class="col-sm-3">E-mail</dt>
+				<dd class="col-sm-9"><?php echo $_SESSION['email']; ?></dd>
+				
 			</dl>
 			
 		</div>
