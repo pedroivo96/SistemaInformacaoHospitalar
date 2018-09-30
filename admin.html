@@ -25,7 +25,27 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-4 border pt-2 pb-2">
+			<p class="h4" align="center">Cadastrar horário</p>
+			
+			<form method="post" action="cadastrarHorario.php">
+				<div class="form-group">
+					<label for="cpf">CPF do profissional</label>
+					<input type="text" class="form-control" id="cpf" name="cpf">
+				</div>
+				
+				<div class="form-group">
+					<label for="cpf">Dia e horário de início</label>
+					<input type="datetime-local" class="form-control" id="diahorarioinicio" name="diahorarioinicio">
+				</div>
+				
+				<div class="form-group">
+					<label for="cpf">Dia e horário de fim</label>
+					<input type="datetime-local" class="form-control" id="diahorariofim" name="diahorariofim">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
 		
 		</div>
 		
@@ -68,17 +88,21 @@
 					<input type="text" class="form-control" id="especialidade" name="especialidade">
 				</div>
 				
-				<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
-					<label class="btn btn-secondary btn-block">
-						<input type="radio" id="radio1" name="tipo" autocomplete="off" value="Médico"> Médico
-					</label>
-					<label class="btn btn-secondary btn-block">
-						<input type="radio" id="radio2" name="tipo" autocomplete="off" value="Enfermeiro"> Enfermeiro
-					</label>
-					<label class="btn btn-secondary btn-block">
-						<input type="radio" id="radio3" name="tipo" autocomplete="off" value="Técnico em Enfermagem"> Técnico em Enfermagem
-					</label>
+				<div class="form-group">
+					<label for="especialidade">Tipo</label>
+					<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+						<label class="btn btn-secondary btn-block">
+							<input type="radio" id="radio1" name="tipo" autocomplete="off" value="Médico"> Médico
+						</label>
+						<label class="btn btn-secondary btn-block">
+							<input type="radio" id="radio2" name="tipo" autocomplete="off" value="Enfermeiro"> Enfermeiro
+						</label>
+						<label class="btn btn-secondary btn-block">
+							<input type="radio" id="radio3" name="tipo" autocomplete="off" value="Técnico em Enfermagem"> Técnico em Enfermagem
+						</label>
+					</div>
 				</div>
+				
 				
 				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
 			</form>
