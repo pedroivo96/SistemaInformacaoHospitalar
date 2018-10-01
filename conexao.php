@@ -6,7 +6,7 @@
         $pass = '';
 
         try{
-            echo "antes";
+            //echo "antes";
             $pdo = new PDO($dsn, $user, $pass, array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
                 PDO::ATTR_PERSISTENT => false,
@@ -15,10 +15,10 @@
 				)
 			);
 			
-            echo "conectou";
+            //echo "conectou";
             return $pdo;
         }catch(PDOException $ex){
-            echo 'Erro: '.$ex->getMessage();
+            //echo 'Erro: '.$ex->getMessage();
         }
     }
 	

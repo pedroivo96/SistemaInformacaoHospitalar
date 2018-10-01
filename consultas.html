@@ -18,9 +18,9 @@
   <body>
 
     <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12" align="center">
-			<h5 class="display-4">Consultas</h5>
+	<div class="row mb-5 mt-5">
+		<div class="col-md-12 border" align="center">
+			<h5 class="display-4">Minhas consultas</h5>
 		</div>
 	</div>
 	<div class="row">
@@ -32,6 +32,9 @@
 					<div class="card-body">
 						<h5 class="card-title">Card title that wraps to a new line</h5>
 						<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						<div class="alert alert-dark" role="alert">
+							Status: Agendada
+						</div>
 					</div>
 				</div>
 				
@@ -67,7 +70,7 @@
 		</div>
 		
 		<div class="col-md-4">
-			<button type="button" class="btn btn-success btn-lg btn-block">Nova consulta</button>
+			<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Exames</button>
 			
