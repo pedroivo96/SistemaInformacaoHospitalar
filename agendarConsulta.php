@@ -34,7 +34,7 @@
 					<strong>Consulta agendada com sucesso!</strong>
                   </div>';
 					  
-			header("Location: consultas.html");
+			header("Location: consultas.php");
         }else{
             echo '<div class="alert alert-danger">
 					<strong>Erro no cadastro!</strong> Falha no banco de dados.

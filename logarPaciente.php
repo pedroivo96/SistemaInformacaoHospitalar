@@ -44,8 +44,9 @@
 				header("Location: menuPaciente.php");
 			}
         }else{
-			
-			
+			echo '<div class="alert alert-danger">
+					<strong>Erro!</strong> Nome de usuário não corresponde a um Paciente cadastrado.
+				  </div>';
 		}
 	}
 ?>

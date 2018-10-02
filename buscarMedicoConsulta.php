@@ -42,7 +42,9 @@
 				Resultado da busca
 			</div>
 			
+			<!--
 			<div class="card-columns">
+			-->
 			
 			<?php
 				include './conexao.php';
@@ -136,8 +138,9 @@
 					}
 				}
 			?>
-			
+			<!--
 			</div>
+			-->
 		
 		</div>
 		<div class="col-md-4">

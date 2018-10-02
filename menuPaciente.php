@@ -88,7 +88,7 @@
 			
 		</div>
 		<div class="col-md-4">
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Consultas</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultas.php';">Consultas</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Exames</button>
 			
