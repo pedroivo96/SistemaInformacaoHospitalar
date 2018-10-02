@@ -79,19 +79,38 @@
 					</dl>
 			
 					<form class="mb-4" method="post" action="finalizarAtendimento.php">
+					
+						<input type="hidden" id="idconsulta"   name="idconsulta"   value="<?php echo $id; ?>">
+						<input type="hidden" id="cpfmedico"    name="cpfmedico"    value="<?php echo $cpfmedico; ?>">
+						<input type="hidden" id="cpfpaciente"  name="cpfpaciente"  value="<?php echo $cpfpaciente; ?>">
+						<input type="hidden" id="nomemedico"   name="nomemedico"   value="<?php echo $nomemedico; ?>">
+						<input type="hidden" id="nomepaciente" name="nomepaciente" value="<?php echo $nomepaciente; ?>">
+					
 						<div class="form-group">
 							<label for="queixaprincipal">Queixa principal</label>
 							<textarea rows="4" class="form-control" id="queixaprincipal" name="queixaprincipal"></textarea>
 						</div>
 				
 						<div class="form-group">
-							<label for="examescomplementares">Exames complementares</label>
-							<input type="text" class="form-control" id="examescomplementares" name="examescomplementares">
+							<label for="exameclinico">Exame clínico</label>
+							<input type="text" class="form-control" id="exameclinico" name="exameclinico">
 						</div>
 				
 						<div class="form-group">
 							<label for="diagnosticoprovavel">Diagnóstico provável</label>
 							<input type="text" class="form-control" id="diagnosticoprovavel" name="diagnosticoprovavel">
+						</div>
+						
+						<div class="form-group">
+							<label for="especialidade"></label>
+							<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+								<label class="btn btn-secondary btn-block">
+									<input type="radio" id="radio1" name="altainternacao" autocomplete="off" value="Alta"> Alta
+								</label>
+								<label class="btn btn-secondary btn-block">
+									<input type="radio" id="radio2" name="altainternacao" autocomplete="off" value="Internação"> Internação
+								</label>
+							</div>
 						</div>
 				
 						<button type="submit" class="btn btn-primary  btn-block">Finalizar</button>

@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do Médico</title>
+    <title>Meus procedimentos</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -32,44 +32,65 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do médico</h5>
+			<h5 class="display-4">Meus procedimentos</h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
 			
-			<dl class="row">
-				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
-
-				<dt class="col-sm-3">CPF</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
+			<div class="row">
+			<?php
+			
+				include './conexao.php';
 				
-				<dt class="col-sm-3">RG</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
-				
-				<dt class="col-sm-3">Tipo</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['tipo']; ?></dd>
-				
-				<dt class="col-sm-3">Nome de usuário</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
-				
-				<dt class="col-sm-3">Registro</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['registro']; ?></dd>
-				
-				<dt class="col-sm-3">Especialidade</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['especialidade']; ?></dd>
-				
-			</dl>
+				$cpfmedico = $_SESSION['cpf'];
+					
+				$conn = getConnection();
+					
+				$sql = 'SELECT * FROM prescricoes WHERE cpfmedico = :cpfmedico';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':cpfmedico', $cpfmedico);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						$id              = $row['id'];
+						$cpfpaciente     = $row['cpfpaciente'];
+						$nomemedicamento = $row['nomemedicamento'];
+						
+						?>
+						<div class="col-sm-4 mb-3">
+							<div class="card border-secondary">
+								<div class="card-header">
+									<label for="nomemedicamento">Nome do medicamento:</label>
+									<h5 class="card-title" id="nomemedicamento" name="nomemedicamento">
+										<?php echo $nomemedicamento; ?>
+									</h5>
+								</div>
+								
+								<div class="card-body">
+								</div>
+							</div>
+						</div>
+						<?php
+					}
+				}	
+			?>
+			</div>
 			
 		</div>
 		<div class="col-md-4">
 		
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Meus exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Meus procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'prescricoesMedico.php';">Minhas prescrições</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
 			
