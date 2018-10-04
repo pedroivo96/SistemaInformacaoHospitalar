@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do Médico</title>
+    <title>Internações</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -32,35 +32,73 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do médico</h5>
+			<h5 class="display-4">Internações</h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
+			<div class="row">
+			<?php
+				include './conexao.php';
+				
+				$cpfmedico = $_SESSION['cpf'];
+				$status = "Solicitada";
+					
+				$conn = getConnection();
+					
+				$sql = 'SELECT * FROM internacoes WHERE status = :status';
+					
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':status', $status);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
 			
-			<dl class="row">
-				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
-
-				<dt class="col-sm-3">CPF</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
-				
-				<dt class="col-sm-3">RG</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
-				
-				<dt class="col-sm-3">Tipo</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['tipo']; ?></dd>
-				
-				<dt class="col-sm-3">Nome de usuário</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
-				
-				<dt class="col-sm-3">Registro</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['registro']; ?></dd>
-				
-				<dt class="col-sm-3">Especialidade</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['especialidade']; ?></dd>
-				
-			</dl>
+					foreach($result as $row){
+						$cpfpaciente = $row['cpfpaciente'];
+						
+						$sql1 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
+						
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':cpfpaciente', $cpfpaciente);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							$result1 = $stmt1->fetchAll();
+			
+							foreach($result1 as $row1){
+								$nomepaciente = $row1['nomecompleto'];
+								
+								?>
+								<div class="col-sm-4 mb-3">
+									<form>
+									<div class="card border-secondary">
+										<div class="card-header">
+											<label for="nomecompleto">Nome do paciente:</label>
+											<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+												<?php echo $nomepaciente; ?>
+											</h5>
+											
+											<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+											
+										</div>
+								
+										<div class="card-body">
+											<button type="submit" class="btn btn-primary btn-block">Internar</button>
+										</div>
+									</div>
+									</form>
+								</div>
+								<?php
+							}
+						}
+					}
+				}
+			?>
+			</div>
 			
 		</div>
 		<div class="col-md-4">

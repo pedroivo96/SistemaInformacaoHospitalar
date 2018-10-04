@@ -9,7 +9,7 @@
 		// Verifica se existe os dados da sessão de login 
 		if(!isset($_SESSION["nomeusuario"]) || !isset($_SESSION["cpf"])) { 
 			// Usuário não logado! Redireciona para a página de login 
-			header("Location: loginProfissional.html"); 
+			header("Location: loginPaciente.html"); 
 			exit; 
 		} 
 	?>
@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do Médico</title>
+    <title>Menu do Enfermeiro</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -32,7 +32,7 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do médico</h5>
+			<h5 class="display-4">Área do enfermeiro</h5>
 		</div>
 	</div>
 	<div class="row">
@@ -64,17 +64,15 @@
 			
 		</div>
 		<div class="col-md-4">
-		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">Evoluções</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamnesesEnfermeiro.php';">Anameneses</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticosEnfermeiro.php';">Diagnósticos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anotacoesEnfermeiro.php';">Anotações</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">Realizar internação</button>
-
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'internacoesEnfermeiro.php';">Internações</button>
 		</div>
 	</div>
 	<div class="row">

@@ -147,7 +147,7 @@
 		<div class="col-md-4">
 			<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
 			
