@@ -64,8 +64,62 @@
 			
 		</div>
 		<div class="col-md-4">
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
+		
+			<?php
+				$cpfprofissional = $_SESSION['cpf'];
+				
+				include './conexao.php';
+				
+				$conn = getConnection();
+				
+				$actual = time();
+		
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :actual AND diahorariofim > :actual';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':actual', $actual);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
 			
+					foreach($result as $row){
+						
+						$idplantao = $row['id'];
+						$chefe = 1;
+							
+						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
+						$stmt1->bindValue(':chefe', $chefe);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							$result1 = $stmt1->fetchAll();
+			
+							foreach($result1 as $row1){
+							
+								$idplantao = $row1['id'];
+								$chefe = $row1['chefe'];
+								
+								if($chefe == 1){
+									?>
+									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
+									<?php
+								}
+								else{
+									//Está escalado para o plantão porém não é o chefe, portanto não pode gerenciar internações
+								}
+							}
+						}
+						else{
+							//Não esta escalado para o plantão atual
+						}
+					}
+				}
+			?>
+		
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">Minhas evoluções</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">Meus diagnósticos</button>

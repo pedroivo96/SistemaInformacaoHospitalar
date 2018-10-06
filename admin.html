@@ -108,9 +108,49 @@
 			</form>
 		</div>
 		
-		<div class="col-md-4">
+		<div class="col-md-4 border pt-2 pb-2">
+			<p class="h4" align="center">Cadastrar plantão</p>
+			
+			<form method="post" action="cadastrarPlantao.php">
+				
+				<div class="form-group">
+					<label for="diahorarioinicio">Dia e horário de início</label>
+					<input type="datetime-local" class="form-control" id="diahorarioinicio" name="diahorarioinicio">
+				</div>
+				
+				<div class="form-group">
+					<label for="diahorariofim">Dia e horário de fim</label>
+					<input type="datetime-local" class="form-control" id="diahorariofim" name="diahorariofim">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
 		</div>
 	</div>
+	
+	<div class="row">
+		<div class="col-md-4 border pt-2 pb-2">
+			<p class="h4" align="center">Cadastrar profissional em um plantão</p>
+			
+			<form method="post" action="cadastrarProfissionalPlantao.php">
+				
+				<div class="form-group">
+					<label for="cpfprofissional">CPF do profissional</label>
+					<input type="text" class="form-control" id="cpfprofissional" name="cpfprofissional">
+				</div>
+				
+				<div class="form-group">
+					<label for="idplantao">ID do plantão</label>
+					<input type="text" class="form-control" id="idplantao" name="idplantao">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
+		</div>
+	</div>
+	
 	<div class="row">
 		<div class="col-md-12">
 		</div>
