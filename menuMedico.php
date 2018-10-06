@@ -77,8 +77,53 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">Realizar internação</button>
+			<?php
+				include './conexao.php';
 			
+				$cpfmedico  = $_SESSION['cpf'];
+				$diahorario = time();
+				
+				$conn = getConnection();
+				
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						
+						$idplantao = $row['id'];
+						
+						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':idplantao'      , $idplantao);
+						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							//Está escalado para o plantão atual, portanto pode realizar internações.
+							?>
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
+								Realizar internação
+							</button>
+							<?php
+						}
+						else{
+							?>
+							<div class="alert alert-primary" role="alert">
+								Você não está escalado para o plantão atual
+							</div>
+							<?php
+						}
+						
+					}
+				}
+			?>
 		</div>
 	</div>
 	<div class="row">

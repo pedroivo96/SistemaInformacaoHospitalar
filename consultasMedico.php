@@ -122,8 +122,43 @@
 												<?php echo "Das ".date("H:i:s",$diahorarioinicio)." às ".date("H:i:s",$diahorariofim); ?>
 											</h6>
 										
-											<button type="submit" class="btn btn-primary btn-block">Atender</button>
+											<?php
+											include './conexao.php';
 											
+											$diahorario = time();
+											$conn = getConnection();
+				
+											$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+											$stmt = $conn->prepare($sql);
+											$stmt->bindValue(':diahorario', $diahorario);
+											$stmt->execute();
+											$count = $stmt->rowCount();
+		
+											if($count > 0){
+												$result = $stmt->fetchAll();
+			
+												foreach($result as $row){
+													$idplantao = $row['id'];
+													
+													$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+													$stmt1 = $conn->prepare($sql1);
+													$stmt1->bindValue(':idplantao'      , $idplantao);
+													$stmt1->bindValue(':cpfprofissional', $cpfmedico);
+													$stmt1->execute();
+													$count1 = $stmt1->rowCount();
+		
+													if($count1 > 0){
+													?>
+														<button type="submit" class="btn btn-primary btn-block">Atender</button>
+													<?php
+													}
+													else{
+														//Não está escalado para o plantão atual, portanto não pode Atender um paciente.
+													}
+													
+												}
+											}
+											?>
 										</form>
 									</div>
 							</div>
