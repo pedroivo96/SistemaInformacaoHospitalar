@@ -32,7 +32,10 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Meus procedimentos</h5>
+			<h3>
+				Menu do médico
+				<small class="text-muted">Procedimentos</small>
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -100,10 +103,65 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Meus procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
 			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
+			
+			<?php
+				include './conexao.php';
+			
+				$cpfmedico  = $_SESSION['cpf'];
+				$diahorario = time();
+				
+				$conn = getConnection();
+				
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						
+						$idplantao = $row['id'];
+						
+						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':idplantao'      , $idplantao);
+						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							//Está escalado para o plantão atual, portanto pode realizar internações.
+							?>
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
+								Realizar internação
+							</button>
+							
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+								Gerenciar internações
+							</button>
+							<?php
+						}
+						else{
+							?>
+							<div class="alert alert-primary" role="alert">
+								Você não está escalado para o plantão atual
+							</div>
+							<?php
+						}
+						
+					}
+				}
+			?>
 		</div>
 	</div>
 	<div class="row">

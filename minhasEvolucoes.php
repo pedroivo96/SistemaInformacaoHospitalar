@@ -32,7 +32,46 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do médico</h5>
+			<?php
+			include './conexao.php';
+			
+			$cpf = $_SESSION['cpf'];
+			
+			$conn = getConnection();
+		
+			$sql = 'SELECT nomecompleto, tipo FROM profissionais WHERE cpf = :cpf';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindValue(':cpf', $cpf);
+			$stmt->execute();
+			$count = $stmt->rowCount();
+		
+			if($count > 0){
+				$result = $stmt->fetchAll();
+			
+				foreach($result as $row){
+					$tipo         = $row['tipo'];
+					$nomecompleto = $row['nomecompleto'];
+					
+					if($tipo == "Médico"){
+					?>
+					<h3>
+						Menu do médico
+						<small class="text-muted">Evoluções</small>
+					</h3>
+					<?php
+					}
+					else{
+					?>
+					<h3>
+						Menu do enfermeiro
+						<small class="text-muted">Evoluções</small>
+					</h3>
+					<?php	
+					}
+				}	
+			}
+			
+			?>
 		</div>
 	</div>
 	<div class="row">
@@ -41,8 +80,6 @@
 			<div class="row">
 			<?php
 				$cpfprofissional = $_SESSION['cpf'];
-				
-				include './conexao.php';
 				
 				$conn = getConnection();
 		
@@ -107,20 +144,162 @@
 		</div>
 		<div class="col-md-4">
 		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
+			<?php
+			include './conexao.php';
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
+			$cpf = $_SESSION['cpf'];
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
+			$conn = getConnection();
+		
+			$sql = 'SELECT tipo FROM profissionais WHERE cpf = :cpf';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindValue(':cpf', $cpf);
+			$stmt->execute();
+			$count = $stmt->rowCount();
+		
+			if($count > 0){
+				$result = $stmt->fetchAll();
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
+				foreach($result as $row){
+					$tipo = $row['tipo'];
+					
+					if($tipo == "Médico"){
+						?>
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">Realizar internação</button>
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
 			
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
+				
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
+			
+						<?php
+						include './conexao.php';
+			
+						$diahorario = time();
+				
+						$conn = getConnection();
+				
+						$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':diahorario', $diahorario);
+						$stmt->execute();
+						$count = $stmt->rowCount();
+		
+						if($count > 0){
+							$result = $stmt->fetchAll();
+			
+							foreach($result as $row){
+						
+								$idplantao = $row['id'];
+						
+								$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+								$stmt1 = $conn->prepare($sql1);
+								$stmt1->bindValue(':idplantao'      , $idplantao);
+								$stmt1->bindValue(':cpfprofissional', $cpf);
+								$stmt1->execute();
+								$count1 = $stmt1->rowCount();
+		
+								if($count1 > 0){
+									//Está escalado para o plantão atual, portanto pode realizar internações.
+									?>
+									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
+										Realizar internação
+									</button>
+							
+									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+										Gerenciar internações
+									</button>
+									<?php
+								}
+								else{
+									?>
+									<div class="alert alert-primary" role="alert">
+										Você não está escalado para o plantão atual
+									</div>
+									<?php
+								}
+						
+							}
+						}
+					}
+					else{		
+						$cpfprofissional = $_SESSION['cpf'];
+				
+						include './conexao.php';
+				
+						$conn = getConnection();
+				
+						$actual = time();
+		
+						$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :actual AND diahorariofim > :actual';
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':actual', $actual);
+						$stmt->execute();
+						$count = $stmt->rowCount();
+		
+						if($count > 0){
+							$result = $stmt->fetchAll();
+			
+							foreach($result as $row){
+							
+								$idplantao = $row['id'];
+								$chefe = 1;
+							
+								$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional';
+								$stmt1 = $conn->prepare($sql1);
+								$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
+								$stmt1->bindValue(':chefe'          , $chefe);
+								$stmt1->execute();
+								$count1 = $stmt1->rowCount();
+		
+								if($count1 > 0){
+									$result1 = $stmt1->fetchAll();
+			
+									foreach($result1 as $row1){
+							
+										$idplantao = $row1['id'];
+										$chefe = $row1['chefe'];
+								
+										if($chefe == 1){
+											?>
+											<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+												Gerenciar internações
+											</button>
+											<?php
+										}
+										else{
+											//Está escalado para o plantão porém não é o chefe, portanto não pode gerenciar internações
+										}
+									}
+								}
+								else{
+									//Não esta escalado para o plantão atual
+								}
+							}
+						}
+						
+						?>
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
+							Minhas evoluções
+						</button>
+			
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
+							Meus diagnósticos
+						</button>
+			
+						<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamneseEnfermeiro.php';">
+							Minhas anamneses
+						</button>
+						<?php
+					}
+				}
+			}
+			?>
 		</div>
 	</div>
 	<div class="row">

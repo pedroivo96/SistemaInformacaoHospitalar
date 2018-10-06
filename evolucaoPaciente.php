@@ -45,12 +45,15 @@
 			
 			<p class="h5">Anotações sobre o paciente <b><?php echo $nomepaciente; ?></b></p>
 			
-			<div class="row border-bottom">
+			<div class="row">
 			<?php
 				include './conexao.php';
+				
 				$conn = getConnection();
+				
+				$actual = time();
 		
-				$sql = 'SELECT * FROM anotacoesenfermagem WHERE cpfpaciente = :cpfpaciente GROUP BY cpfprofissional';
+				$sql = 'SELECT cpfprofissional FROM anotacoesenfermagem WHERE cpfpaciente = :cpfpaciente GROUP BY cpfprofissional';
 				$stmt = $conn->prepare($sql);
 				$stmt->bindValue(':cpfpaciente', $cpfpaciente);
 				$stmt->execute();
@@ -58,110 +61,61 @@
 		
 				if($count > 0){
 					$result = $stmt->fetchAll();
-					
-					$cpftecnicoatual = "";
-					$cpftecnicoanterior = "-1";
-					
+			
 					foreach($result as $row){
+						$cpfprofissional = $row['cpfprofissional'];
 						
-						$cpftecnicoatual = $row['cpfprofissional'];
-						$conteudo        = $row['conteudo'];
-						$diahorario      = $row['diahorario'];
+						$sql = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfprofissional';
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':cpfprofissional', $cpfprofissional);
+						$stmt->execute();
+						$count = $stmt->rowCount();
 						
-						if($cpftecnicoatual != $cpftecnicoanterior){
-							if($cpftecnicoanterior == "-1"){
-								//Significa que estamos no primeiro tecnico
-								//Criamos um novo card
+						if($count1 > 0){
+							$result1 = $stmt1->fetchAll();
+			
+							foreach($result1 as $row1){
+								$nomeprofissional = $row1['nomecompleto'];
 								
-								$sql1 = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpftecnico';
-								$stmt1 = $conn->prepare($sql1);
-								$stmt1->bindValue(':cpftecnico', $cpftecnicoatual);
-								$stmt1->execute();
-								$count1 = $stmt1->rowCount();
-		
-								if($count1 > 0){
-									$result1 = $stmt1->fetchAll();
+								?>
+								<div class="col-sm-4 mb-3">
+									<div class="card">
 					
-									foreach($result1 as $row1){
-										$nometecnico = $row1['nomecompleto'];
-										
+										<div class="card-header">
+											<?php echo $nomeprofissional; ?>
+										</div>
+					
+										<ul class="list-group list-group-flush">
+								<?php
+								
+								$sql2 = 'SELECT * FROM anotacoesenfermagem WHERE cpfprofissional = :cpfprofissional AND cpfpaciente = :cpfpaciente';
+								$stmt2 = $conn->prepare($sql2);
+								$stmt2->bindValue(':cpfprofissional', $cpfprofissional);
+								$stmt2->bindValue(':cpfpaciente'    , $cpfpaciente);
+								$stmt2->execute();
+								$count2 = $stmt2->rowCount();
+		
+								if($count2 > 0){
+									$result2 = $stmt2->fetchAll();
+			
+									foreach($result2 as $row2){
+										$conteudo = $row2['conteudo'];
+										$diahorario = $row2['diahorario'];
 										?>
-										<div class="col-sm-6 mb-3">
-											<div class="card">
-									
-												<div class="card-body">
-													<h5 class="card-title">Nome do técnico</h5>
-													<p class="card-text"><?php echo $nometecnico; ?></p>
-												</div>
-									
-												<div class="card-body">
-													<h5 class="card-title">Dia e horário da anotação</h5>
-													<p class="card-text"><?php echo date("d/m/y h:m", $diahorario); ?></p>
-												</div>
-												
-												<ul class="list-group list-group-flush">
+										<li class="list-group-item">
+											<?php echo $conteudo; ?>
+										</li>
 										<?php
 									}
 								}
-							}
-							else{
-								//Significa que não estamos no primeiro tecnico e que houve mudança de tecnico
-								//Fechamos o card anterior e criamos um novo
-								
 								?>
 										</ul>
 									</div>
 								</div>
 								<?php
-								
-								$sql1 = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpftecnico';
-								$stmt1 = $conn->prepare($sql1);
-								$stmt1->bindValue(':cpftecnico', $cpftecnicoatual);
-								$stmt1->execute();
-								$count1 = $stmt1->rowCount();
-		
-								if($count1 > 0){
-									$result1 = $stmt1->fetchAll();
-					
-									foreach($result1 as $row1){
-										$nometecnico = $row1['nomecompleto'];
-										
-										?>
-										<div class="col-sm-4 mb-3">
-											<div class="card">
-									
-												<div class="card-body">
-													<h5 class="card-title">Nome do técnico</h5>
-													<p class="card-text"><?php echo $nometecnico; ?></p>
-												</div>
-									
-												<div class="card-body">
-													<h5 class="card-title">Dia e horário da anotação</h5>
-													<p class="card-text"><?php echo date("d/m/y h:m", $diahorario); ?></p>
-												</div>
-												
-												<ul class="list-group list-group-flush">
-										<?php
-									}
-								}
-								
 							}
-							
-						}
-						else{
-							//Adiciona um novo item na lista, afinal ainda estamos no Card do mesmo técnico anterior.
-							?>
-							<li class="list-group-item"><?php echo $conteudo; ?></li>
-							<?php
 						}
 					}
-					
-					//Fecha o último Card.
-					?>
-										</ul>
-									</div>
-								</div>
-					<?php
 				}
 			?>
 			</div>
@@ -169,11 +123,13 @@
 			<form method="post" action="evoluirPaciente.php">
 				<div class="form-group">
 					<label for="exampleInputEmail1">Evolução do paciente</label>
-					<input type="hidden" id="cpfpaciente"   name="cpfpaciente"   value="<?php echo $cpfpaciente; ?>">
-					<input type="hidden" id="cpfenfermeiro" name="cpfenfermeiro" value="<?php echo $cpfenfermeiro; ?>">
+					
 					<textarea type="email" class="form-control" rows="10" id="evolucao" name="evolucao">
-					</textarea>
+					</textarea>	
 				</div>
+				
+				<input type="hidden" id="cpfpaciente"   name="cpfpaciente"   value="<?php echo $cpfpaciente; ?>">
+				<input type="hidden" id="cpfenfermeiro" name="cpfenfermeiro" value="<?php echo $cpfenfermeiro; ?>">
 				
 				<button type="submit" class="btn btn-primary btn-block">Cadastrar evolução</button>
 			</form>

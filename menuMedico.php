@@ -32,7 +32,9 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do médico</h5>
+			<h3>
+				Menu do médico
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -111,6 +113,10 @@
 							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
 								Realizar internação
 							</button>
+							
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+								Gerenciar internações
+							</button>
 							<?php
 						}
 						else{
@@ -119,8 +125,7 @@
 								Você não está escalado para o plantão atual
 							</div>
 							<?php
-						}
-						
+						}	
 					}
 				}
 			?>
