@@ -54,7 +54,8 @@
 					echo '<div class="alert alert-success">
 							<strong>Internação solicitada com sucesso!</strong>
 						</div>';
-				
+					
+					header("Location: consultasMedico.php");
 				}
 				
 			else{

@@ -38,7 +38,7 @@
 	<div class="row">
 		<div class="col-md-8">
 		
-			<p class="h3 border-bottom">Internados</p>
+			<p class="h3 border-bottom">Atualmente internados</p>
 			
 				<div class="row">
 				<?php
@@ -105,6 +105,8 @@
 								
 													<div class="card-body">
 													<button type="button" class="btn btn-primary btn-block">Evoluir</button>
+													
+													<button type="button" class="btn btn-primary btn-block">Fazer anamnese</button>
 													</div>
 												</div>
 											</div>
@@ -118,7 +120,7 @@
 				?>
 				</div>
 			
-			<p class="h3 border-bottom">Não internados</p>
+			<p class="h3 border-bottom">Com internação solicitada ou com Alta</p>
 			
 				<div class="row">
 				<?php
@@ -139,10 +141,11 @@
 						foreach($result as $row){
 							$cpfpaciente = $row['cpfpaciente'];
 							
-							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
+							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente WHERE status != :status';
 					
 							$stmt1 = $conn->prepare($sql1);
 							$stmt1->bindValue(':cpfmedico', $cpfmedico);
+							$stmt1->bindValue(':status', $status);
 							$stmt1->execute();
 							$count1 = $stmt1->rowCount();
 		
@@ -202,29 +205,79 @@
 									}	
 								}
 							}
-							else{
-								//Pacientes não-internados, que não possuem internação solicitada nem que tiveram alta
-								?>
-								<div class="col-sm-4 mb-3">
-									<div class="card border-secondary">
-										<div class="card-header">
-											<label for="nomecompleto">Nome do paciente:</label>
-											<h5 class="card-title" id="nomecompleto" name="nomecompleto">
-												<?php echo $nomepaciente; ?>
-											</h5>
-										</div>
-								
-										<div class="card-body">
-										</div>						
-									</div>
-								</div>
-								<?php
-							}
 						}
 					}	
 				?>
 				</div>
 			
+			<p class="h3 border-bottom">Nunca internados</p>
+			
+				<div class="row">
+				<?php
+					$cpfmedico = $_SESSION['cpf'];
+					
+					$status = "Realizada";
+					
+					$sql = 'SELECT cpfpaciente FROM consultas WHERE cpfmedico = :cpfmedico LIMIT 1';
+					
+					$stmt = $conn->prepare($sql);
+					$stmt->bindValue(':cpfmedico', $cpfmedico);
+					$stmt->execute();
+					$count = $stmt->rowCount();
+		
+					if($count > 0){
+						$result = $stmt->fetchAll();
+						
+						foreach($result as $row){
+							$cpfpaciente = $row['cpfpaciente'];
+			
+							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
+						
+							$stmt1 = $conn->prepare($sql1);
+							$stmt1->bindValue(':cpfpaciente', $cpfpaciente);
+							$stmt1->execute();
+							$count1 = $stmt1->rowCount();
+		
+							if($count1 > 0){
+								$result1 = $stmt1->fetchAll();
+							}
+							else{
+							
+								$sql2 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
+					
+								$stmt2 = $conn->prepare($sql2);
+								$stmt2->bindValue(':cpf', $cpfpaciente);
+								$stmt2->execute();
+								$count2 = $stmt2->rowCount();
+		
+								if($count2 > 0){
+									$result2 = $stmt2->fetchAll();
+								
+									foreach($result2 as $row2){
+										$nomepaciente = $row2['nomecompleto']
+								
+										?>
+										<div class="col-sm-4 mb-3">
+											<div class="card border-secondary">
+												<div class="card-header">
+													<label for="nomecompleto">Nome do paciente:</label>
+														<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+															<?php echo $nomepaciente; ?>
+														</h5>
+													</div>
+								
+												<div class="card-body">
+												</div>			
+											</div>
+										</div>
+										<?php
+									}
+								}
+							}
+						}
+					}	
+				?>
+				</div>
 		</div>
 		<div class="col-md-4">
 		

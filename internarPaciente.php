@@ -31,6 +31,9 @@
 			
 			
 			if($stmt1->execute()){
+				
+				$diahorarioentrada = time();
+				
 				$sql2 = 'UPDATE internacoes SET idleito = :idleito,
 				                                diahorarioentrada = :diahorarioentrada,
 												status = :status
@@ -38,7 +41,7 @@
 									 
 				$stmt2 = $conn->prepare($sql2);
 				$stmt2->bindParam(':idleito'          , $idleito);
-				$stmt2->bindParam(':diahorarioentrada', $idleito);
+				$stmt2->bindParam(':diahorarioentrada', $diahorarioentrada);
 				$stmt2->bindParam(':status'           , $statusinternacao);
 				$stmt2->bindParam(':cpfpaciente'      , $cpfpaciente);
 			
@@ -46,6 +49,8 @@
 					echo '<div class="alert alert-success">
 							<strong>Internação realizada!</strong>.
 						</div>';
+						
+					header("Location: internacoes.php");
 				}
 				else{
 					echo '<div class="alert alert-danger">

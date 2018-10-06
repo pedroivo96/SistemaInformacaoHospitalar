@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do Enfermeiro</title>
+    <title>Minhas evoluções</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -32,35 +32,72 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Área do enfermeiro</h5>
+			<h5 class="display-4">Minhas evoluções</h5>
+			
+			<div class="row">
+			<?php
+				include './conexao.php';
+				
+				$cpfprofissional = $_SESSION['cpf'];
+				
+				$conn = getConnection();
+		
+				$sql = 'SELECT * FROM evolucoes WHERE cpfprofissional = :cpfprofissional';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':cpfprofissional', $cpfprofissional);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						$cpfpaciente = $row['cpfpaciente'];
+						$conteudo = $row['conteudo'];
+						$diahorario = $row['diahorario'];
+						
+						$sql1 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':cpfpaciente', $cpfpaciente);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							$result1 = $stmt1->fetchAll();
+			
+							foreach($result1 as $row1){
+								$nomepaciente = $row1['nomecompleto'];
+								
+								?>
+								<div class="col-sm-12">
+									<div class="card">
+										<div class="card-header">
+											<?php echo $nomepaciente; ?>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Conteúdo</h5>
+											<p class="card-text"><?php echo $conteudo; ?></p>
+										</div>
+									</div>
+								</div>
+								<?php
+							}
+						}
+					}
+				}
+				else{
+					?>
+					<div class="alert alert-warning" role="alert">
+						Você não tem evoluções cadastradas.
+					</div>
+					<?php
+				}
+			?>
+			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			
-			<dl class="row">
-				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
-
-				<dt class="col-sm-3">CPF</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
-				
-				<dt class="col-sm-3">RG</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
-				
-				<dt class="col-sm-3">Tipo</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['tipo']; ?></dd>
-				
-				<dt class="col-sm-3">Nome de usuário</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
-				
-				<dt class="col-sm-3">Registro</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['registro']; ?></dd>
-				
-				<dt class="col-sm-3">Especialidade</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['especialidade']; ?></dd>
-				
-			</dl>
 			
 		</div>
 		<div class="col-md-4">
