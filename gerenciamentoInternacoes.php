@@ -32,6 +32,27 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
+			<?php
+			$tipo = $_SESSION['tipo'];
+			
+			if($tipo == "Médico"){
+				?>
+				<h3>
+					Menu do médico
+					<small class="text-muted">Gerenciamento de internações</small>
+				</h3>
+				<?php
+			}
+			else{
+				?>
+				<h3>
+					Menu do enfermeiro
+					<small class="text-muted">Gerenciamento de internações</small>
+				</h3>
+				<?php
+			}
+			?>
+		
 			<h5 class="display-4">Gerenciamento de Internações</h5>
 		</div>
 	</div>

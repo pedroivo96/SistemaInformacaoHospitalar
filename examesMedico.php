@@ -34,7 +34,7 @@
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
-				<small class="text-muted">Exames</small>
+				<small class="text-muted">Meus exames</small>
 			</h3>
 		</div>
 	</div>

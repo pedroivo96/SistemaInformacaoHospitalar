@@ -22,7 +22,10 @@
 	
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Administrador</h5>
+			<h3>
+				Administrador
+				<small class="text-muted">Painel de controle</small>
+			</h3>
 		</div>
 	</div>
 	
@@ -148,6 +151,74 @@
 				</div>
 				
 				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
+		</div>
+		
+		<div class="col-md-4 border pt-2 pb-2 mb-5">
+			<p class="h4" align="center">Cadastrar novo setor</p>
+			
+			<form method="post" action="cadastrarSetor.php">
+				
+				<div class="form-group">
+					<label for="cpfprofissional">Nome do setor</label>
+					<input type="text" class="form-control" id="nomesetor" name="nomesetor">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
+		</div>
+		
+		<div class="col-md-4 border pt-2 pb-2 mb-5">
+			<p class="h4" align="center">Cadastrar leito em um setor</p>
+			
+			<form method="post" action="cadastrarLeito.php">
+				
+				<div class="form-group">
+					<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+					<?php
+					include './conexao.php';
+					
+					$conn = getConnection();
+					
+					$sql = 'SELECT * FROM setores';
+					
+					$stmt = $conn->prepare($sql);
+					$stmt->execute();
+					$count = $stmt->rowCount();
+		
+					if($count > 0){
+						$result = $stmt->fetchAll();
+						$submit = 1;
+			
+						foreach($result as $row){
+							$id   = $row['id'];
+							$nome = $row['nome'];
+							?>
+							<label class="btn btn-secondary btn-block mb-1">
+								<input type="radio" id="<?php echo $id; ?>" name="setor" autocomplete="off" value="<?php echo $id; ?>"> <?php echo $nome; ?>
+							</label>
+							<?php
+						}
+					}
+					else{
+						echo '<div class="alert alert-warning btn-block">
+								<strong>Não há setores cadastrados!</strong>
+							  </div>';
+						$submit = 0;
+					}
+					?>
+					</div>
+				</div>
+				
+				<?php
+				if($submit == 1){
+					?>
+					<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+					<?php
+				}
+				?>
 			</form>
 		
 		</div>

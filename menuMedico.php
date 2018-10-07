@@ -34,6 +34,7 @@
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
+				<small class="text-muted">Informações pessoais</small>
 			</h3>
 		</div>
 	</div>
@@ -119,14 +120,17 @@
 						}
 						else{
 							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado para o plantão atual
+							<div class="alert alert-primary mt-3" role="alert">
+								Você não está escalado para o plantão atual!
 							</div>
 							<?php
 						}	
 					}
 				}
 			?>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+			
 		</div>
 	</div>
 	<div class="row">

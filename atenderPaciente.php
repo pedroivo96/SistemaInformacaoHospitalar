@@ -26,6 +26,24 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
+	
+	<script src="js/jquery-3.3.1.min.js"></script>
+	
+	<script>
+	
+		function mostrarSetores() {
+			var setores = document.getElementById('setorescomvagas');
+			
+			setores.style.display = "block";
+		}
+		
+		function ocultarSetores() {
+			var setores = document.getElementById('setorescomvagas');
+			
+			setores.style.display = "none";
+		}
+	
+	</script>
 
   </head>
   <body>
@@ -101,6 +119,79 @@
 							<input type="text" class="form-control" id="diagnosticoprovavel" name="diagnosticoprovavel">
 						</div>
 						
+						<div class="btn-group-vertical">
+							<button type="button" class="btn btn-primary" onclick="ocultarSetores();">
+								Alta
+							</button>
+							
+							<button type="button" class="btn btn-primary" onclick="mostrarSetores();">
+								Internação
+							</button>
+						</div>
+						
+						<?php
+							include './conexao.php';
+				
+							$conn = getConnection();
+							$status = "Livre";
+					
+							$sql = 'SELECT * FROM leitos WHERE status = :status GROUP BY idsetor';
+					
+							$stmt = $conn->prepare($sql);
+							$stmt->bindValue(':status', $status);
+							$stmt->execute();
+							$count = $stmt->rowCount();
+		
+							if($count > 0){
+								$result = $stmt->fetchAll();
+			
+								?>
+								<div class="form-group" id="setorescomvagas">
+									<label for="label">Setores com vagas</label>
+									<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+								<?php
+								foreach($result as $row){
+									$idleito = $row['id'];
+									$idsetor = $row['idsetor'];
+									
+									$sql1 = 'SELECT nome FROM setores WHERE id = :idsetor';
+					
+									$stmt1 = $conn->prepare($sql1);
+									$stmt1->bindValue(':idsetor', $idsetor);
+									$stmt1->execute();
+									$count1 = $stmt1->rowCount();
+		
+									if($count1 > 0){
+										$result1 = $stmt1->fetchAll();
+			
+										foreach($result1 as $row1){
+											$nomesetor = $row1['nome'];
+											?>
+											<label class="btn btn-secondary btn-block">
+												<input type="radio" 
+												       id="<?php echo $idsetor; ?>" 
+												       name="setor" 
+													   autocomplete="off" 
+													   value="<?php echo $nomesetor; ?>"> <?php echo $nomesetor; ?>
+													   
+												<input type="hidden" id="idsetor" name="idsetor" value="<?php echo $idsetor; ?>">
+											</label>
+											<?php
+										}
+									}
+								}
+								?>
+									</div>
+								</div>
+								<?php
+							}
+							else{
+								echo '<div class="alert alert-danger btn-block">
+										<strong>Erro!</strong> Não existem setores com vagas.
+									  </div>';
+							}
+						?>
+						<!--
 						<div class="form-group">
 							<label for="especialidade"></label>
 							<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
@@ -112,6 +203,7 @@
 								</label>
 							</div>
 						</div>
+						-->
 				
 						<button type="submit" class="btn btn-primary  btn-block">Finalizar</button>
 					</form>

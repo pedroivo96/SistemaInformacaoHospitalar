@@ -34,7 +34,7 @@
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
-				<small class="text-muted">Consultas</small>
+				<small class="text-muted">Minhas consultas</small>
 			</h3>
 		</div>
 	</div>
@@ -126,14 +126,12 @@
 											</h6>
 										
 											<?php
-											include './conexao.php';
-											
 											$diahorario = time();
-											$conn = getConnection();
 				
-											$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+											$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 											$stmt = $conn->prepare($sql);
-											$stmt->bindValue(':diahorario', $diahorario);
+											$stmt->bindValue(':diahorario1', $diahorario);
+											$stmt->bindValue(':diahorario2', $diahorario);
 											$stmt->execute();
 											$count = $stmt->rowCount();
 		
@@ -195,16 +193,14 @@
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
 			
 			<?php
-				include './conexao.php';
 			
 				$cpfmedico  = $_SESSION['cpf'];
 				$diahorario = time();
 				
-				$conn = getConnection();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
 				$stmt->execute();
 				$count = $stmt->rowCount();
 		
@@ -248,8 +244,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
-		</div>
+		<?php include 'rodape.html'; ?>
 	</div>
 </div>
 

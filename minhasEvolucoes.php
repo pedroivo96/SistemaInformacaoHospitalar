@@ -56,7 +56,7 @@
 					?>
 					<h3>
 						Menu do médico
-						<small class="text-muted">Evoluções</small>
+						<small class="text-muted">Minhas evoluções</small>
 					</h3>
 					<?php
 					}
@@ -64,7 +64,7 @@
 					?>
 					<h3>
 						Menu do enfermeiro
-						<small class="text-muted">Evoluções</small>
+						<small class="text-muted">Minhas evoluções</small>
 					</h3>
 					<?php	
 					}

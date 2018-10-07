@@ -32,7 +32,10 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Menu do técnico em enfermagem</h5>
+			<h3>
+				Menu do técnico em enfermagem
+				<small class="text-muted">Informações pessoais</small>
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -71,6 +74,10 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
 				Minhas anotações
+			</button>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
+				Sair
 			</button>
 			
 		</div>

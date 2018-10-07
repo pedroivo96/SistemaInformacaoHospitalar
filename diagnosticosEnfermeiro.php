@@ -32,8 +32,14 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Meus diagnósticos</h5>
-			
+			<h3>
+				Menu do enfermeiro
+				<small class="text-muted">Meus diagnósticos</small>
+			</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
 			<div class="row">
 			<?php
 				include './conexao.php';
@@ -94,11 +100,6 @@
 				}
 			?>
 			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-8">
-			
 		</div>
 		<div class="col-md-4">
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>

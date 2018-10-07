@@ -25,6 +25,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
+	
+	<script src="js/jquery-3.3.1.min.js"></script>
 
   </head>
   <body>
@@ -32,9 +34,13 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Associar técnico</h5>
+			<h3>
+				Menu do enfermeiro
+				<small class="text-muted">Associar técnico a um paciente</small>
+			</h3>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-8">
 			<?php
@@ -126,6 +132,7 @@
 			
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-12">
 		</div>

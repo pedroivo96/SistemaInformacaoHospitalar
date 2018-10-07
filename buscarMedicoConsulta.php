@@ -86,17 +86,14 @@
 								
 								$result1 = $stmt1->fetchAll();
 		
-			
 								foreach($result1 as $row1){
 									
 									$nomecompleto     = $row['nomecompleto'];
 									$cpf              = $row['cpf'];
 									$diahorarioinicio = $row1['diahorarioinicio'];
-									$diahorariofim    = $row1['diahorariofim'];
-									
+									$diahorariofim    = $row1['diahorariofim'];									
 									?>
-									
-									
+
 									<div class="card">
 										<form method="post" action="agendarConsulta.php">
 											
