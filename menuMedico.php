@@ -87,9 +87,10 @@
 				
 				$conn = getConnection();
 				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
 				$stmt->execute();
 				$count = $stmt->rowCount();
 		
@@ -110,9 +111,6 @@
 						if($count1 > 0){
 							//Está escalado para o plantão atual, portanto pode realizar internações.
 							?>
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
-								Realizar internação
-							</button>
 							
 							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
 								Gerenciar internações
@@ -132,8 +130,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
-		</div>
+		<?php include 'rodape.html'; ?>
 	</div>
 </div>
 

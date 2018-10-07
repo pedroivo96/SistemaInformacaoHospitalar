@@ -19,11 +19,13 @@
   <body>
 
     <div class="container-fluid">
+	
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h5 class="display-4">Administrador</h5>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-4 border pt-2 pb-2">
 			<p class="h4" align="center">Cadastrar horário</p>
@@ -130,7 +132,7 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-4 border pt-2 pb-2">
+		<div class="col-md-4 border pt-2 pb-2 mb-5">
 			<p class="h4" align="center">Cadastrar profissional em um plantão</p>
 			
 			<form method="post" action="cadastrarProfissionalPlantao.php">
@@ -151,7 +153,7 @@
 		</div>
 	</div>
 	
-	<div class="row">
+	<div class="row mt-5">
 		<?php include 'rodape.html'; ?>
 	</div>
 </div>

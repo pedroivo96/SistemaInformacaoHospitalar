@@ -36,7 +36,7 @@
 				<a href="loginPaciente.html">
 					<img src="img/paciente2.jpg" class="image-fluid mb-2" alt="Responsive image">
 				</a>
-				<button type="button" class="btn btn-success btn-lg btn-block"  onclick="location.href = 'loginPaciente.html';">
+				<button type="button" class="btn btn-success btn-lg btn-block"  onclick="location.href = 'loginPaciente.php';">
 					Paciente
 				</button>
 			
@@ -47,13 +47,12 @@
 				<a href="loginProfissional.html">
 					<img src="img/profissional2.jpg" class="image-fluid mb-2" alt="Responsive image">
 				</a>
-				<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'loginProfissional.html';">
+				<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'loginProfissional.php';">
 					Profissional
 				</button>
 			</div>
 		
 		</div>
-		
 		
 		<div class="row">
 			<?php include 'rodape.html'; ?>

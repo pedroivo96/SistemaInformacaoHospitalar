@@ -20,7 +20,7 @@
 		$sql = 'UPDATE consultas SET queixaprincipal = :queixaprincipal,
 		                             exameclinico = :exameclinico,
 									 diagnosticoprovavel = :diagnosticoprovavel,
-									 altainternacao = :altainternacao,
+									 altainternacao = :altainternacao
 									 WHERE id = :idconsulta';
 									 
         $stmt = $conn->prepare($sql);
