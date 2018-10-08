@@ -59,7 +59,7 @@
 						<strong>Cadastrado realizado!</strong> Profissional cadastrado com sucesso.
                       </div>';
 					  
-					  header("Location: admin.html");
+					  header("Location: admin.php");
             }else{
                 echo '<div class="alert alert-danger">
 						<strong>Erro no cadastro!</strong> Falha no banco de dados.

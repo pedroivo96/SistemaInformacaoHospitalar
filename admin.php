@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	
-	<div class="row">
+	<div class="row mb-5">
 		<div class="col-md-4 border pt-2 pb-2">
 			<p class="h4" align="center">Cadastrar horário</p>
 			

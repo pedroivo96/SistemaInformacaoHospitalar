@@ -51,7 +51,10 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Atendimento</h5>
+			<h3>
+				Menu do médico
+				<small class="text-muted">Atendimento ao paciente</small>
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -119,8 +122,8 @@
 							<input type="text" class="form-control" id="diagnosticoprovavel" name="diagnosticoprovavel">
 						</div>
 						
-						<div class="btn-group-vertical">
-							<button type="button" class="btn btn-primary" onclick="ocultarSetores();">
+						<div class="btn-group-vertical btn-block">
+							<button type="button" class="btn btn-primary mb-1" onclick="ocultarSetores();">
 								Alta
 							</button>
 							
@@ -130,7 +133,6 @@
 						</div>
 						
 						<?php
-							include './conexao.php';
 				
 							$conn = getConnection();
 							$status = "Livre";
@@ -281,8 +283,6 @@
 					<?php
 					
 						$status = "Solicitado";
-					
-						$conn = getConnection();
 		
 						$sql = 'SELECT nomeexame FROM exames WHERE idconsulta = :idconsulta AND status = :status';
 						$stmt = $conn->prepare($sql);
@@ -317,8 +317,6 @@
 					<?php
 					
 						$status = "Solicitado";
-					
-						$conn = getConnection();
 		
 						$sql = 'SELECT nomeprocedimento FROM procedimentos WHERE idconsulta = :idconsulta AND status = :status';
 						$stmt = $conn->prepare($sql);
@@ -351,8 +349,6 @@
 					<p class="h4 border-bottom">Prescrições de medicamentos</p>
 					
 					<?php
-					
-						$conn = getConnection();
 		
 						$sql = 'SELECT nomemedicamento FROM prescricoes WHERE idconsulta = :idconsulta';
 						$stmt = $conn->prepare($sql);
@@ -392,9 +388,66 @@
 		<div class="col-md-4">
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Meus exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Meus procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
+			
+			<?php
+			
+				$cpfmedico  = $_SESSION['cpf'];
+				$diahorario = time();
+				
+				$conn = getConnection();
+				
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						
+						$idplantao = $row['id'];
+						
+						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':idplantao'      , $idplantao);
+						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							//Está escalado para o plantão atual, portanto pode realizar internações.
+							?>
+							
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+								Gerenciar internações
+							</button>
+							<?php
+						}
+						else{
+							?>
+							<div class="alert alert-primary mt-3" role="alert">
+								Você não está escalado para o plantão atual!
+							</div>
+							<?php
+						}	
+					}
+				}
+			?>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+			
 		</div>
 	</div>
 	<div class="row">

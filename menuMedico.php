@@ -30,7 +30,7 @@
   <body>
 
     <div class="container-fluid">
-	<div class="row mb-5 mt-5">
+	<div class="row mb-4 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
@@ -133,9 +133,11 @@
 			
 		</div>
 	</div>
-	<div class="row">
-		<?php include 'rodape.html'; ?>
+	
+	<div class="fixed-bottom">
+		<?php include 'rodape1.html'; ?>
 	</div>
+	
 </div>
 
     <script src="js/jquery.min.js"></script>

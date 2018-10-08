@@ -30,10 +30,13 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Minhas consultas</h5>
+			<h3>
+				Menu do paciente
+				<small class="text-muted">Minhas consultas</small>
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -109,6 +112,8 @@
 												<label for="exampleInputEmail1">Dia:</label>
 												<h6 class="card-text" id="especialidade" name="especialidade">
 													<?php echo date("d/m/y",$diahorarioinicio); ?>
+													a
+													<?php echo date("d/m/y",$diahorariofim); ?>
 												</h6>
 												
 												<label for="exampleInputEmail1">Horário:</label>
@@ -139,6 +144,11 @@
 							}
 						}
 					}
+					else{
+						echo '<div class="alert alert-primary btn-block">
+								<strong>Você não tem nenhuma consulta agendada!</strong>
+                              </div>';
+					}
 				?>
 			</div>
 			
@@ -151,9 +161,9 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Pesquisar médicos</button>
-			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>
 	</div>
 	<div class="row">

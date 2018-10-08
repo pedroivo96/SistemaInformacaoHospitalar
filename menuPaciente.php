@@ -29,7 +29,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -38,7 +38,8 @@
 			</h3>
 		</div>
 	</div>
-	<div class="row">
+	
+	<div class="row mb-5">
 		<div class="col-md-8">
 			
 			<dl class="row">
@@ -102,6 +103,7 @@
 			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>
 	</div>
+	
 	<div class="row">
 		<?php include 'rodape.html'; ?>
 	</div>

@@ -54,7 +54,7 @@
 		
 		</div>
 		
-		<div class="row">
+		<div class="fixed-bottom">
 			<?php include 'rodape.html'; ?>
 		</div>
 		

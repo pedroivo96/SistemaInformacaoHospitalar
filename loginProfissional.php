@@ -22,6 +22,7 @@
 			<h5 class="display-4">Login profissional</h5>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-4">
 		</div>
@@ -46,9 +47,11 @@
 		</div>
 	</div>
 	
-	<div class="row">
-		<?php include 'rodape.html'; ?>
+	
+	<div class="fixed-bottom">
+		<?php include 'rodape1.html'; ?>
 	</div>
+
 </div>
 
     <script src="js/jquery.min.js"></script>

@@ -29,22 +29,22 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Agendar consulta</h5>
+			<h3>
+				Menu do paciente
+				<small class="text-muted">Agendar consulta</small>
+			</h3>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-md-8">
 		
 			<div class="alert alert-primary d-block" role="alert">
 				Resultado da busca
 			</div>
-			
-			<!--
-			<div class="card-columns">
-			-->
 			
 			<?php
 				include './conexao.php';
@@ -126,11 +126,16 @@
 								}
 								
 							}
+							else{
+								echo '<div class="alert alert-warning">
+										<strong>Nenhum profissional dessa especialidade com horário compatível foi encontrado!</strong>
+									  </div>';
+							}
 						}
 			
 					}else{
 						echo '<div class="alert alert-danger">
-								<strong>Erro!</strong> Nenhum resultado encontrado.
+								<strong>Erro!</strong> Nenhum profissional dessa especialidade foi encontrado.
 							  </div>';
 					}
 				}
@@ -141,13 +146,15 @@
 		
 		</div>
 		<div class="col-md-4">
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultas.html';">Consultas</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Consultas</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>
 	</div>
 	<div class="row">
