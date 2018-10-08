@@ -48,6 +48,8 @@
 			
 			<?php
 				include './conexao.php';
+				
+				date_default_timezone_set("America/Fortaleza"); 
 
 				if(!empty($_POST)){
 					$especialidade = $_POST['especialidade'];
@@ -58,11 +60,11 @@
 					$tipo = "Médico";
 					
 					$conn = getConnection();
-
-					$sql = 'SELECT * FROM profissionais WHERE especialidade = :especialidade AND tipo = :tipo';
+					
+					$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio <= :diahorario1 AND diahorariofim >= :diahorario2';
 					$stmt = $conn->prepare($sql);
-					$stmt->bindValue(':especialidade', $especialidade);
-					$stmt->bindValue(':tipo'         , $tipo);
+					$stmt->bindValue(':diahorario1', $diahorario);
+					$stmt->bindValue(':diahorario2', $diahorario);
 					$stmt->execute();
 					$count = $stmt->rowCount();
 
@@ -72,13 +74,13 @@
 						
 						foreach($result as $row){
 							
-							$cpf = $row['cpf'];
+							$idplantao        = $row['id'];
+							$diahorarioinicio = $row['diahorarioinicio'];
+							$diahorariofim    = $row['diahorariofim'];
 							
-							$sql1 = 'SELECT * FROM horarios WHERE cpf = :cpf AND diahorarioinicio <= :diahorario1 AND diahorariofim >= :diahorario2';
+							$sql1 = 'SELECT cpfprofissional FROM profissionaisplantao WHERE idplantao = :idplantao';
 							$stmt1 = $conn->prepare($sql1);
-							$stmt1->bindValue(':diahorario1', $diahorario);
-							$stmt1->bindValue(':diahorario2', $diahorario);
-							$stmt1->bindValue(':cpf'        , $cpf);
+							$stmt1->bindValue(':idplantao', $idplantao);
 							$stmt1->execute();
 							$count1 = $stmt1->rowCount();
 							
@@ -88,55 +90,74 @@
 		
 								foreach($result1 as $row1){
 									
-									$nomecompleto     = $row['nomecompleto'];
-									$cpf              = $row['cpf'];
-									$diahorarioinicio = $row1['diahorarioinicio'];
-									$diahorariofim    = $row1['diahorariofim'];									
-									?>
-
-									<div class="card">
-										<form method="post" action="agendarConsulta.php">
+									$cpfprofissional = $row1['cpfprofissional'];
+									
+									$sql2 = 'SELECT * FROM profissionais WHERE  cpf = :cpfprofissional AND especialidade = :especialidade AND tipo = :tipo';
+									$stmt2 = $conn->prepare($sql2);
+									$stmt2->bindValue(':cpfprofissional', $cpfprofissional);
+									$stmt2->bindValue(':especialidade'  , $especialidade);
+									$stmt2->bindValue(':tipo'           , $tipo);
+									$stmt2->execute();
+									$count2 = $stmt2->rowCount();
+							
+									if($count2 > 0){
+								
+										$result2 = $stmt2->fetchAll();
+		
+										foreach($result2 as $row2){
 											
-											<div class="card-body">
+											$nomemedico = $row2['nomecompleto'];
+											
+											?>
+											<div class="card">
+												<form method="post" action="agendarConsulta.php">
+											
+													<div class="card-body">
 													
-												<div class="form-group">
-													<label for="exampleInputEmail1">Nome do médico:</label>
-													<h5 class="card-title" id="nomecompleto" name="nomecompleto">
-														<?php echo $nomecompleto; ?>
-													</h5>
-												</div>
+														<div class="form-group">
+															<label for="exampleInputEmail1">Nome do médico:</label>
+															<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+																<?php echo $nomemedico; ?>
+															</h5>
+														</div>
 													
-												<input type="hidden" id="cpf" name="cpf" value="<?php echo $cpf; ?>">
-												<input type="hidden" id="diahorarioinicio" name="diahorarioinicio" value="<?php echo $diahorarioinicio; ?>">
-												<input type="hidden" id="diahorariofim" name="diahorariofim" value="<?php echo $diahorariofim; ?>">
+														<input type="hidden" id="cpf"              name="cpf"              value="<?php echo $cpfprofissional; ?>">
+														<input type="hidden" id="diahorarioinicio" name="diahorarioinicio" value="<?php echo $diahorarioinicio; ?>">
+														<input type="hidden" id="diahorariofim"    name="diahorariofim"    value="<?php echo $diahorariofim; ?>">
 													
-												<div class="form-group">
-													<label for="exampleInputEmail1">Especialidade:</label>
-													<h6 class="card-text" id="especialidade" name="especialidade">
-														<?php echo $especialidade; ?>
-													</h6>
-												</div>
+														<div class="form-group">
+															<label for="exampleInputEmail1">Especialidade:</label>
+															<h6 class="card-text" id="especialidade" name="especialidade">
+																<?php echo $especialidade; ?>
+															</h6>
+														</div>
 													
-												<button type="submit" class="btn btn-primary btn-block">Agendar</button>
+														<button type="submit" class="btn btn-primary btn-block">Agendar</button>
+													</div>
+												</form>	
 											</div>
-										</form>	
-									</div>
-										
-									<?php
+											<?php
+										}
+									}
+									else{
+										echo '<div class="alert alert-warning">
+												<strong>Nenhum médico dessa especialidade cadastrado nesse plantão!</strong>
+											  </div>';
+									}
 								}
 								
 							}
 							else{
 								echo '<div class="alert alert-warning">
-										<strong>Nenhum profissional dessa especialidade com horário compatível foi encontrado!</strong>
+										<strong>Nenhum profissional cadastrado nesse plantão!</strong>
 									  </div>';
 							}
 						}
 			
 					}else{
-						echo '<div class="alert alert-danger">
-								<strong>Erro!</strong> Nenhum profissional dessa especialidade foi encontrado.
-							  </div>';
+						echo '<div class="alert alert-warning">
+										<strong>Nenhum plantão cadastrado nesse horário!</strong>
+									  </div>';
 					}
 				}
 			?>

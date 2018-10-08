@@ -3,6 +3,8 @@
 
     if(!empty($_POST)){
 		
+		date_default_timezone_set("America/Fortaleza"); 
+		
 		$diahorarioinicio = $_POST['diahorarioinicio'];
 		$diahorariofim    = $_POST['diahorariofim'];
 		
@@ -12,8 +14,8 @@
 			                          diahorariofim) VALUES(:diahorarioinicio, 
 											                :diahorariofim)';
 															
-		$timeinicio = strtotime(strval($diahorarioinicio));
-		$timefim    = strtotime(strval($diahorariofim));
+		$timeinicio = strtotime($diahorarioinicio);
+		$timefim    = strtotime($diahorariofim);
 		
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':diahorarioinicio', $timeinicio);

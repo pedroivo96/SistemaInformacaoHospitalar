@@ -224,9 +224,8 @@
 		</div>
 	</div>
 	
-	<div class="row mt-5">
-		<?php include 'rodape.html'; ?>
-	</div>
+	<?php include 'rodape1.html'; ?>
+	
 </div>
 
 	<script src="js/bootstrap.bundle.min.js"></script>

@@ -20,7 +20,8 @@
 		$sql = 'UPDATE consultas SET queixaprincipal = :queixaprincipal,
 		                             exameclinico = :exameclinico,
 									 diagnosticoprovavel = :diagnosticoprovavel,
-									 altainternacao = :altainternacao
+									 altainternacao = :altainternacao,
+									 status = :status
 									 WHERE id = :idconsulta';
 									 
         $stmt = $conn->prepare($sql);
@@ -29,6 +30,7 @@
 		$stmt->bindParam(':diagnosticoprovavel'  , $diagnosticoprovavel);
 		$stmt->bindParam(':altainternacao'       , $altainternacao);
 		$stmt->bindParam(':idconsulta'           , $idconsulta);
+		$stmt->bindParam(':status'               , $status);
 			
 		if($stmt->execute()){
             echo '<div class="alert alert-success">
@@ -58,7 +60,7 @@
 					header("Location: consultasMedico.php");
 				}
 				
-			else{
+			}else{
 				//Não solicita internação
 			}
 				  

@@ -48,9 +48,10 @@
 		</div>
 	</div>
 	
-	<div class="row">
-		<?php include 'rodape.html'; ?>
+	<div class="fixed-bottom">
+		<?php include 'rodape1.html'; ?>
 	</div>
+	
 </div>
 
     <script src="js/jquery.min.js"></script>

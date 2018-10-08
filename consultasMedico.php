@@ -49,6 +49,8 @@
 			<?php
 				include './conexao.php';
 				
+				date_default_timezone_set("America/Fortaleza"); 
+				
 				$cpfmedico = $_SESSION['cpf'];
 				$status    = "Agendada";
 				$nomemedico = $_SESSION['nomecompleto'];
@@ -128,28 +130,31 @@
 										
 											<?php
 											$diahorario = time();
+											
+											/*echo $diahorario;
+											echo date("H:i:s",$diahorario);*/
 				
-											$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-											$stmt = $conn->prepare($sql);
-											$stmt->bindValue(':diahorario1', $diahorario);
-											$stmt->bindValue(':diahorario2', $diahorario);
-											$stmt->execute();
-											$count = $stmt->rowCount();
+											$sql2 = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
+											$stmt2 = $conn->prepare($sql2);
+											$stmt2->bindValue(':diahorario1', $diahorario);
+											$stmt2->bindValue(':diahorario2', $diahorario);
+											$stmt2->execute();
+											$count2 = $stmt2->rowCount();
 		
-											if($count > 0){
-												$result = $stmt->fetchAll();
+											if($count2 > 0){
+												$result2 = $stmt2->fetchAll();
 			
-												foreach($result as $row){
-													$idplantao = $row['id'];
+												foreach($result2 as $row2){
+													$idplantao = $row2['id'];
 													
-													$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-													$stmt1 = $conn->prepare($sql1);
-													$stmt1->bindValue(':idplantao'      , $idplantao);
-													$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-													$stmt1->execute();
-													$count1 = $stmt1->rowCount();
+													$sql3 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+													$stmt3 = $conn->prepare($sql3);
+													$stmt3->bindValue(':idplantao'      , $idplantao);
+													$stmt3->bindValue(':cpfprofissional', $cpfmedico);
+													$stmt3->execute();
+													$count3 = $stmt3->rowCount();
 		
-													if($count1 > 0){
+													if($count3 > 0){
 													?>
 														<button type="submit" class="btn btn-primary btn-block">Atender</button>
 													<?php
@@ -158,6 +163,13 @@
 														//Não está escalado para o plantão atual, portanto não pode Atender um paciente.
 													}
 												}
+											}
+											else{
+												?>
+												<div class="alert alert-primary" role="alert">
+													Não há um plantão cadastrado para o horário atual.
+												</div>
+												<?php
 											}
 											?>
 										</form>

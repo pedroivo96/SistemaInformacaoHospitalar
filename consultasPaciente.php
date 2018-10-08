@@ -46,6 +46,8 @@
 			<div class="row">
 				<?php
 				
+					date_default_timezone_set("America/Fortaleza"); 
+				
 					include './conexao.php';
 				
 					$cpfpaciente = $_SESSION['cpf'];

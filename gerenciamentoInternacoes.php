@@ -52,8 +52,6 @@
 				<?php
 			}
 			?>
-		
-			<h5 class="display-4">Gerenciamento de Internações</h5>
 		</div>
 	</div>
 	<div class="row">
@@ -233,8 +231,6 @@
 			if($tipo == "Enfermeiro"){
 				$cpfprofissional = $_SESSION['cpf'];
 				
-				include './conexao.php';
-				
 				$conn = getConnection();
 				
 				$actual = time();
@@ -330,16 +326,16 @@
 				</button>
 			
 				<?php
-				include './conexao.php';
 			
 				$cpfmedico  = $_SESSION['cpf'];
 				$diahorario = time();
 				
 				$conn = getConnection();
 				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
 				$stmt->execute();
 				$count = $stmt->rowCount();
 		
