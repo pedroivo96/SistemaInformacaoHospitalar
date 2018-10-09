@@ -336,6 +336,8 @@
 					}
 				}
 			?>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>
 	</div>
 	

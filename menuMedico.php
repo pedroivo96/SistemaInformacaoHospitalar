@@ -29,7 +29,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-4 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>

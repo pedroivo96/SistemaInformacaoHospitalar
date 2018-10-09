@@ -13,6 +13,7 @@
 		$exameclinico         = $_POST['exameclinico'];
 		$diagnosticoprovavel  = $_POST['diagnosticoprovavel'];
 		$altainternacao       = $_POST['altainternacao'];
+		$idsetor              = $_POST['idsetor'];
 		$status               = "Realizada";
 		
 		$conn = getConnection();
@@ -44,13 +45,16 @@
 				
 				$sql1 = 'INSERT INTO internacoes (cpfmedico, 
 			                                      cpfpaciente, 
-									              status) VALUES(:cpfmedico, 
-											                     :cpfpaciente, 
-												                 :status)';
+									              status,
+												  idsetor) VALUES(:cpfmedico, 
+											                      :cpfpaciente, 
+												                  :status,
+																  :idsetor)';
 				$stmt1 = $conn->prepare($sql1);
 				$stmt1->bindParam(':cpfmedico'       , $cpfmedico);
 				$stmt1->bindParam(':cpfpaciente'     , $cpfpaciente);
 				$stmt1->bindParam(':status'          , $status1);
+				$stmt1->bindParam(':idsetor'         , $idsetor);
 			
 				if($stmt1->execute()){
 					echo '<div class="alert alert-success">

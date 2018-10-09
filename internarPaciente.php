@@ -1,15 +1,20 @@
 <?php
 	include './conexao.php';
+	
+	date_default_timezone_set("America/Fortaleza"); 
 				
-	$cpfpaciente = $_SESSION['cpfpaciente'];
-	$status = "Livre";
+	$cpfpaciente = $_POST['cpfpaciente'];
+	$cpfmedico   = $_POST['cpfmedico'];
+	$idsetor     = $_POST['idsetor'];
+	$status      = "Livre";
 					
 	$conn = getConnection();
 					
-	$sql = 'SELECT * FROM leitos WHERE status = :status LIMIT 1';
+	$sql = 'SELECT * FROM leitos WHERE status = :status AND idsetor = :idsetor LIMIT 1';
 					
 	$stmt = $conn->prepare($sql);
-	$stmt->bindValue(':status', $status);
+	$stmt->bindValue(':status' , $status);
+	$stmt->bindValue(':idsetor', $idsetor);
 	$stmt->execute();
 	$count = $stmt->rowCount();
 		
@@ -27,7 +32,7 @@
 									 
 			$stmt1 = $conn->prepare($sql1);
 			$stmt1->bindParam(':status' , $statusleito);
-			$stmt1->bindParam(':id'     , $idleito);
+			$stmt1->bindParam(':idleito', $idleito);
 			
 			
 			if($stmt1->execute()){
@@ -50,7 +55,7 @@
 							<strong>Internação realizada!</strong>.
 						</div>';
 						
-					header("Location: internacoes.php");
+					header("Location: gerenciamentoInternacoes.php");
 				}
 				else{
 					echo '<div class="alert alert-danger">

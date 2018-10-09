@@ -53,15 +53,19 @@
 
 				if(!empty($_POST)){
 					$especialidade = $_POST['especialidade'];
-					$diahorario    = strtotime(strval($_POST['diahorario']));
+					$diahorariotemp    = $_POST['diahorario'];
+					$diahorario = strtotime($diahorariotemp);
 					
-					//echo $diahorario;
+					/*
+					echo $diahorario;
+					echo date("d-m-y", $diahorario);
+					*/
 					
 					$tipo = "Médico";
 					
 					$conn = getConnection();
 					
-					$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio <= :diahorario1 AND diahorariofim >= :diahorario2';
+					$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 					$stmt = $conn->prepare($sql);
 					$stmt->bindValue(':diahorario1', $diahorario);
 					$stmt->bindValue(':diahorario2', $diahorario);
@@ -75,6 +79,7 @@
 						foreach($result as $row){
 							
 							$idplantao        = $row['id'];
+							//echo $idplantao;
 							$diahorarioinicio = $row['diahorarioinicio'];
 							$diahorariofim    = $row['diahorariofim'];
 							
@@ -161,9 +166,6 @@
 					}
 				}
 			?>
-			<!--
-			</div>
-			-->
 		
 		</div>
 		<div class="col-md-4">

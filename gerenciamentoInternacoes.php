@@ -29,7 +29,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<?php
@@ -57,8 +57,10 @@
 	<div class="row">
 		<div class="col-md-8">
 			
-			<div class="row">
 			<p class="h5">Internados</p>
+			
+			<div class="row">
+			
 			<?php
 				$cpfprofissional = $_SESSION['cpf'];
 				$tipo            = $_SESSION['tipo'];
@@ -83,7 +85,7 @@
 						$idleito           = $row['idleito'];
 						$cpfpaciente       = $row['cpfpaciente'];
 						$diahorarioentrada = $row['diahorarioentrada'];
-						$diahorarioalta    = $row['diahorarioalta'];
+						//$diahorarioalta    = $row['diahorarioalta'];
 						$cpfmedico         = $row['cpfmedico'];
 						//$cpftecnico        = $row['cpftecnico'];
 						
@@ -100,6 +102,7 @@
 								$nomepaciente = $row1['nomecompleto'];
 								
 								?>
+								<div class="col-sm-4 mb-3">
 								<div class="card">
 									<div class="card-header">
 										<?php echo $nomepaciente; ?>
@@ -157,10 +160,18 @@
 										?>
 									</div>
 								</div>
+								</div>
 								<?php	
 							}
 						}
 					}
+				}
+				else{
+					?>
+					<div class="alert alert-primary btn-block" role="alert">
+						Não existem pacientes internados.
+					</div>
+					<?php
 				}
 			?>
 			</div>
@@ -168,8 +179,9 @@
 			<?php
 			if($tipo == "Médico"){
 				?>
+				<p class="h5">A internar</p>
 				<div class="row">
-					<p class="h5">A internar</p>
+					
 					
 					<?php
 					$status = "Solicitada";
@@ -184,7 +196,10 @@
 						$result = $stmt->fetchAll();
 			
 						foreach($result as $row){
+							
 							$cpfpaciente = $row['cpfpaciente'];
+							$cpfmedico   = $row['cpfmedico'];
+							$idsetor     = $row['idsetor'];
 							
 							$sql1 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
 							$stmt1 = $conn->prepare($sql1);
@@ -200,23 +215,36 @@
 									
 									?>
 									<div class="col-sm-4 mb-3">
-										<div class="card border-secondary">
-											<div class="card-header">
-												<label for="nomecompleto">Nome do paciente:</label>
-												<h5 class="card-title" id="nomecompleto" name="nomecompleto">
-													<?php echo $nomepaciente; ?>
-												</h5>
-											</div>
+										<form method="post" action="internarPaciente.php">
+											<div class="card border-secondary">
+												<div class="card-header">
+													<label for="nomecompleto">Nome do paciente:</label>
+													<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+														<?php echo $nomepaciente; ?>
+													</h5>
+												</div>
+											
+												<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+												<input type="hidden" id="cpfmedico"   name="cpfmedico"   value="<?php echo $cpfmedico; ?>">
+												<input type="hidden" id="idsetor"     name="idsetor"     value="<?php echo $idsetor; ?>">
 								
-											<div class="card-body">
-												<button type="button" class="btn btn-primary btn-block">Internar</button>
+												<div class="card-body">
+													<button type="submit" class="btn btn-primary btn-block">Internar</button>
+												</div>
 											</div>
-										</div>
+										</form>
 									</div>
 									<?php
 								}
 							}
 						}
+					}
+					else{
+						?>
+						<div class="alert alert-primary btn-block" role="alert">
+							Não existem pacientes a serem internados.
+						</div>
+						<?php
 					}
 					?>
 				
@@ -371,6 +399,11 @@
 						}	
 					}
 				}
+				?>
+				<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
+					Sair
+				</button>
+				<?php
 			}
 			?>
 		

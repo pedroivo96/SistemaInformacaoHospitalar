@@ -132,8 +132,9 @@
 							</button>
 						</div>
 						
+						
 						<?php
-				
+							
 							$conn = getConnection();
 							$status = "Livre";
 					
@@ -172,11 +173,10 @@
 											<label class="btn btn-secondary btn-block">
 												<input type="radio" 
 												       id="<?php echo $idsetor; ?>" 
-												       name="setor" 
+												       name="idsetor" 
 													   autocomplete="off" 
-													   value="<?php echo $nomesetor; ?>"> <?php echo $nomesetor; ?>
-													   
-												<input type="hidden" id="idsetor" name="idsetor" value="<?php echo $idsetor; ?>">
+													   value="<?php echo $idsetor; ?>"> <?php echo $nomesetor; ?>
+													
 											</label>
 											<?php
 										}
@@ -192,7 +192,9 @@
 										<strong>Erro!</strong> Não existem setores com vagas.
 									  </div>';
 							}
-						?>
+													?>
+						
+						
 						<!--
 						<div class="form-group">
 							<label for="especialidade"></label>
