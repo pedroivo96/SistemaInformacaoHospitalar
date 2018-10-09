@@ -97,7 +97,6 @@
 												<h5 class="card-title" id="nomecompleto" name="nomecompleto">
 													<?php echo $nomemedico; ?>
 												</h5>
-										
 											</div>
 											
 											<div class="card-body">

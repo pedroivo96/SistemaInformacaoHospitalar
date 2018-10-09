@@ -29,26 +29,62 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Evolução do paciente</h5>
+			<?php
+			
+			include './conexao.php';
+			date_default_timezone_set("America/Fortaleza");
+			
+			$tipo            = $_POST['tipo'];
+			$cpfprofissional = $_POST['cpfprofissional'];
+			$cpfpaciente     = $_POST['cpfpaciente'];
+			
+			if($tipo == "Médico"){
+				?>
+				<h3>
+				Menu do médico
+					<small class="text-muted">Evolução do paciente</small>
+				</h3>
+				<?php
+			}
+			else{
+				?>
+				<h3>
+				Menu do enfermeiro
+					<small class="text-muted">Evolução do paciente</small>
+				</h3>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
 			
 			<?php
-				$cpfpaciente   = $_POST['cpfpaciente'];
-				$cpfenfermeiro = $_POST['cpfenfermeiro'];
+			$conn = getConnection();
+		
+			$sql = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+			$stmt->execute();
+			$count = $stmt->rowCount();
+		
+			if($count > 0){
+				$result = $stmt->fetchAll();
+			
+				foreach($result as $row){
+					$nomepaciente = $row['nomecompleto'];
+				}
+			}
 			?>
 			
 			<p class="h5">Anotações sobre o paciente <b><?php echo $nomepaciente; ?></b></p>
 			
 			<div class="row">
 			<?php
-				include './conexao.php';
-				
 				$conn = getConnection();
 				
 				$actual = time();
@@ -124,18 +160,108 @@
 				<div class="form-group">
 					<label for="exampleInputEmail1">Evolução do paciente</label>
 					
-					<textarea type="email" class="form-control" rows="10" id="evolucao" name="evolucao">
+					<textarea type="text" class="form-control" rows="10" id="conteudo" name="conteudo">
 					</textarea>	
 				</div>
 				
 				<input type="hidden" id="cpfpaciente"   name="cpfpaciente"   value="<?php echo $cpfpaciente; ?>">
-				<input type="hidden" id="cpfenfermeiro" name="cpfenfermeiro" value="<?php echo $cpfenfermeiro; ?>">
+				<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $cpfprofissional; ?>">
 				
 				<button type="submit" class="btn btn-primary btn-block">Cadastrar evolução</button>
 			</form>
 			
 		</div>
 		<div class="col-md-4">
+		
+			<?php
+			if($tipo == "Médico"){
+				?>
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
+					Minhas consultas
+				</button>
+			
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">
+					Meus exames
+				</button>
+			
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">
+					Meus procedimentos
+				</button>
+			
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">
+					Meus pacientes
+				</button>
+			
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">
+					Minhas anamneses
+				</button>
+			
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">
+					Minhas evoluções
+				</button>
+			
+				<?php 
+			
+					$cpfmedico  = $_SESSION['cpf'];
+					$diahorario = time();
+				
+					$conn = getConnection();
+				
+					$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
+					$stmt = $conn->prepare($sql);
+					$stmt->bindValue(':diahorario1', $diahorario);
+					$stmt->bindValue(':diahorario2', $diahorario);
+					$stmt->execute();
+					$count = $stmt->rowCount();
+		
+					if($count > 0){
+						$result = $stmt->fetchAll();
+			
+						foreach($result as $row){
+						
+							$idplantao = $row['id'];
+						
+							$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+							$stmt1 = $conn->prepare($sql1);
+							$stmt1->bindValue(':idplantao'      , $idplantao);
+							$stmt1->bindValue(':cpfprofissional', $cpfmedico);
+							$stmt1->execute();
+							$count1 = $stmt1->rowCount();
+		
+							if($count1 > 0){
+								//Está escalado para o plantão atual, portanto pode realizar internações.
+								?>
+							
+								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
+									Gerenciar internações
+								</button>
+								<?php
+							}
+							else{
+								?>
+								<div class="alert alert-primary mt-3" role="alert">
+									Você não está escalado para o plantão atual!
+								</div>
+								<?php
+							}	
+						}
+					}
+				?>
+			
+				<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
+					Sair
+				</button>
+			
+				<div class="alert alert-primary mt-3" role="alert">
+					Dia <?php echo date("d/m/y", time()); ?> às <?php echo date("h:i:s", time()); ?>
+				</div>
+				
+				<?php
+			}
+			else{
+				
+			}
+			?>
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">Minhas evoluções</button>

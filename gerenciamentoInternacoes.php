@@ -33,6 +33,9 @@
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<?php
+			
+			date_default_timezone_set("America/Fortaleza");
+			
 			$tipo = $_SESSION['tipo'];
 			
 			if($tipo == "Médico"){
@@ -109,21 +112,46 @@
 									</div>
 									<div class="card-body">
 									
-										<form method="post" action="evolucaoPaciente.php">
-											<input type="hidden" id="cpfpaciente"   name="cpfpaciente"   value="<?php echo $cpfpaciente; ?>">
-											<input type="hidden" id="cpfenfermeiro" name="cpfenfermeiro" value="<?php echo $cpfenfermeiro; ?>">
-											<input type="hidden" id="tipo"          name="tipo"          value="<?php echo $tipo; ?>">
-											
-											<button type="submit" class="btn btn-primary">Evoluir</button>
-										</form>
-										
 										<?php
+											$timestamptoday = time();
+											$flag = 0;
+											
+											$sql = 'SELECT diahorario FROM evolucoes WHERE cpfpaciente = :cpfpaciente';
+											$stmt = $conn->prepare($sql);
+											$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+											$stmt->execute();
+											$count = $stmt->rowCount();
+		
+											if($count > 0){
+												$result = $stmt->fetchAll();
+			
+												foreach($result as $row){
+													$diahorario = $row['diahorario'];
+													
+													if(date("d/m/y", $timestamptoday) == date("d/m/y", $diahorario)){
+														$flag = 1;
+													}
+												}
+											}
+											
+											if($flag == 0){
+												?>
+												<form method="post" action="evolucaoPaciente.php">
+													<input type="hidden" id="cpfpaciente"     name="cpfpaciente"     value="<?php echo $cpfpaciente; ?>">
+													<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $cpfprofissional; ?>">
+													<input type="hidden" id="tipo"            name="tipo"            value="<?php echo $tipo; ?>">
+											
+													<button type="submit" class="btn btn-primary btn-block  mb-1">Evoluir</button>
+												</form>
+												<?php
+											}
+											
 										if($tipo == "Enfermeiro"){
 											if(empty($row['cpftecnico'])){
 												?>
 												<form method="post" action="associacaoTecnico.php">
 													<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-													<button type="submit" class="btn btn-primary">Associar técnico</button>
+													<button type="submit" class="btn btn-primary btn-block">Associar técnico</button>
 												</form>
 												<?php
 											}
@@ -181,7 +209,6 @@
 				?>
 				<p class="h5">A internar</p>
 				<div class="row">
-					
 					
 					<?php
 					$status = "Solicitada";
@@ -261,11 +288,12 @@
 				
 				$conn = getConnection();
 				
-				$actual = time();
+				$diahorario = time();
 		
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :actual AND diahorariofim > :actual';
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':actual', $actual);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
 				$stmt->execute();
 				$count = $stmt->rowCount();
 		
@@ -280,7 +308,6 @@
 						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional';
 						$stmt1 = $conn->prepare($sql1);
 						$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
-						$stmt1->bindValue(':chefe', $chefe);
 						$stmt1->execute();
 						$count1 = $stmt1->rowCount();
 		
@@ -289,9 +316,11 @@
 			
 							foreach($result1 as $row1){
 							
-								$idplantao = $row1['id'];
+								$idplantao = $row1['idplantao'];
 								$chefe = $row1['chefe'];
-								
+						
+								$chefe = 1;
+						
 								if($chefe == 1){
 									?>
 									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
@@ -303,27 +332,27 @@
 							}
 						}
 						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado(a) para o plantão atual
-							</div>
-							<?php
+							//Não esta escalado para o plantão atual
 						}
 					}
 				}
 			?>
 		
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
-					Minhas evoluções
-				</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
+				Minhas evoluções
+			</button>
 			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
-					Meus diagnósticos
-				</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
+				Meus diagnósticos
+			</button>
 			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamneseEnfermeiro.php';">
-					Minhas anamneses
-				</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamneseEnfermeiro.php';">
+				Minhas anamneses
+			</button>
+			
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
+				Sair
+			</button>
 			
 			<?php	
 			}

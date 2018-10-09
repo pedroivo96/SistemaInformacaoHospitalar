@@ -82,6 +82,7 @@
 			
 			<?php
 				include './conexao.php';
+				date_default_timezone_set("America/Sao_Paulo"); 
 			
 				$cpfmedico  = $_SESSION['cpf'];
 				$diahorario = time();
@@ -130,6 +131,11 @@
 			?>
 			
 			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+			
+			<div class="alert alert-primary mt-3" role="alert">
+				Dia <?php echo date("d/m/y", time()); ?> às <?php echo date("h:i:s", time()); ?>
+			</div>
+			
 			
 		</div>
 	</div>

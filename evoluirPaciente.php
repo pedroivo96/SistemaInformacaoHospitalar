@@ -1,8 +1,9 @@
 <?php
 	include './conexao.php';
+	date_default_timezone_set("America/Fortaleza");
 
 	$cpfpaciente     = $_POST['cpfpaciente'];
-	$cpfprofissional = $_POST['cpfenfermeiro'];
+	$cpfprofissional = $_POST['cpfprofissional'];
 	$conteudo        = $_POST['conteudo'];
 	$diahorario      = time();
 	
@@ -26,7 +27,7 @@
 				<strong>Evolução realizada com sucesso!</strong>.
               </div>';
 					  
-		header("Location: evolucoesEnfermeiro.php");
+		header("Location: gerenciamentoInternacoes.php");
     }else{
         echo '<div class="alert alert-danger">
 				<strong>Erro no cadastro da evolução!</strong> Falha no banco de dados.
