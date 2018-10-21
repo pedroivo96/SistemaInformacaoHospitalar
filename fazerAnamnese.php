@@ -685,8 +685,10 @@
 			
 			<button type="button" class="btn btn-warning btn-block" id="botao3" onclick="chamaForm3();">Exame físico/Informações sobre órgãos e sistemas</button>
 			
-			<form id="form3">
+			<form id="form3" method="post" action="cadastrarExameOrgaosSistemas.php">
 				<h4 align="center">Exame físico/ informações relevantes sobre órgãos e sistemas</h4>
+				
+				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 			
 				<div class="form-group w-50 p-2 border">
 					<label for="nome"></label>
@@ -752,7 +754,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="nutricaooutros">Anotações</label>
+						<label for="nutricaooutros">Outros</label>
 						<input type="text" class="form-control" id="nutricaooutros" name="nutricaooutros">
 					</div>
 					
@@ -892,7 +894,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="peletecidosoutros">Anotações</label>
+						<label for="peletecidosoutros">Outros</label>
 						<input type="text" class="form-control" id="peletecidosoutros" name="peletecidosoutros">
 					</div>
 					
@@ -1579,8 +1581,10 @@
 			
 			<button type="button" class="btn btn-warning btn-block" id="botao4" onclick="chamaForm4();">Psicossocial</button>
 			
-			<form id="form4">
+			<form id="form4" method="post" action="cadastrarPsicossocial.php">
 				<h4 align="center">Psicossocial</h4>
+				
+				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 				
 				<div class="form-group w-50 p-2 border">
 					<label for="nome">Interação social</label>
@@ -1784,8 +1788,10 @@
 			
 			<button type="button" class="btn btn-warning btn-block" id="botao5" onclick="chamaForm5();">Dados especificados de cada área</button>
 			
-			<form id="form5">
+			<form id="form5" method="post" action="cadastrarDadosEspecificados.php">
 				<h4 align="center">Dados específicos de cada área</h4>
+				
+				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 				
 				<div class="form-group w-50 p-2 border">
 					

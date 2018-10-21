@@ -15,17 +15,11 @@
 		$fatoresriscooutros     = $_POST['fatoresriscooutros'];
 		
 		if(isset($_POST['fatoresrisco1'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco1'] . ","; }
-		
 		if(isset($_POST['fatoresrisco2'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco2'] . ","; }
-		
 		if(isset($_POST['fatoresrisco3'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco3'] . ","; }
-		
 		if(isset($_POST['fatoresrisco4'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco4'] . ","; }
-		
 		if(isset($_POST['fatoresrisco5'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco5'] . ","; }
-		
 		if(isset($_POST['fatoresrisco6'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco6'] . ","; }
-		
 		if(isset($_POST['fatoresrisco7'])){ $fatoresrisco = $fatoresrisco . $_POST['fatoresrisco7'];       }
 		
 		$conn = getConnection();
