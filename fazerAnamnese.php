@@ -1823,13 +1823,17 @@
 								?>
 								<div class="form-group">
 									<label for="nomeprofissional">Nome do profissional</label>
-									<input type="text" class="form-control" id="nomeprofissional" name="nomeprofissional" value="<?php echo $nomeprofissional; ?>" readonly>
+									<input type="text" class="form-control" value="<?php echo $nomeprofissional; ?>" readonly>
 								</div>
+								
+								<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $cpfprofissional; ?>">
 								
 								<div class="form-group">
 									<label for="registro">Número de registro</label>
-									<input type="text" class="form-control" id="registro" name="registro" value="<?php echo $registro; ?>" readonly>
+									<input type="text" class="form-control" value="<?php echo $registro; ?>" readonly>
 								</div>
+								
+								<input type="hidden" id="registro" name="registro" value="<?php echo $registro; ?>">
 								<?php	
 							}
 						}
@@ -1842,8 +1846,10 @@
 						?>
 						<div class="form-group">
 							<label for="data">Data e horário</label>
-							<input type="text" class="form-control" id="data" name="data" value="<?php echo $diahorarioformatado; ?>"readonly>
+							<input type="text" class="form-control" value="<?php echo $diahorarioformatado; ?>"readonly>
 						</div>
+						
+						<input type="hidden" id="data" name="data" value="<?php echo $diahorarioatual; ?>">
 						<?php
 					?>
 					
