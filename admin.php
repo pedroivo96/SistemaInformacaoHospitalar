@@ -224,6 +224,48 @@
 		</div>
 	</div>
 	
+	<div class="row">
+		<div class="col-md-4 border pt-2 pb-2 mb-5">
+			<p class="h4" align="center">Cadastrar resultados de exame</p>
+			
+			<form method="post" action="cadastrarResultadoExame.php">
+				
+				<div class="form-group">
+					<label for="cpfprofissional">ID do exame</label>
+					<input type="text" class="form-control" id="id" name="id">
+				</div>
+				
+				<div class="form-group">
+					<label for="idplantao">Arquivo</label>
+					<input type="file" class="form-control" id="conteudo" name="conteudo">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
+		</div>
+		
+		<div class="col-md-4 border pt-2 pb-2 mb-5">
+			<p class="h4" align="center">Cadastrar resultados de procedimento</p>
+			
+			<form method="post" action="cadastrarResultadoProcedimento.php">
+				
+				<div class="form-group">
+					<label for="cpfprofissional">ID do exame</label>
+					<input type="text" class="form-control" id="id" name="id">
+				</div>
+				
+				<div class="form-group">
+					<label for="idplantao">Arquivo</label>
+					<input type="file" class="form-control" id="conteudo" name="conteudo">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+			</form>
+		
+		</div>
+	</div>
+	
 	<?php include 'rodape1.html'; ?>
 	
 </div>
