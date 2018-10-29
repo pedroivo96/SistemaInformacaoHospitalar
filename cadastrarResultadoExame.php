@@ -4,29 +4,80 @@
     if(!empty($_POST)){
 	
 		$id       = $_POST['id'];
-		$conteudo = $_POST['conteudo'];
+		//$conteudo = $_FILES['conteudo'];
 		
-		$conn = getConnection();
+		// File upload path
+		$targetDir      = "img/";
+		$fileName       = basename($_FILES["conteudo"]["name"]);
+		$fileNameNew    = time();
+		$targetFilePath = $targetDir . $fileName;
+		$fileType       = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 		
-		$sql = 'INSERT INTO resultadosexames (id, 
-			                                  conteudo) VALUES(:id, 
-											                   :conteudo)';
+		$newFilePath = $targetDir.$fileNameNew.".".$fileType;
+		
+		if(isset($_POST["submit"]) && !empty($_FILES["conteudo"]["name"])){
+			// Allow certain file formats
+			$allowTypes = array('jpg','png','jpeg','gif','pdf');
+			if(in_array($fileType, $allowTypes)){
+				// Upload file to server
+				if(move_uploaded_file($_FILES["conteudo"]["tmp_name"], $newFilePath)){
+			
+					$conn = getConnection();
+		
+					$sql = 'INSERT INTO resultadosexames (id, 
+			                                              nomeimagem) VALUES(:id, 
+											                                 :nomeimagem)';
 															
 		
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id'      , $id);
-		$stmt->bindParam(':conteudo', $conteudo);
+					$stmt = $conn->prepare($sql);
+					$stmt->bindParam(':id'      , $id);
+					$stmt->bindParam(':nomeimagem', $newFilePath);
 			
-		if($stmt->execute()){
-			echo '<div class="alert alert-success">
-					<strong>Plantão realizado!</strong>
-                  </div>';
-			header("Location: admin.php");
+					if($stmt->execute()){
+						echo '<div class="alert alert-success">
+							<strong>Resultado de exame cadastrado com sucesso!</strong>
+						</div>';
+				  
+						$status = "Resultado";
+				  
+						$sql1 = 'UPDATE exames SET status = :status
+											   WHERE id = :id';
+									 
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindParam(':status', $status);
+						$stmt1->bindParam(':id'    , $id);
+			
+						if($stmt1->execute()){
+							echo '<div class="alert alert-success">
+								<strong>Atualização de exame finalizada com sucesso!</strong>
+							</div>';
+					
+							header("Location: admin.php");
+						}
+					}
+					else{
+						echo '<div class="alert alert-danger">
+							<strong>Erro no cadastro!</strong> Falha no banco de dados.
+						</div>';
+					}
+
+					if($insert){
+						$statusMsg = "The file ".$fileName. " has been uploaded successfully.";
+					}else{
+						$statusMsg = "File upload failed, please try again.";
+					} 
+				}else{
+					$statusMsg = "Sorry, there was an error uploading your file.";
+				}
+			}else{
+				$statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+			}
+		}else{
+			$statusMsg = 'Please select a file to upload.';
 		}
-		else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro no cadastro!</strong> Falha no banco de dados.
-                  </div>';
-		}
+
+		// Display status message
+		echo $statusMsg;
+		
 	}
 ?>

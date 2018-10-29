@@ -42,6 +42,172 @@
 			
 			setores.style.display = "none";
 		}
+		
+		function iniciaAjax(){
+			
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function processaExame(){
+			ajax = iniciaAjax();
+			
+			idconsulta         = document.getElementById("idconsulta").value;
+			nomeexame          = document.getElementById("nomeexame").value;
+			anotacoesopcionais = document.getElementById("anotacoesopcionais").value;
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "Sucesso1"){
+								divSucesso1 = document.getElementById("sucesso1");
+								divSucesso1.className = "alert alert-success d-block";
+								
+								listaExames = document.getElementById("exames");
+								
+								novoItem  = document.createElement("li");
+								novoItem.className = "list-group-item";
+								novoTexto = document.createTextNode(nomeexame);
+								
+								novoItem.appendChild(novoTexto);
+								listaExames.appendChild(novoItem);
+								
+							}else if(retorno == "Erro1"){
+								divErro1 = document.getElementById("erro1");
+								divErro1.className = "alert alert-danger d-block";		
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				//Monta a QueryString
+				dados = 'idconsulta='+idconsulta+"&nomeexame="+nomeexame+"&anotacoesopcionais="+anotacoesopcionais;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'solicitarExame.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function processaProcedimento(){
+			ajax = iniciaAjax();
+			
+			idconsulta         = document.getElementById("idconsulta").value;
+			nomeprocedimento   = document.getElementById("nomeprocedimento").value;
+			anotacoesopcionais = document.getElementById("anotacoesopcionais").value;
+				
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "Sucesso2"){
+								divSucesso2 = document.getElementById("sucesso2");
+								divSucesso2.className = "alert alert-success d-block";
+								
+								listaProcedimentos = document.getElementById("procedimentos");
+								
+								novoItem  = document.createElement("li");
+								novoItem.className = "list-group-item";
+								novoTexto = document.createTextNode(nomeprocedimento);
+								
+								novoItem.appendChild(novoTexto);
+								listaProcedimentos.appendChild(novoItem);
+								
+							}else if(retorno == "Erro2"){
+								divErro2 = document.getElementById("erro2");
+								divErro2.className = "alert alert-danger d-block";		
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				//Monta a QueryString
+				dados = 'idconsulta='+idconsulta+"&nomeprocedimento="+nomeprocedimento+"&anotacoesopcionais="+anotacoesopcionais;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'solicitarProcedimento.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function processaPrescricao(){
+			ajax = iniciaAjax();
+			
+			idconsulta      = document.getElementById("idconsulta").value;
+			nomemedicamento = document.getElementById("nomemedicamento").value;
+			quantidade      = document.getElementById("quantidade").value;
+			vezesaodia      = document.getElementById("vezesaodia").value;
+				
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "Sucesso3"){
+								divSucesso3 = document.getElementById("sucesso3");
+								divSucesso2.className = "alert alert-success d-block";
+								
+								listaPrescricoes = document.getElementById("prescricoes");
+								
+								novoItem  = document.createElement("li");
+								novoItem.className = "list-group-item";
+								novoTexto = document.createTextNode(nomemedicamento);
+								
+								novoItem.appendChild(novoTexto);
+								listaPrescricoes.appendChild(novoItem);
+								
+							}else if(retorno == "Erro3"){
+								divErro3 = document.getElementById("erro3");
+								divErro3.className = "alert alert-danger d-block";		
+							}
+							
+						}
+						else{
+							alert(ajax.statusText);
+						}
+						
+					}
+				}
+				
+				//Monta a QueryString
+				dados = 'idconsulta='+idconsulta+"&nomemedicamento="+nomemedicamento+"&quantidade="+quantidade+"&vezesaodia="+vezesaodia;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'prescreverMedicamento.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
 	
 	</script>
 
@@ -57,9 +223,10 @@
 			</h3>
 		</div>
 	</div>
+	
 	<div class="row">
 	
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<?php
 				include './conexao.php';
@@ -83,11 +250,8 @@
 			?>
 			
 			<div class="row">
-	
-				<div class="col-md-2">
-				</div>
 				
-				<div class="col-md-8">
+				<div class="col-md-12">
 					<dl class="row">
 						<dt class="col-sm-5">ID</dt>
 						<dd class="col-sm-7"><?php echo $id; ?></dd>
@@ -122,14 +286,18 @@
 							<input type="text" class="form-control" id="diagnosticoprovavel" name="diagnosticoprovavel">
 						</div>
 						
-						<div class="btn-group-vertical btn-block">
-							<button type="button" class="btn btn-primary mb-1" onclick="ocultarSetores();">
-								Alta
-							</button>
-							
-							<button type="button" class="btn btn-primary" onclick="mostrarSetores();">
-								Internação
-							</button>
+						<div class="form-group">
+							<label for="especialidade"></label>
+							<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
+								<label class="btn btn-secondary btn-block">
+									<input type="radio" id="radio1" name="altainternacao" autocomplete="off" value="Alta" onclick="ocultarSetores();"> 
+									Alta
+								</label>
+								<label class="btn btn-secondary btn-block">
+									<input type="radio" id="radio2" name="altainternacao" autocomplete="off" value="Internação" onclick="mostrarSetores();"> 
+									Internação
+								</label>
+							</div>
 						</div>
 						
 						
@@ -209,17 +377,28 @@
 						</div>
 						-->
 				
-						<button type="submit" class="btn btn-primary  btn-block">Finalizar</button>
+						<button type="submit" class="btn btn-primary btn-block mt-5">Finalizar</button>
 					</form>
+				</div>
+			
+			</div>
+			
+			<div class="row">
+				<div class="col-md-4 border-right">
+					<form class="mb-4" method="post" action="">
 					
-					<form class="mb-4" method="post" action="solicitarExame.php">
+						<p class="h4">Solicitar exame</p>
+					
+						<div class="alert alert-success d-none" role="alert" id="sucesso1">
+							Exame solicitado com sucesso.
+						</div>
+						
+						<div class="alert alert-danger d-none" role="alert" id="erro1">
+							Erro! Falha no banco de dados.
+						</div>
 					
 						<input type="hidden" id="idconsulta"   name="idconsulta"   value="<?php echo $id; ?>">
-						<input type="hidden" id="cpfmedico"    name="cpfmedico"    value="<?php echo $cpfmedico; ?>">
-						<input type="hidden" id="cpfpaciente"  name="cpfpaciente"  value="<?php echo $cpfpaciente; ?>">
-						<input type="hidden" id="nomemedico"   name="nomemedico"   value="<?php echo $nomemedico; ?>">
-						<input type="hidden" id="nomepaciente" name="nomepaciente" value="<?php echo $nomepaciente; ?>">
-					
+									
 						<div class="form-group">
 							<label for="nomeexame">Nome do exame</label>
 							<input type="text" class="form-control" id="nomeexame" name="nomeexame">
@@ -230,16 +409,24 @@
 							<input type="text" class="form-control" id="anotacoesopcionais" name="anotacoesopcionais">
 						</div>
 				
-						<button type="submit" class="btn btn-primary  btn-block">Solicitar</button>
+						<button type="button" onclick="processaExame();" class="btn btn-primary  btn-block">Solicitar</button>
 					</form>
+				</div>
+				
+				<div class="col-md-4 border-right">
+					<form class="mb-4" method="post" action="">
 					
-					<form class="mb-4" method="post" action="solicitarProcedimento.php">
+						<p class="h4">Solicitar exame</p>
+					
+						<div class="alert alert-success d-none" role="alert" id="sucesso2">
+							Procedimento solicitado com sucesso.
+						</div>
+						
+						<div class="alert alert-danger d-none" role="alert" id="erro2">
+							Erro! Falha no banco de dados.
+						</div>
 						
 						<input type="hidden" id="idconsulta" name="idconsulta" value="<?php echo $id; ?>">
-						<input type="hidden" id="cpfmedico"   name="cpfmedico"   value="<?php echo $cpfmedico; ?>">
-						<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-						<input type="hidden" id="nomemedico"   name="nomemedico"   value="<?php echo $nomemedico; ?>">
-						<input type="hidden" id="nomepaciente" name="nomepaciente" value="<?php echo $nomepaciente; ?>">
 						
 						<div class="form-group">
 							<label for="nomeprocedimento">Nome do procedimento</label>
@@ -247,20 +434,28 @@
 						</div>
 						
 						<div class="form-group">
-							<label for="nomeexame">Anotações opcionais</label>
+							<label for="anotacoesopcionais">Anotações opcionais</label>
 							<input type="text" class="form-control" id="anotacoesopcionais" name="anotacoesopcionais">
 						</div>
 				
-						<button type="submit" class="btn btn-primary  btn-block">Solicitar</button>
+						<button type="button" onclick="processaProcedimento();" class="btn btn-primary  btn-block">Solicitar</button>
 					</form>
+				</div>
+				
+				<div class="col-md-4">
+					<form class="mb-4" method="post" action="">
 					
-					<form class="mb-4" method="post" action="prescreverMedicamento.php">
+						<p class="h4">Prescrever medicamento</p>
 						
 						<input type="hidden" id="idconsulta" name="idconsulta" value="<?php echo $id; ?>">
-						<input type="hidden" id="cpfmedico"   name="cpfmedico"   value="<?php echo $cpfmedico; ?>">
-						<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-						<input type="hidden" id="nomemedico"   name="nomemedico"   value="<?php echo $nomemedico; ?>">
-						<input type="hidden" id="nomepaciente" name="nomepaciente" value="<?php echo $nomepaciente; ?>">
+						
+						<div class="alert alert-success d-none" role="alert" id="sucesso3">
+							Medicação prescrita com sucesso.
+						</div>
+						
+						<div class="alert alert-danger d-none" role="alert" id="erro3">
+							Erro! Falha no banco de dados.
+						</div>
 						
 						<div class="form-group">
 							<label for="nomemedicamento">Nome do medicamento</label>
@@ -277,10 +472,17 @@
 							<input type="text" class="form-control" id="vezesaodia" name="vezesaodia">
 						</div>
 				
-						<button type="submit" class="btn btn-primary btn-block">Prescrever</button>
+						<button type="button" onclick="processaPrescricao();" class="btn btn-primary btn-block">Prescrever</button>
 					</form>
-					
+				</div>
+				
+			</div>
+			
+			<div class="row">
+				<div class="col-md-4 border-right">
 					<p class="h4 border-bottom">Exames solicitados</p>
+					
+					<ul class="list-group" id="exames">
 					
 					<?php
 					
@@ -296,10 +498,6 @@
 						if($count > 0){
 							$result = $stmt->fetchAll();
 			
-							?>
-								<ul class="list-group">
-							<?php
-			
 							foreach($result as $row){
 								$nomeexame = $row['nomeexame'];
 								
@@ -307,14 +505,16 @@
 								<li class="list-group-item"><?php echo $nomeexame; ?></li>
 								<?php
 							}
-							
-							?>
-								</ul>
-							<?php
 						}
 					?>
 					
+					</ul>
+				</div>
+				
+				<div class="col-md-4 border-right">
 					<p class="h4 border-bottom">Procedimentos solicitados</p>
+					
+					<ul class="list-group" id="procedimentos">
 					
 					<?php
 					
@@ -330,10 +530,6 @@
 						if($count > 0){
 							$result = $stmt->fetchAll();
 			
-							?>
-								<ul class="list-group">
-							<?php
-			
 							foreach($result as $row){
 								$nomeprocedimento = $row['nomeprocedimento'];
 								
@@ -341,14 +537,16 @@
 								<li class="list-group-item"><?php echo $nomeprocedimento; ?></li>
 								<?php
 							}
-							
-							?>
-								</ul>
-							<?php
 						}
 					?>
 					
+					</ul>
+				</div>
+				
+				<div class="col-md-4">
 					<p class="h4 border-bottom">Prescrições de medicamentos</p>
+					
+					<ul class="list-group" id="prescricoes">
 					
 					<?php
 		
@@ -361,10 +559,6 @@
 						if($count > 0){
 							$result = $stmt->fetchAll();
 			
-							?>
-								<ul class="list-group">
-							<?php
-			
 							foreach($result as $row){
 								$nomemedicamento = $row['nomemedicamento'];
 								
@@ -372,22 +566,17 @@
 								<li class="list-group-item"><?php echo $nomemedicamento; ?></li>
 								<?php
 							}
-							
-							?>
-								</ul>
-							<?php
 						}
 					?>
 					
-				</div>
-				
-				<div class="col-md-2">
+					</ul>
+					
 				</div>
 			</div>
 			
 		</div>
 		
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>

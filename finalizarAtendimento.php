@@ -13,8 +13,13 @@
 		$exameclinico         = $_POST['exameclinico'];
 		$diagnosticoprovavel  = $_POST['diagnosticoprovavel'];
 		$altainternacao       = $_POST['altainternacao'];
-		$idsetor              = $_POST['idsetor'];
+		
+		if($altainternacao != "Alta"){
+			$idsetor = $_POST['idsetor'];
+		}
 		$status               = "Realizada";
+		
+		$diahorarioatendimento = time();
 		
 		$conn = getConnection();
 		
@@ -22,7 +27,8 @@
 		                             exameclinico = :exameclinico,
 									 diagnosticoprovavel = :diagnosticoprovavel,
 									 altainternacao = :altainternacao,
-									 status = :status
+									 status = :status,
+									 diahorarioatendimento = :diahorarioatendimento
 									 WHERE id = :idconsulta';
 									 
         $stmt = $conn->prepare($sql);
@@ -32,13 +38,14 @@
 		$stmt->bindParam(':altainternacao'       , $altainternacao);
 		$stmt->bindParam(':idconsulta'           , $idconsulta);
 		$stmt->bindParam(':status'               , $status);
+		$stmt->bindParam(':diahorarioatendimento', $diahorarioatendimento);
 			
 		if($stmt->execute()){
             echo '<div class="alert alert-success">
 					<strong>Consulta finalizada com sucesso!</strong>
                   </div>';
 				  
-			if($alta != "Alta"){
+			if($altainternacao != "Alta"){
 				//Solicitar internação
 				
 				$status1 = "Solicitada";

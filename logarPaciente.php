@@ -19,11 +19,6 @@
             $result = $stmt->fetchAll();
 			
 			foreach($result as $row){
-				/*
-				echo "<li>{$row['nomecompleto']}</li>";
-				echo "<li>{$row['cpf']}</li>";
-				echo "<li>{$row['nomemae']}</li>";
-				*/
 				
 				session_start();
 				$_SESSION['cpf']                    = $row['cpf'];
@@ -41,12 +36,13 @@
 				$_SESSION['enderecoestado']         = $row['enderecoestado'];
 				$_SESSION['nomeusuario']            = $row['nomeusuario'];
 				$_SESSION['email']                  = $row['email'];
-				header("Location: menuPaciente.php");
+				
+				//header("Location: menuPaciente.php");
+				
+				echo "OK";
 			}
         }else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro!</strong> Nome de usuário não corresponde a um Paciente cadastrado.
-				  </div>';
+			echo "Erro1"; //As informações não correspondem a um usuário cadastrado
 		}
 	}
 ?>

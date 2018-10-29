@@ -18,13 +18,7 @@
 		if($count > 0){
             $result = $stmt->fetchAll();
 			
-			foreach($result as $row){
-				/*
-				echo "<li>{$row['nomecompleto']}</li>";
-				echo "<li>{$row['cpf']}</li>";
-				echo "<li>{$row['nomemae']}</li>";
-				*/
-				
+			foreach($result as $row){	
 				$tipo = $row['tipo'];
 				
 				session_start();
@@ -37,19 +31,20 @@
 				$_SESSION['especialidade'] = $row['especialidade'];
 				
 				if($tipo == "Médico"){
-					header("Location: menuMedico.php");
+					//header("Location: menuMedico.php");
+					echo "OK1";
 				}
 				if($tipo == "Enfermeiro"){
-					header("Location: menuEnfermeiro.php");
+					//header("Location: menuEnfermeiro.php");
+					echo "OK2";
 				}
 				if($tipo == "Técnico em Enfermagem"){
-					header("Location: menuTecnico.php");
+					//header("Location: menuTecnico.php");
+					echo "OK3";
 				}
 			}
         }else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro!</strong> Nome de usuário não corresponde a um Profissional cadastrado.
-				  </div>';
+			echo "Erro1";
 		}
 	}
 ?>

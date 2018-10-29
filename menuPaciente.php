@@ -33,7 +33,7 @@
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
-				Menu do médico
+				Menu do paciente
 				<small class="text-muted">Informações pessoais</small>
 			</h3>
 		</div>
@@ -96,9 +96,9 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Procedimentos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'visualizarProntuario.php';">Gerar prontuário</button>
 			
 			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>

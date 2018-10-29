@@ -118,7 +118,12 @@
 												}
 												if($status == "Realizado"){
 													?>
-													<div class="card-footer bg-success text-white border-success"><?php echo $status; ?></div>
+													<div class="card-footer bg-warning text-white border-success"><?php echo $status; ?></div>
+													<?php
+												}
+												if($status == "Resultado"){
+													?>
+													<div class="card-footer bg-success text-white border-success">Ver resultado</div>
 													<?php
 												}
 											?>

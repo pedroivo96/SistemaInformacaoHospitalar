@@ -12,6 +12,77 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+	
+	<script>
+		function iniciaAjax(){
+			
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function processa(){
+			ajax = iniciaAjax();
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "Erro1"){
+								
+								divErro = document.getElementById("erro");
+								divErro.className = "alert alert-danger d-block";
+								
+							}else if(retorno == "OK1"){
+								
+								window.location = "menuMedico.php";
+								
+							}else if(retorno == "OK2"){
+								
+								window.location = "menuEnfermeiro.php";
+								
+							}else if(retorno == "OK3"){
+								
+								window.location = "menuTecnico.php";
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+						
+					}
+				}
+				
+				nomeUsuario = document.getElementById("nomeusuario").value;
+				senha = document.getElementById("senha").value;
+				
+				//Monta a QueryString
+				dados = 'nomeusuario='+nomeUsuario+"&senha="+senha;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'logarProfissional.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+	
+	</script>
 
   </head>
   <body>
@@ -28,7 +99,11 @@
 		</div>
 		<div class="col-md-4">
 		
-			<form method="post" action="logarProfissional.php">
+			<div class="alert alert-danger d-none" role="alert" id="erro">
+				As informações não correspondem a um usuário cadastrado.
+			</div>
+		
+			<form method="post" action="">
 				<div class="form-group">
 					<label for="nomeusuario">Nome de usuário</label>
 					<input type="text" class="form-control" id="nomeusuario" name="nomeusuario">
@@ -39,7 +114,7 @@
 					<input type="password" class="form-control" id="senha" name="senha">
 				</div>
 				
-				<button type="submit" class="btn btn-primary btn-block">Login</button>
+				<button type="button" onclick="processa();" class="btn btn-primary btn-block">Login</button>
 			</form>
 			
 		</div>
