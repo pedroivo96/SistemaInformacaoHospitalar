@@ -5,6 +5,10 @@
 	<?php 
 		// Inicia sessões 
 		session_start(); 
+		
+		include './conexao.php';
+				
+		$conn = getConnection();
  
 		// Verifica se existe os dados da sessão de login 
 		if(!isset($_SESSION["nomeusuario"]) || !isset($_SESSION["cpf"])) { 
@@ -49,9 +53,10 @@
 			
 			$diahorarioatual = time();
 			
-			$sql = 'SELECT id FROM plantoes WHERE diahorarioinicio < :diahorarioatual AND diahorariofim > :diahorarioatual';
+			$sql = 'SELECT id FROM plantoes WHERE diahorarioinicio < :diahorarioatual1 AND diahorariofim > :diahorarioatual2';
 			$stmt = $conn->prepare($sql);
-			$stmt->bindValue(':diahorarioatual', $diahorarioatual);
+			$stmt->bindValue(':diahorarioatual1', $diahorarioatual);
+			$stmt->bindValue(':diahorarioatual2', $diahorarioatual);
 			$stmt->execute();
 			$count = $stmt->rowCount();
 		
@@ -94,7 +99,7 @@
 										
 										?>
 										<label class="btn btn-secondary btn-block">
-											<input type="radio"  id="nometecnico"  name="nometecnico" autocomplete="off" value="<?php echo $nomeprofissional;?>">Médico
+											<input type="radio"  id="nometecnico"  name="nometecnico" autocomplete="off" value="<?php echo $nomeprofissional;?>"><?php echo $nomeprofissional;?>
 											<input type="hidden" id="cpftecnico"   name="cpftecnico"  autocomplete="off" value="<?php echo $cpfprofissional;?>">
 											<input type="hidden" id="cpfpaciente"  name="cpfpaciente" autocomplete="off" value="<?php echo $cpfpaciente;?>">
 										</label>

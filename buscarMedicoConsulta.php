@@ -26,6 +26,75 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 	
+	<script>
+		function iniciaAjax(){
+			
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function processa(){
+			ajax = iniciaAjax();
+			
+			idconsulta         = document.getElementById("idconsulta").value;
+			nomeexame          = document.getElementById("nomeexame").value;
+			anotacoesopcionais = document.getElementById("anotacoesopcionais").value;
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "Sucesso1"){
+								divSucesso1 = document.getElementById("sucesso1");
+								divSucesso1.className = "alert alert-success d-block";
+								
+								listaExames = document.getElementById("exames");
+								
+								novoItem  = document.createElement("li");
+								novoItem.className = "list-group-item";
+								novoTexto = document.createTextNode(nomeexame);
+								
+								novoItem.appendChild(novoTexto);
+								listaExames.appendChild(novoItem);
+								
+							}else if(retorno == "Erro1"){
+								divErro1 = document.getElementById("erro1");
+								divErro1.className = "alert alert-danger d-block";		
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				//Monta a QueryString
+				dados = 'idconsulta='+idconsulta+"&nomeexame="+nomeexame+"&anotacoesopcionais="+anotacoesopcionais;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'solicitarExame.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+	</script>
+	
   </head>
   <body>
 
@@ -149,6 +218,7 @@
 												<strong>Nenhum médico dessa especialidade cadastrado nesse plantão!</strong>
 											  </div>';
 									}
+									break;
 								}
 								
 							}
@@ -157,6 +227,7 @@
 										<strong>Nenhum profissional cadastrado nesse plantão!</strong>
 									  </div>';
 							}
+							break;
 						}
 			
 					}else{

@@ -26,6 +26,77 @@
     <link href="css/style.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
 
+	<script>
+		function iniciaAjax(){
+			
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function processaAssociacao(cpftecnico, cpfpaciente){
+			ajax = iniciaAjax();
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "OK"){
+								
+								
+								
+							}else if(retorno == "Erro"){
+								
+								
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+						
+					}
+				}
+				
+				nomeUsuario = document.getElementById("nomeusuario").value;
+				senha = document.getElementById("senha").value;
+				
+				//Monta a QueryString
+				dados = 'cpfpaciente='+cpfpaciente+"&cpftecnico="+cpftecnico;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'associarTecnico1.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function listarTecnicos(){
+			listatecnicos = document.getElementById("listatecnicos");
+		
+			if (listatecnicos.style.display === "none") {
+				listatecnicos.style.display = "block";
+			} else {
+				listatecnicos.style.display = "none";
+			}
+		}
+	</script>
+	
   </head>
   <body>
 
@@ -51,6 +122,7 @@
 				<h3>
 					Menu do enfermeiro
 					<small class="text-muted">Gerenciamento de internações</small>
+					
 				</h3>
 				<?php
 			}
@@ -116,17 +188,17 @@
 											$timestamptoday = time();
 											$flag = 0;
 											
-											$sql = 'SELECT diahorario FROM evolucoes WHERE cpfpaciente = :cpfpaciente';
-											$stmt = $conn->prepare($sql);
-											$stmt->bindValue(':cpfpaciente', $cpfpaciente);
-											$stmt->execute();
-											$count = $stmt->rowCount();
+											$sql2 = 'SELECT diahorario FROM evolucoes WHERE cpfpaciente = :cpfpaciente';
+											$stmt2 = $conn->prepare($sql2);
+											$stmt2->bindValue(':cpfpaciente', $cpfpaciente);
+											$stmt2->execute();
+											$count2 = $stmt2->rowCount();
 		
-											if($count > 0){
-												$result = $stmt->fetchAll();
+											if($count2 > 0){
+												$result2 = $stmt2->fetchAll();
 			
-												foreach($result as $row){
-													$diahorario = $row['diahorario'];
+												foreach($result2 as $row2){
+													$diahorario = $row2['diahorario'];
 													
 													if(date("d/m/y", $timestamptoday) == date("d/m/y", $diahorario)){
 														$flag = 1;
@@ -147,13 +219,97 @@
 											}
 											
 										if($tipo == "Enfermeiro"){
+											
+											$diahorarioatual = time();
+											
+											//Construir uma lista com os Técnicos disponíveis no plantão atual
+											
+											$tecnicos = array();
+											
+											$sql3 = 'SELECT id FROM plantoes WHERE diahorarioinicio <= :diahorario1 AND diahorariofim >= :diahorario2';
+											$stmt3 = $conn->prepare($sql3);
+											$stmt3->bindValue(':diahorario1', $diahorarioatual);
+											$stmt3->bindValue(':diahorario2', $diahorarioatual);
+											$stmt3->execute();
+											$count3 = $stmt3->rowCount();
+		
+											if($count3 > 0){
+												$result3 = $stmt3->fetchAll();
+			
+												foreach($result3 as $row3){
+													$idplantao = $row3['id'];
+													
+													$sql4 = 'SELECT cpfprofissional FROM profissionaisplantao WHERE idplantao = :idplantao';
+													$stmt4 = $conn->prepare($sql4);
+													$stmt4->bindValue(':idplantao', $idplantao);
+													$stmt4->execute();
+													$count4 = $stmt4->rowCount();
+		
+													if($count4 > 0){
+														$result4 = $stmt4->fetchAll();
+			
+														foreach($result4 as $row4){
+															$cpfprofissional = $row4['cpfprofissional'];
+															
+															$tipo1 = "Técnico em Enfermagem";
+															
+															$sql5 = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfprofissional AND tipo = :tipo';
+															$stmt5 = $conn->prepare($sql5);
+															$stmt5->bindValue(':cpfprofissional', $cpfprofissional);
+															$stmt5->bindValue(':tipo', $tipo1);
+															$stmt5->execute();
+															$count5 = $stmt5->rowCount();
+		
+															if($count5 > 0){
+																$result5 = $stmt5->fetchAll();
+			
+																foreach($result5 as $row5){
+																	$nomecompleto = $row5['nomecompleto'];
+																	
+																	$tecnicos[$cpfprofissional] = $nomecompleto;
+																}
+															}
+														}
+													}
+												}
+											}
+											
 											if(empty($row['cpftecnico'])){
+												
+												/*
 												?>
 												<form method="post" action="associacaoTecnico.php">
 													<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
 													<button type="submit" class="btn btn-primary btn-block">Associar técnico</button>
 												</form>
 												<?php
+												*/
+												?>
+												<button type="button" onclick="listarTecnicos();" class="btn btn-primary btn-block">Listar técnicos</button>
+												<?php
+											
+												if(count($tecnicos) == 0){
+													echo '<div class="alert alert-danger" role="alert">
+															Não há técnicos cadastrados nesse plantão.
+														  </div>';
+												}
+												else{
+													//Percorre o array de Técnicos e cria uma lista de botões para que o Enfermeiro clique e selecione
+													?>
+													<div class="btn-group-vertical btn-block" id="listatecnicos">
+													<?php
+													foreach($tecnicos as $cpf => $nometecnico) {
+														?>
+														<button type="button" onclick="processaAssociacao(<?php echo $cpf?>, <?php echo $cpfpaciente?>);" 
+														        value="<?php echo $cpf; ?>" class="btn btn-secondary btn-sm">
+															<?php echo $nometecnico; ?>
+														</button>
+														<?php
+													}
+													?>
+													</div>
+													<?php
+												}
 											}
 											else{
 											
@@ -175,13 +331,6 @@
 														</dl>
 														<?php
 													}
-													
-													?>
-													<form method="post" action="associacaoTecnico.php">
-														<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-														<button type="submit" class="btn btn-primary btn-block">Associar técnico</button>
-													</form>
-													<?php
 												}
 											}
 										}
@@ -280,13 +429,14 @@
 			}
 			?>
 		</div>
+		
 		<div class="col-md-4">
 		
 			<?php
 			if($tipo == "Enfermeiro"){
 				$cpfprofissional = $_SESSION['cpf'];
 				
-				$conn = getConnection();
+				//$conn = getConnection();
 				
 				$diahorario = time();
 		
@@ -320,15 +470,11 @@
 								$chefe = $row1['chefe'];
 						
 								$chefe = 1;
-						
-								if($chefe == 1){
-									?>
-									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
-									<?php
-								}
-								else{
-									//Está escalado para o plantão porém não é o chefe, portanto não pode gerenciar internações
-								}
+								
+								?>
+								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
+								<?php
+								
 							}
 						}
 						else{
@@ -386,8 +532,6 @@
 			
 				$cpfmedico  = $_SESSION['cpf'];
 				$diahorario = time();
-				
-				$conn = getConnection();
 				
 				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
