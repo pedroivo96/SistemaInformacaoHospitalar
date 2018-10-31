@@ -24,9 +24,8 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-	<link href="css/bootstrap.css" rel="stylesheet">
-
-	<script>
+	
+	<script type="text/javascript">
 		function iniciaAjax(){
 			
 			var ajax;
@@ -47,22 +46,50 @@
 			return ajax;
 		}
 		
-		function processaAssociacao(cpftecnico, cpfpaciente){
+		function listarTecnicos(){
+	
+		
+			if (listatecnicos.style.display == "none") {
+				listatecnicos.style.display = "block";
+			} else {
+				listatecnicos.style.display = "none";
+			}
+		}
+		
+		function associacao(cpfpaciente, cpftecnico, nometecnico){
+			
+			alert(cpfpaciente);
+			alert(cpftecnico);
+			alert(nometecnico);
+			
 			ajax = iniciaAjax();
 			
+			
 			if(ajax){
+				
 				ajax.onreadystatechange = function(){
 					if(ajax.readyState == 4){
 						if(ajax.status == 200){
 							retorno = ajax.responseText;
 							
-							if(retorno == "OK"){
+							if(retorno == "Erro"){
+								
+								alertErro = document.getElementById("erro");
+								alertErro.style.display = "block";
+								
+							}else{
+								
+								listarTecnicosButton = document.getElementById("listarTecnicosButton");
+								listarTecnicosButton.className = "btn btn-success btn-block";
 								
 								
+								textoButton = listarTecnicosButton.firstChild;
+								textoButton.data = nometecnico;
 								
-							}else if(retorno == "Erro"){
+								listarTecnicosButton.disabled = true;
 								
-								
+								listaTecnicos = document.getElementById("listatecnicos");
+								listaTecnicos.style.display = "none";
 								
 							}
 						}
@@ -73,28 +100,19 @@
 					}
 				}
 				
-				nomeUsuario = document.getElementById("nomeusuario").value;
-				senha = document.getElementById("senha").value;
 				
 				//Monta a QueryString
-				dados = 'cpfpaciente='+cpfpaciente+"&cpftecnico="+cpftecnico;
+				dados = 'cpfpaciente='+cpfpaciente+"&cpftecnico="+cpftecnico+"&nometecnico="+nometecnico;
 				
 				//Faz a requisição e envio pelo método POST
 				ajax.open('POST', 'associarTecnico1.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
+				
 			}
+			
 		}
 		
-		function listarTecnicos(){
-			listatecnicos = document.getElementById("listatecnicos");
-		
-			if (listatecnicos.style.display === "none") {
-				listatecnicos.style.display = "block";
-			} else {
-				listatecnicos.style.display = "none";
-			}
-		}
 	</script>
 	
   </head>
@@ -267,6 +285,7 @@
 																	$nomecompleto = $row5['nomecompleto'];
 																	
 																	$tecnicos[$cpfprofissional] = $nomecompleto;
+																	
 																}
 															}
 														}
@@ -285,7 +304,14 @@
 												<?php
 												*/
 												?>
-												<button type="button" onclick="listarTecnicos();" class="btn btn-primary btn-block">Listar técnicos</button>
+												<button type="button" id="listarTecnicosButton" onclick="listarTecnicos();" class="btn btn-primary btn-block">Listar técnicos</button>
+												
+												<br />
+												
+												<div class="alert alert-danger" role="alert" id="erro" style="display : none">
+													Erro no banco de dados.
+												</div>
+												
 												<?php
 											
 												if(count($tecnicos) == 0){
@@ -298,11 +324,16 @@
 													?>
 													<div class="btn-group-vertical btn-block" id="listatecnicos">
 													<?php
+													
 													foreach($tecnicos as $cpf => $nometecnico) {
+														
 														?>
-														<button type="button" onclick="processaAssociacao(<?php echo $cpf?>, <?php echo $cpfpaciente?>);" 
-														        value="<?php echo $cpf; ?>" class="btn btn-secondary btn-sm">
-															<?php echo $nometecnico; ?>
+														<button type="button" 
+														        onclick="associacao(<?php echo $cpfpaciente        ; ?>,
+																                    <?php echo $cpf                ; ?>,
+																					<?php echo "'".$nometecnico."'"; ?>);" 
+																class="btn btn-secondary btn-sm"> 
+																<?php echo $nometecnico; ?>
 														</button>
 														<?php
 													}
@@ -312,6 +343,8 @@
 												}
 											}
 											else{
+											
+												$cpftecnico = $row['cpftecnico'];
 											
 												$sql2 = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpftecnico';
 												$stmt2 = $conn->prepare($sql2);
@@ -455,9 +488,10 @@
 						$idplantao = $row['id'];
 						$chefe = 1;
 							
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional';
+						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional AND idplantao = :idplantao';
 						$stmt1 = $conn->prepare($sql1);
 						$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
+						$stmt1->bindValue(':idplantao', $idplantao);
 						$stmt1->execute();
 						$count1 = $stmt1->rowCount();
 		
@@ -475,11 +509,13 @@
 								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
 								<?php
 								
+							
 							}
 						}
 						else{
 							//Não esta escalado para o plantão atual
 						}
+						
 					}
 				}
 			?>
@@ -590,6 +626,5 @@
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>
   </body>
 </html>
