@@ -68,7 +68,7 @@
 			
 			idconsulta         = document.getElementById("idconsulta").value;
 			nomeexame          = document.getElementById("nomeexame").value;
-			anotacoesopcionais = document.getElementById("anotacoesopcionais").value;
+			anotacoesopcionais = document.getElementById("anotacoesopcionais1").value;
 			
 			if(ajax){
 				ajax.onreadystatechange = function(){
@@ -115,8 +115,7 @@
 			
 			idconsulta         = document.getElementById("idconsulta").value;
 			nomeprocedimento   = document.getElementById("nomeprocedimento").value;
-			anotacoesopcionais = document.getElementById("anotacoesopcionais").value;
-				
+			anotacoesopcionais = document.getElementById("anotacoesopcionais2").value;
 			
 			if(ajax){
 				ajax.onreadystatechange = function(){
@@ -175,7 +174,7 @@
 							
 							if(retorno == "Sucesso3"){
 								divSucesso3 = document.getElementById("sucesso3");
-								divSucesso2.className = "alert alert-success d-block";
+								divSucesso3.className = "alert alert-success d-block";
 								
 								listaPrescricoes = document.getElementById("prescricoes");
 								
@@ -190,12 +189,10 @@
 								divErro3 = document.getElementById("erro3");
 								divErro3.className = "alert alert-danger d-block";		
 							}
-							
 						}
 						else{
 							alert(ajax.statusText);
 						}
-						
 					}
 				}
 				
@@ -406,7 +403,7 @@
 						
 						<div class="form-group">
 							<label for="nomeexame">Anotações opcionais</label>
-							<input type="text" class="form-control" id="anotacoesopcionais" name="anotacoesopcionais">
+							<input type="text" class="form-control" id="anotacoesopcionais1" name="anotacoesopcionais">
 						</div>
 				
 						<button type="button" onclick="processaExame();" class="btn btn-primary  btn-block">Solicitar</button>
@@ -416,7 +413,7 @@
 				<div class="col-md-4 border-right">
 					<form class="mb-4" method="post" action="">
 					
-						<p class="h4">Solicitar exame</p>
+						<p class="h4">Solicitar procedimento</p>
 					
 						<div class="alert alert-success d-none" role="alert" id="sucesso2">
 							Procedimento solicitado com sucesso.
@@ -435,7 +432,7 @@
 						
 						<div class="form-group">
 							<label for="anotacoesopcionais">Anotações opcionais</label>
-							<input type="text" class="form-control" id="anotacoesopcionais" name="anotacoesopcionais">
+							<input type="text" class="form-control" id="anotacoesopcionais2" name="anotacoesopcionais">
 						</div>
 				
 						<button type="button" onclick="processaProcedimento();" class="btn btn-primary  btn-block">Solicitar</button>
@@ -447,8 +444,6 @@
 					
 						<p class="h4">Prescrever medicamento</p>
 						
-						<input type="hidden" id="idconsulta" name="idconsulta" value="<?php echo $id; ?>">
-						
 						<div class="alert alert-success d-none" role="alert" id="sucesso3">
 							Medicação prescrita com sucesso.
 						</div>
@@ -456,6 +451,8 @@
 						<div class="alert alert-danger d-none" role="alert" id="erro3">
 							Erro! Falha no banco de dados.
 						</div>
+						
+						<input type="hidden" id="idconsulta" name="idconsulta" value="<?php echo $id; ?>">
 						
 						<div class="form-group">
 							<label for="nomemedicamento">Nome do medicamento</label>

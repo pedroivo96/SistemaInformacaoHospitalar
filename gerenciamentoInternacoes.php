@@ -46,24 +46,22 @@
 			return ajax;
 		}
 		
-		function listarTecnicos(){
+		function listarTecnicos(cpfpaciente){
 	
+			alert(cpfpaciente);
+	
+			listaTecnicos = document.getElementById(cpfpaciente);
 		
-			if (listatecnicos.style.display == "none") {
-				listatecnicos.style.display = "block";
+			if (listaTecnicos.style.display == "none") {
+				listaTecnicos.style.display = "block";
 			} else {
-				listatecnicos.style.display = "none";
+				listaTecnicos.style.display = "none";
 			}
 		}
 		
 		function associacao(cpfpaciente, cpftecnico, nometecnico){
 			
-			alert(cpfpaciente);
-			alert(cpftecnico);
-			alert(nometecnico);
-			
 			ajax = iniciaAjax();
-			
 			
 			if(ajax){
 				
@@ -79,18 +77,24 @@
 								
 							}else{
 								
+								/*
+								//Botão de listar tecnicos some
 								listarTecnicosButton = document.getElementById("listarTecnicosButton");
-								listarTecnicosButton.className = "btn btn-success btn-block";
+								listarTecnicosButton.style.display = "none"; 
 								
-								
-								textoButton = listarTecnicosButton.firstChild;
-								textoButton.data = nometecnico;
-								
-								listarTecnicosButton.disabled = true;
-								
+								//A lista de técnicos também some
 								listaTecnicos = document.getElementById("listatecnicos");
 								listaTecnicos.style.display = "none";
 								
+								//Cria a TAG que mostrar o técnico responsável
+								tecnico = document.getElementById("tecnico");
+								nometecnicoNode = document.createTextNode(nometecnico);
+								tecnico.appendChild(nometecnicoNode);
+								tecnico.style.display = "block";
+								*/
+								
+								location.reload();
+																
 							}
 						}
 						else{
@@ -200,7 +204,7 @@
 									<div class="card-header">
 										<?php echo $nomepaciente; ?>
 									</div>
-									<div class="card-body">
+									<div class="card-body px-2">
 									
 										<?php
 											$timestamptoday = time();
@@ -231,8 +235,9 @@
 													<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $cpfprofissional; ?>">
 													<input type="hidden" id="tipo"            name="tipo"            value="<?php echo $tipo; ?>">
 											
-													<button type="submit" class="btn btn-primary btn-block  mb-1">Evoluir</button>
+													<button type="submit" class="btn btn-primary btn-block mt-2 mb-1">Evoluir</button>
 												</form>
+												
 												<?php
 											}
 											
@@ -285,7 +290,6 @@
 																	$nomecompleto = $row5['nomecompleto'];
 																	
 																	$tecnicos[$cpfprofissional] = $nomecompleto;
-																	
 																}
 															}
 														}
@@ -294,17 +298,13 @@
 											}
 											
 											if(empty($row['cpftecnico'])){
-												
-												/*
+								
 												?>
-												<form method="post" action="associacaoTecnico.php">
-													<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-													<button type="submit" class="btn btn-primary btn-block">Associar técnico</button>
-												</form>
-												<?php
-												*/
-												?>
-												<button type="button" id="listarTecnicosButton" onclick="listarTecnicos();" class="btn btn-primary btn-block">Listar técnicos</button>
+												<button type="button" 
+														onclick="listarTecnicos(<?php echo $cpfpaciente; ?>);" 
+														class="btn btn-primary btn-block">
+													Listar técnicos
+												</button>
 												
 												<br />
 												
@@ -315,14 +315,16 @@
 												<?php
 											
 												if(count($tecnicos) == 0){
-													echo '<div class="alert alert-danger" role="alert">
-															Não há técnicos cadastrados nesse plantão.
-														  </div>';
+													?>
+													<div class="alert alert-danger" role="alert">
+														Não há técnicos cadastrados nesse plantão.
+													</div>
+													<?php
 												}
 												else{
 													//Percorre o array de Técnicos e cria uma lista de botões para que o Enfermeiro clique e selecione
 													?>
-													<div class="btn-group-vertical btn-block" id="listatecnicos">
+													<div class="btn-group-vertical btn-block mb-2" id="<?php echo $cpfpaciente; ?>">
 													<?php
 													
 													foreach($tecnicos as $cpf => $nometecnico) {
@@ -358,10 +360,12 @@
 													foreach($result2 as $row2){
 														$nometecnico = $row2['nomecompleto'];
 														?>
-														<dl class="row">
-															<dt class="col-sm-3">Técnico responsável</dt>
-															<dd class="col-sm-9"><?php echo $nometecnico; ?></dd>
-														</dl>
+														
+														<h5>											
+															<small class="text-muted">Técnico responsável:</small><br />
+															<?php echo $nometecnico; ?>
+														</h5>
+												
 														<?php
 													}
 												}

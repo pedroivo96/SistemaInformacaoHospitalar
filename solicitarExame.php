@@ -24,13 +24,19 @@
 		$stmt->bindParam(':idconsulta'         , $idconsulta);
 			
 		if($stmt->execute()){
-            echo "Sucesso1";
-				  
-			session_start();
-				  
-			$_SESSION['id'] = $idconsulta;	  
-					  
-			//header("Location: atenderPaciente.php");
+			
+			$idexame = $conn->lastInsertId();
+			
+			$sql1 = 'INSERT INTO consultaexame (idconsulta, 
+									            idexame) VALUES(:idconsulta,
+												                :idexame)';
+			$stmt1 = $conn->prepare($sql1);
+			$stmt1->bindParam(':idconsulta', $idconsulta);
+			$stmt1->bindParam(':idexame'   , $idexame);
+			
+			if($stmt1->execute()){
+				echo "Sucesso1";
+			}
         }else{
             echo "Erro1";
         }

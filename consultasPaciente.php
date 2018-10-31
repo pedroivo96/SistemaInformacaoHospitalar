@@ -156,8 +156,34 @@
 		</div>
 		
 		<div class="col-md-4">
-			<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
+		
+			<?php
 			
+				$conn = getConnection();
+				
+				$cpfpaciente = $_SESSION['cpf'];
+		
+				$sql = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					?>
+					<div class="alert alert-primary btn-block" role="alert">
+						Você está internado!
+					</div>
+					<?php
+				}
+				else{
+					?>
+					<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
+					<?php
+				}
+			
+			?>
+	
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>

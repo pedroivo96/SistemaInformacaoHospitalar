@@ -92,13 +92,14 @@
 			
 		</div>
 		<div class="col-md-4">
+		
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Consultas</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Procedimentos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'visualizarProntuario.php';">Gerar prontuário</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerarProntuario.php';">Gerar prontuário</button>
 			
 			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>

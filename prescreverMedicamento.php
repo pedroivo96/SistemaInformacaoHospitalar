@@ -24,17 +24,19 @@
 		$stmt->bindParam(':idconsulta'      , $idconsulta);
 			
 		if($stmt->execute()){
-            echo "Sucesso3";
-					  
-			session_start();
-				  
-			$_SESSION['id']           = $idconsulta;
-			$_SESSION['cpfmedico']    = $cpfmedico;
-			$_SESSION['cpfpaciente']  = $cpfpaciente;
-			$_SESSION['nomemedico']   = $nomemedico;
-			$_SESSION['nomepaciente'] = $nomepaciente;	  
-					  
-			//header("Location: atenderPaciente.php");
+			
+			$idprescricao = $conn->lastInsertId();
+			
+			$sql1 = 'INSERT INTO consultaprescricao (idconsulta, 
+									                 idprescricao) VALUES(:idconsulta,
+												                          :idprescricao)';
+			$stmt1 = $conn->prepare($sql1);
+			$stmt1->bindParam(':idconsulta'  , $idconsulta);
+			$stmt1->bindParam(':idprescricao', $idprescricao);
+			
+			if($stmt1->execute()){
+				echo "Sucesso3";
+			}
         }else{
             echo "Erro3";
         }
