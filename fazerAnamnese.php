@@ -1017,11 +1017,237 @@
 				if(membrosinferiores.substr(membrosinferiores.length - 1) == ","){
 					membrosinferiores = membrosinferiores.substr(0, membrosinferiores.length - 1);
 				}
+				
+				
+				//Monta a QueryString
+				dados = 'idinternacao='+idinternacao
+				        "&pressao="+pressao+
+						"&pulso="+pulso+
+						"&frequenciacardiaca="+frequenciacardiaca+
+						"&temperatura="+temperatura+
+						"&frequenciarespiratoria="+frequenciarespiratoria+
+						"&peso="+peso+
+						"&altura="+altura+
+						"&nutricao="+nutricao+
+						"&nutricaooutros="+nutricaooutros+
+						"&consciencia="+consciencia+
+						"&conscienciaoutros="+conscienciaoutros+
+						"&movimentacao="+movimentacao+
+						"&movimentacaooutros="+movimentacaooutros+
+						"&peletecidos="+peletecidos+
+						"&peletecidosoutros="+peletecidosoutros+
+						"&cranio="+cranio+
+						"&craniooutros="+craniooutros+
+						"&olhos="+olhos+
+						"&olhosoutros="+olhosoutros+
+						"&ouvidos="+ouvidos+
+						"&ouvidosoutros="+ouvidosoutros+
+						"&nariz="+nariz+
+						"&narizoutros="+narizoutros+
+						"&boca="+boca+
+						"&bocaoutros="+bocaoutros+
+						"&pescoco="+pescoco+
+						"&pescocooutros="+pescocooutros+
+						"&torax="+torax+
+						"&toraxoutros="+toraxoutros+
+						"&mamas="+mamas+
+						"&mamasoutros="+mamasoutros+
+						"&ausculta="+ausculta+
+						"&auscultaoutros="+auscultaoutros+
+						"&oxigenacao="+oxigenacao+
+						"&oxigenacaooutros="+oxigenacaooutros+
+						"&coracao="+coracao+
+						"&coracaooutros="+coracaooutros+
+						"&precordio="+precordio+
+						"&precordiooutros="+precordiooutros+
+						"&abdome="+abdome+
+						"&abdomeoutros="+abdomeoutros+
+						"&geniturinario="+geniturinario+
+						"&geniturinariooutros="+geniturinariooutros+
+						"&membrossuperiores="+membrossuperiores+
+						"&membrossuperioresoutros="+membrossuperioresoutros+
+						"&membrosinferiores="+membrosinferiores+
+						"&membrosinferioresoutros="+membrosinferioresoutros+
+						"&medicamentoscasa="+medicamentoscasa+
+						"&exames="+exames+
+						"&outrasqueixas="+outrasqueixas;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
 			}
 		}
 		
 		function anamnesePsicossocial(){
+			ajax = iniciaAjax();	
 			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+							}else{
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var idinternacao               = document.getElementById('idinternacao').value;
+				var interacaosocial            = "";
+				var resolucaoproblemas         = "";
+				var apoioespiritual            = "";
+				var suportefinanceiro          = "";
+				var suportefinanceirooutros    = document.getElementById('suportefinanceirooutros').value;
+				var conhecimentoproblema       = "";
+				var conhecimentoproblemaoutros = document.getElementById('conhecimentoproblemaoutros').value;
+				var condicoesautocuidado       = "";
+				var condicoesautocuidadooutros = document.getElementById('condicoesautocuidadooutros').value;
+				var mudancahumor               = "";
+				var mudancahumoroutros         = document.getElementById('mudancahumoroutros').value;
+				
+				if(document.getElementById('interacaosocial1').checked == true){
+					interacaosocial = interacaosocial + document.getElementById('interacaosocial1').value + ",";
+				}
+				if(document.getElementById('interacaosocial2').checked == true){
+					interacaosocial = interacaosocial + document.getElementById('interacaosocial2').value + ",";
+				}
+				if(document.getElementById('interacaosocial3').checked == true){
+					interacaosocial = interacaosocial + document.getElementById('interacaosocial3').value + ",";
+				}
+				if(document.getElementById('interacaosocial4').checked == true){
+					interacaosocial = interacaosocial + document.getElementById('interacaosocial4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(interacaosocial.substr(interacaosocial.length - 1) == ","){
+					interacaosocial = interacaosocial.substr(0, interacaosocial.length - 1);
+				}
+				
+				
+				if(document.getElementById('resolucaoproblemas1').checked == true){
+					resolucaoproblemas = resolucaoproblemas + document.getElementById('resolucaoproblemas1').value + ",";
+				}
+				if(document.getElementById('resolucaoproblemas2').checked == true){
+					resolucaoproblemas = resolucaoproblemas + document.getElementById('resolucaoproblemas2').value + ",";
+				}
+				if(document.getElementById('resolucaoproblemas3').checked == true){
+					resolucaoproblemas = resolucaoproblemas + document.getElementById('resolucaoproblemas3').value + ",";
+				}
+				if(document.getElementById('resolucaoproblemas4').checked == true){
+					resolucaoproblemas = resolucaoproblemas + document.getElementById('resolucaoproblemas4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(resolucaoproblemas.substr(resolucaoproblemas.length - 1) == ","){
+					resolucaoproblemas = resolucaoproblemas.substr(0, resolucaoproblemas.length - 1);
+				}
+				
+				
+				if(document.getElementById('apoioespiritual1').checked == true){
+					apoioespiritual = apoioespiritual + document.getElementById('apoioespiritual1').value + ",";
+				}
+				if(document.getElementById('apoioespiritual2').checked == true){
+					apoioespiritual = apoioespiritual + document.getElementById('apoioespiritual2').value + ",";
+				}
+				if(document.getElementById('apoioespiritual3').checked == true){
+					apoioespiritual = apoioespiritual + document.getElementById('apoioespiritual3').value + ",";
+				}
+				if(document.getElementById('apoioespiritual4').checked == true){
+					apoioespiritual = apoioespiritual + document.getElementById('apoioespiritual4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(apoioespiritual.substr(apoioespiritual.length - 1) == ","){
+					apoioespiritual = apoioespiritual.substr(0, apoioespiritual.length - 1);
+				}
+			
+				
+				if(document.getElementById('suportefinanceiro1').checked == true){
+					suportefinanceiro = suportefinanceiro + document.getElementById('suportefinanceiro1').value + ",";
+				}
+				if(document.getElementById('suportefinanceiro2').checked == true){
+					suportefinanceiro = suportefinanceiro + document.getElementById('suportefinanceiro2').value + ",";
+				}
+				if(document.getElementById('suportefinanceiro3').checked == true){
+					suportefinanceiro = suportefinanceiro + document.getElementById('suportefinanceiro3').value + ",";
+				}
+				if(document.getElementById('suportefinanceiro4').checked == true){
+					suportefinanceiro = suportefinanceiro + document.getElementById('suportefinanceiro4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(suportefinanceiro.substr(suportefinanceiro.length - 1) == ","){
+					suportefinanceiro = suportefinanceiro.substr(0, suportefinanceiro.length - 1);
+				}
+				
+				
+				if(document.getElementById('conhecimentoproblema1').checked == true){
+					conhecimentoproblema = conhecimentoproblema + document.getElementById('conhecimentoproblema1').value + ",";
+				}
+				if(document.getElementById('conhecimentoproblema2').checked == true){
+					conhecimentoproblema = conhecimentoproblema + document.getElementById('conhecimentoproblema2').value + ",";
+				}
+				if(document.getElementById('conhecimentoproblema3').checked == true){
+					conhecimentoproblema = conhecimentoproblema + document.getElementById('conhecimentoproblema3').value + ",";
+				}
+				if(document.getElementById('conhecimentoproblema4').checked == true){
+					conhecimentoproblema = conhecimentoproblema + document.getElementById('conhecimentoproblema4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(conhecimentoproblema.substr(conhecimentoproblema.length - 1) == ","){
+					conhecimentoproblema = conhecimentoproblema.substr(0, conhecimentoproblema.length - 1);
+				}
+				
+				
+				if(document.getElementById('condicoesautocuidado1').checked == true){
+					condicoesautocuidado = condicoesautocuidado + document.getElementById('condicoesautocuidado1').value + ",";
+				}
+				if(document.getElementById('condicoesautocuidado2').checked == true){
+					condicoesautocuidado = condicoesautocuidado + document.getElementById('condicoesautocuidado2').value + ",";
+				}
+				if(document.getElementById('condicoesautocuidado3').checked == true){
+					condicoesautocuidado = condicoesautocuidado + document.getElementById('condicoesautocuidado3').value + ",";
+				}
+				if(document.getElementById('condicoesautocuidado4').checked == true){
+					condicoesautocuidado = condicoesautocuidado + document.getElementById('condicoesautocuidado4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(condicoesautocuidado.substr(condicoesautocuidado.length - 1) == ","){
+					condicoesautocuidado = condicoesautocuidado.substr(0, condicoesautocuidado.length - 1);
+				}
+				
+				
+				if(document.getElementById('mudancahumor1').checked == true){
+					mudancahumor = mudancahumor + document.getElementById('mudancahumor1').value + ",";
+				}
+				if(document.getElementById('mudancahumor2').checked == true){
+					mudancahumor = mudancahumor + document.getElementById('mudancahumor2').value + ",";
+				}
+				if(document.getElementById('mudancahumor3').checked == true){
+					mudancahumor = mudancahumor + document.getElementById('mudancahumor3').value + ",";
+				}
+				if(document.getElementById('mudancahumor4').checked == true){
+					mudancahumor = mudancahumor + document.getElementById('mudancahumor4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(mudancahumor.substr(mudancahumor.length - 1) == ","){
+					mudancahumor = mudancahumor.substr(0, mudancahumor.length - 1);
+				}
+				
+				//Monta a QueryString
+				dados = 'idinternacao='+idinternacao
+				        "&condicoesmoradia="+condicoesmoradia;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+				
+			}
 		}
 		
 		function anamneseDadosEspecificos(){
