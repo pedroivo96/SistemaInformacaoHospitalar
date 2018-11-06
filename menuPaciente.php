@@ -99,8 +99,14 @@
 			
 			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Procedimentos</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerarProntuario.php';">Gerar prontuário</button>
-			
+			<form class="btn btn-primary btn-block" method="POST" action="gerarProntuario.php" class="btn btn-primary">
+				<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $_SESSION['cpf']; ?>">
+					
+				<button class="btn btn-primary btn-block" type="submit">
+					Gerar PDF do Prontuário
+				</button> 
+			</form>
+				
 			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
 		</div>
 	</div>

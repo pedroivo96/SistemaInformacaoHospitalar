@@ -3,6 +3,7 @@
   <head>
   
 	<?php 
+		/*
 		// Inicia sessões 
 		session_start(); 
  
@@ -12,6 +13,7 @@
 			header("Location: loginPaciente.html"); 
 			exit; 
 		} 
+		*/
 	?>
   
     <meta charset="utf-8">
@@ -28,6 +30,1003 @@
 	<link href="css/bootstrap.css" rel="stylesheet">
 	
 	<script>
+	
+		function iniciaAjax(){
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function anamneseInformacoesDoencasTratamento(){
+			
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+							}else{
+								document.getElementById('submit1').disabled = false;
+								document.getElementById('submit2').disabled = false;
+								document.getElementById('submit3').disabled = false;
+								document.getElementById('submit4').disabled = false;
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var idinternacao          = document.getElementById('idinternacao').value;
+				var motivointernacao      = document.getElementById('motivointernacao').value;
+				var doencascronicas       = document.getElementById('doencascronicas').value;
+				var tratamentosanteriores = document.getElementById('tratamentosanteriores').value;
+				var fatoresrisco          = "";
+				
+				if(document.getElementById('fatoresrisco1').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco1').value + ",";
+				}
+				if(document.getElementById('fatoresrisco2').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco2').value + ",";
+				}
+				if(document.getElementById('fatoresrisco3').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco3').value + ",";
+				}
+				if(document.getElementById('fatoresrisco4').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco4').value + ",";
+				}
+				if(document.getElementById('fatoresrisco5').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco5').value + ",";
+				}
+				if(document.getElementById('fatoresrisco6').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco6').value + ",";
+				}
+				if(document.getElementById('fatoresrisco7').checked == true){
+					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco7').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(fatoresrisco.substr(fatoresrisco.length - 1) == ","){
+					fatoresrisco = fatoresrisco.substr(0, fatoresrisco.length - 1);
+				}
+				
+				var fatoresriscooutros     = document.getElementById('fatoresriscooutros').value;
+				var medicamentosuso        = document.getElementById('medicamentosuso').value;
+				var antecedentesfamiliares = document.getElementById('antecedentesfamiliares').value;
+				
+				//Monta a QueryString
+				dados = 'idinternacao='+idinternacao
+				        "&motivointernacao="+motivointernacao+
+						"&doencascronicas="+doencascronicas+
+						"&tratamentosanteriores="+tratamentosanteriores+
+						"&fatoresrisco="+fatoresrisco+
+						"&fatoresriscooutros="+fatoresriscooutros+
+						"&medicamentosuso="+medicamentosuso+
+						"&antecedentesfamiliares="+antecedentesfamiliares;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function anamneseHabitos(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+							}else{
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var idinternacao            = document.getElementById('idinternacao').value;
+				var condicoesmoradia        = "";
+				var condicoesmoradiaoutros  = document.getElementById('condicoesmoradiaoutros');
+				var cuidadocorporal         = "";
+				var periodobanho            = "";
+				var atividadetrabalho       = "";
+				var atividadetrabalhooutros = document.getElementById('atividadetrabalhooutros').value;
+				var sonorepouso             = "";
+				var horasdormidas           = document.getElementById('horasdormidas').value;
+				var insoniauti              = document.getElementById('insoniauti').value;
+				var exerciciosprogramados   = "";
+				var vezesexercicios         = "";
+				var recreacaolazer          = "";
+				var recreacaolazeroutros    = document.getElementById('recreacaolazeroutros').value;
+				var comerfrequencia         = "";
+				var comerfrequenciaoutros   = document.getElementById('comerfrequenciaoutros').value;
+				var eliminacaourinaria      = document.getElementById('eliminacaourinaria').value;
+				var eliminacaointestinal    = "";
+				var eliminacaointestinalfrequencia = document.getElementById('eliminacaointestinalfrequencia').value;
+				var ciclomenstrual          = "";
+				var ciclomenstrualoutros    = document.getElementById('ciclomenstrualoutros').value;
+				var atividadesexual         = "";
+				var atividadesexualoutros   = document.getElementById('atividadesexualoutros').value;
+				
+				if(document.getElementById('condicoesmoradia1').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia1').value + ",";
+				}
+				if(document.getElementById('condicoesmoradia2').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia2').value + ",";
+				}
+				if(document.getElementById('condicoesmoradia3').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia3').value + ",";
+				}
+				if(document.getElementById('condicoesmoradia4').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia4').value + ",";
+				}
+				if(document.getElementById('condicoesmoradia5').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia5').value + ",";
+				}
+				if(document.getElementById('condicoesmoradia6').checked == true){
+					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia6').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(condicoesmoradia.substr(condicoesmoradia.length - 1) == ","){
+					condicoesmoradia = condicoesmoradia.substr(0, condicoesmoradia.length - 1);
+				}
+			
+				if(document.getElementById('cuidadocorporal1').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal1').value + ",";
+				}
+				if(document.getElementById('cuidadocorporal2').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal2').value + ",";
+				}
+				if(document.getElementById('cuidadocorporal3').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal3').value + ",";
+				}
+				if(document.getElementById('cuidadocorporal4').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal4').value + ",";
+				}
+				if(document.getElementById('cuidadocorporal5').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal5').value + ",";
+				}
+				if(document.getElementById('cuidadocorporal6').checked == true){
+					cuidadocorporal = cuidadocorporal + document.getElementById('cuidadocorporal6').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(cuidadocorporal.substr(cuidadocorporal.length - 1) == ","){
+					cuidadocorporal = cuidadocorporal.substr(0, cuidadocorporal.length - 1);
+				}
+				
+				if(document.getElementById('periodobanho1').checked == true){
+					periodobanho = periodobanho + document.getElementById('periodobanho1').value + ",";
+				}
+				if(document.getElementById('periodobanho2').checked == true){
+					periodobanho = periodobanho + document.getElementById('periodobanho2').value + ",";
+				}
+				if(document.getElementById('periodobanho3').checked == true){
+					periodobanho = periodobanho + document.getElementById('periodobanho3').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(periodobanho.substr(periodobanho.length - 1) == ","){
+					periodobanho = periodobanho.substr(0, periodobanho.length - 1);
+				}
+				
+				if(document.getElementById('atividadetrabalho1').checked == true){
+					atividadetrabalho = atividadetrabalho + document.getElementById('atividadetrabalho1').value + ",";
+				}
+				if(document.getElementById('atividadetrabalho2').checked == true){
+					atividadetrabalho = atividadetrabalho + document.getElementById('atividadetrabalho2').value + ",";
+				}
+				if(document.getElementById('atividadetrabalho3').checked == true){
+					atividadetrabalho = atividadetrabalho + document.getElementById('atividadetrabalho3').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(atividadetrabalho.substr(atividadetrabalho.length - 1) == ","){
+					atividadetrabalho = atividadetrabalho.substr(0, atividadetrabalho.length - 1);
+				}
+				
+				if(document.getElementById('sonorepouso1').checked == true){
+					sonorepouso = sonorepouso + document.getElementById('sonorepouso1').value + ",";
+				}
+				if(document.getElementById('sonorepouso2').checked == true){
+					sonorepouso = sonorepouso + document.getElementById('sonorepouso2').value + ",";
+				}
+				if(document.getElementById('sonorepouso3').checked == true){
+					sonorepouso = sonorepouso + document.getElementById('sonorepouso3').value + ",";
+				}
+				if(document.getElementById('sonorepouso4').checked == true){
+					sonorepouso = sonorepouso + document.getElementById('sonorepouso4').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(sonorepouso.substr(sonorepouso.length - 1) == ","){
+					sonorepouso = sonorepouso.substr(0, sonorepouso.length - 1);
+				}
+				
+				if(document.getElementById('exerciciosprogramados1').checked == true){
+					exerciciosprogramados = exerciciosprogramados + document.getElementById('exerciciosprogramados1').value + ",";
+				}
+				if(document.getElementById('exerciciosprogramados2').checked == true){
+					exerciciosprogramados = exerciciosprogramados + document.getElementById('exerciciosprogramados2').value + ",";
+				}
+				if(document.getElementById('exerciciosprogramados3').checked == true){
+					exerciciosprogramados = exerciciosprogramados + document.getElementById('exerciciosprogramados3').value + ",";
+				}
+				if(document.getElementById('exerciciosprogramados4').checked == true){
+					exerciciosprogramados = exerciciosprogramados + document.getElementById('exerciciosprogramados4').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(exerciciosprogramados.substr(exerciciosprogramados.length - 1) == ","){
+					exerciciosprogramados = exerciciosprogramados.substr(0, exerciciosprogramados.length - 1);
+				}
+				
+				if(document.getElementById('recreacaolazer1').checked == true){
+					recreacaolazer = recreacaolazer + document.getElementById('recreacaolazer1').value + ",";
+				}
+				if(document.getElementById('recreacaolazer2').checked == true){
+					recreacaolazer = recreacaolazer + document.getElementById('recreacaolazer2').value + ",";
+				}
+				if(document.getElementById('recreacaolazer3').checked == true){
+					recreacaolazer = recreacaolazer + document.getElementById('recreacaolazer3').value + ",";
+				}
+				if(document.getElementById('recreacaolazer4').checked == true){
+					recreacaolazer = recreacaolazer + document.getElementById('recreacaolazer4').value + ",";
+				}
+				if(document.getElementById('recreacaolazer5').checked == true){
+					recreacaolazer = recreacaolazer + document.getElementById('recreacaolazer5').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(recreacaolazer.substr(recreacaolazer.length - 1) == ","){
+					recreacaolazer = recreacaolazer.substr(0, recreacaolazer.length - 1);
+				}
+				
+				if(document.getElementById('comerfrequencia1').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia1').value + ",";
+				}
+				if(document.getElementById('comerfrequencia2').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia2').value + ",";
+				}
+				if(document.getElementById('comerfrequencia3').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia3').value + ",";
+				}
+				if(document.getElementById('comerfrequencia4').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia4').value + ",";
+				}
+				if(document.getElementById('comerfrequencia5').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia5').value + ",";
+				}
+				if(document.getElementById('comerfrequencia6').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia6').value + ",";
+				}
+				if(document.getElementById('comerfrequencia7').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia7').value + ",";
+				}
+				if(document.getElementById('comerfrequencia8').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia8').value + ",";
+				}
+				if(document.getElementById('comerfrequencia9').checked == true){
+					comerfrequencia = comerfrequencia + document.getElementById('comerfrequencia9').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(comerfrequencia.substr(comerfrequencia.length - 1) == ","){
+					comerfrequencia = comerfrequencia.substr(0, comerfrequencia.length - 1);
+				}
+				
+				if(document.getElementById('eliminacaourinaria1').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria1').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria2').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria2').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria3').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria3').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria4').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria4').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria5').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria5').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria6').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria6').value + ",";
+				}
+				if(document.getElementById('eliminacaourinaria7').checked == true){
+					eliminacaourinaria = eliminacaourinaria + document.getElementById('eliminacaourinaria7').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(eliminacaourinaria.substr(eliminacaourinaria.length - 1) == ","){
+					eliminacaourinaria = eliminacaourinaria.substr(0, eliminacaourinaria.length - 1);
+				}
+				
+				if(document.getElementById('eliminacaointestinal1').checked == true){
+					eliminacaointestinal = eliminacaointestinal + document.getElementById('eliminacaointestinal1').value + ",";
+				}
+				if(document.getElementById('eliminacaointestinal2').checked == true){
+					eliminacaointestinal = eliminacaointestinal + document.getElementById('eliminacaointestinal2').value + ",";
+				}
+				if(document.getElementById('eliminacaointestinal3').checked == true){
+					eliminacaointestinal = eliminacaointestinal + document.getElementById('eliminacaointestinal3').value + ",";
+				}
+				if(document.getElementById('eliminacaointestinal4').checked == true){
+					eliminacaointestinal = eliminacaointestinal + document.getElementById('eliminacaointestinal4').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(eliminacaointestinal.substr(eliminacaointestinal.length - 1) == ","){
+					eliminacaointestinal = eliminacaointestinal.substr(0, eliminacaointestinal.length - 1);
+				}
+				
+				if(document.getElementById('ciclomenstrual1').checked == true){
+					ciclomenstrual = ciclomenstrual + document.getElementById('ciclomenstrual1').value + ",";
+				}
+				if(document.getElementById('ciclomenstrual2').checked == true){
+					ciclomenstrual = ciclomenstrual + document.getElementById('ciclomenstrual2').value + ",";
+				}
+				if(document.getElementById('ciclomenstrual3').checked == true){
+					ciclomenstrual = ciclomenstrual + document.getElementById('ciclomenstrual3').value + ",";
+				}
+				if(document.getElementById('ciclomenstrual4').checked == true){
+					ciclomenstrual = ciclomenstrual + document.getElementById('ciclomenstrual4').value + ",";
+				}
+				
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(ciclomenstrual.substr(ciclomenstrual.length - 1) == ","){
+					ciclomenstrual = ciclomenstrual.substr(0, ciclomenstrual.length - 1);
+				}
+				
+				if(document.getElementById('atividadesexual1').checked == true){
+					atividadesexual = atividadesexual + document.getElementById('atividadesexual1').value + ",";
+				}
+				if(document.getElementById('atividadesexual2').checked == true){
+					atividadesexual = atividadesexual + document.getElementById('atividadesexual2').value + ",";
+				}
+				if(document.getElementById('atividadesexual3').checked == true){
+					atividadesexual = atividadesexual + document.getElementById('atividadesexual3').value + ",";
+				}
+
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(atividadesexual.substr(atividadesexual.length - 1) == ","){
+					atividadesexual = atividadesexual.substr(0, atividadesexual.length - 1);
+				}
+				
+				//Monta a QueryString
+				dados = 'idinternacao='+idinternacao
+				        "&condicoesmoradia="+condicoesmoradia+
+						"&condicoesmoradiaoutros="+condicoesmoradiaoutros+
+						"&cuidadocorporal="+cuidadocorporal+
+						"&periodobanho="+periodobanho+
+						"&atividadetrabalho="+atividadetrabalho+
+						"&atividadetrabalhooutros="+atividadetrabalhooutros+
+						"&sonorepouso="+sonorepouso+
+						"&horasdormidas="+horasdormidas+
+						"&insoniauti="+insoniauti+
+						"&exerciciosprogramados="+exerciciosprogramados+
+						"&vezesexercicios="+vezesexercicios+
+						"&recreacaolazer="+recreacaolazer+
+						"&recreacaolazeroutros="+recreacaolazeroutros+
+						"&comerfrequencia="+comerfrequencia+
+						"&comerfrequenciaoutros="+comerfrequenciaoutros+
+						"&eliminacaourinaria="+eliminacaourinaria+
+						"&eliminacaointestinal="+eliminacaointestinal+
+						"&eliminacaointestinalfrequencia="+eliminacaointestinalfrequencia+
+						"&ciclomenstrual="+ciclomenstrual+
+						"&ciclomenstrualoutros="+ciclomenstrualoutros+
+						"&atividadesexual="+atividadesexual+
+						"&atividadesexualoutros="+atividadesexualoutros;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+				
+				
+			}
+		}
+		
+		function anamneseExameOrgaosSistemas(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+							}else{
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var idinternacao 			= document.getElementById('idinternacao').value;
+				var pressao      			= document.getElementById('pressao').value;
+				var pulso        			= document.getElementById('pulso').value;
+				var frequenciacardiaca 		= document.getElementById('frequenciacardiaca').value;
+				var temperatura 			= document.getElementById('temperatura').value;
+				var frequenciarespiratoria 	= document.getElementById('frequenciarespiratoria').value;
+				var peso 					= document.getElementById('peso').value;
+				var altura 					= document.getElementById('altura').value;
+				var nutricao 				= "";
+				var nutricaooutros 			= document.getElementById('nutricaooutros').value;
+				var consciencia 			= "";
+				var conscienciaoutros 		= document.getElementById('conscienciaoutros').value;
+				var movimentacao 			= "";
+				var movimentacaooutros 		= document.getElementById('movimentacaooutros').value;
+				var peletecidos 			= "";
+				var peletecidosoutros 		= document.getElementById('peletecidosoutros').value;
+				var cranio 					= "";
+				var craniooutros 			= document.getElementById('craniooutros').value;
+				var olhos 					= "";
+				var olhosoutros 			= document.getElementById('olhosoutros').value;
+				var ouvidos 				= "";
+				var ouvidosoutros 			= document.getElementById('ouvidosoutros').value;
+				var nariz 					= "";
+				var narizoutros 			= document.getElementById('narizoutros').value;
+				var boca 					= "";
+				var bocaoutros 				= document.getElementById('bocaoutros').value;
+				var pescoco 				= "";
+				var pescocooutros 			= document.getElementById('pescocooutros').value;
+				var torax 					= "";
+				var toraxoutros 			= document.getElementById('toraxoutros').value;
+				var mamas 					= "";
+				var mamasoutros             = document.getElementById('mamasoutros').value;
+				var ausculta                = "";
+				var auscultaoutros          = document.getElementById('auscultaoutros').value;
+				var oxigenacao              = "";
+				var oxigenacaooutros        = document.getElementById('oxigenacaooutros').value;
+				var coracao                 = "";
+				var coracaooutros           = document.getElementById('coracaooutros').value;
+				var precordio               = "";
+				var precordiooutros         = document.getElementById('precordiooutros').value;
+				var abdome                  = "";
+				var abdomeoutros            = document.getElementById('abdomeoutros').value;
+				var geniturinario           = "";
+				var geniturinariooutros     = document.getElementById('geniturinariooutros').value;
+				var membrossuperiores       = "";
+				var membrossuperioresoutros = document.getElementById('membrossuperioresoutros').value;
+				var membrosinferiores       = "";
+				var membrosinferioresoutros = document.getElementById('membrosinferioresoutros').value;
+				var medicamentoscasa        = document.getElementById('medicamentoscasa').value;
+				var exames                  = document.getElementById('exames').value;
+				var outrasqueixas           = document.getElementById('outrasqueixas').value;
+				
+				if(document.getElementById('nutricao1').checked == true){
+					nutricao = nutricao + document.getElementById('nutricao1').value + ",";
+				}
+				if(document.getElementById('nutricao2').checked == true){
+					nutricao = nutricao + document.getElementById('nutricao2').value + ",";
+				}
+				if(document.getElementById('nutricao3').checked == true){
+					nutricao = nutricao + document.getElementById('nutricao3').value + ",";
+				}
+				if(document.getElementById('nutricao4').checked == true){
+					nutricao = nutricao + document.getElementById('nutricao4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(nutricao.substr(nutricao.length - 1) == ","){
+					nutricao = nutricao.substr(0, nutricao.length - 1);
+				}
+				
+				if(document.getElementById('consciencia1').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia1').value + ",";
+				}
+				if(document.getElementById('consciencia2').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia2').value + ",";
+				}
+				if(document.getElementById('consciencia3').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia3').value + ",";
+				}
+				if(document.getElementById('consciencia4').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia4').value + ",";
+				}
+				if(document.getElementById('consciencia5').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia5').value + ",";
+				}
+				if(document.getElementById('consciencia6').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia6').value + ",";
+				}
+				if(document.getElementById('consciencia7').checked == true){
+					consciencia = consciencia + document.getElementById('consciencia7').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(consciencia.substr(consciencia.length - 1) == ","){
+					consciencia = consciencia.substr(0, consciencia.length - 1);
+				}
+				
+				if(document.getElementById('movimentacao1').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao1').value + ",";
+				}
+				if(document.getElementById('movimentacao2').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao2').value + ",";
+				}
+				if(document.getElementById('movimentacao3').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao3').value + ",";
+				}
+				if(document.getElementById('movimentacao4').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao4').value + ",";
+				}
+				if(document.getElementById('movimentacao5').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao5').value + ",";
+				}
+				if(document.getElementById('movimentacao6').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao6').value + ",";
+				}
+				if(document.getElementById('movimentacao7').checked == true){
+					movimentacao = movimentacao + document.getElementById('movimentacao7').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(movimentacao.substr(movimentacao.length - 1) == ","){
+					movimentacao = movimentacao.substr(0, movimentacao.length - 1);
+				}
+				
+				if(document.getElementById('peletecidos1').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos1').value + ",";
+				}
+				if(document.getElementById('peletecidos2').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos2').value + ",";
+				}
+				if(document.getElementById('peletecidos3').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos3').value + ",";
+				}
+				if(document.getElementById('peletecidos4').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos4').value + ",";
+				}
+				if(document.getElementById('peletecidos5').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos5').value + ",";
+				}
+				if(document.getElementById('peletecidos6').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos6').value + ",";
+				}
+				if(document.getElementById('peletecidos7').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos7').value + ",";
+				}
+				if(document.getElementById('peletecidos8').checked == true){
+					peletecidos = peletecidos + document.getElementById('peletecidos8').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(peletecidos.substr(peletecidos.length - 1) == ","){
+					peletecidos = peletecidos.substr(0, peletecidos.length - 1);
+				}
+				
+				if(document.getElementById('cranio1').checked == true){
+					cranio = cranio + document.getElementById('cranio1').value + ",";
+				}
+				if(document.getElementById('cranio2').checked == true){
+					cranio = cranio + document.getElementById('cranio2').value + ",";
+				}
+				if(document.getElementById('cranio3').checked == true){
+					cranio = cranio + document.getElementById('cranio3').value + ",";
+				}
+				if(document.getElementById('cranio4').checked == true){
+					cranio = cranio + document.getElementById('cranio4').value + ",";
+				}
+				if(document.getElementById('cranio5').checked == true){
+					cranio = cranio + document.getElementById('cranio5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(cranio.substr(cranio.length - 1) == ","){
+					cranio = cranio.substr(0, cranio.length - 1);
+				}
+				
+				if(document.getElementById('olhos1').checked == true){
+					olhos = olhos + document.getElementById('olhos1').value + ",";
+				}
+				if(document.getElementById('olhos2').checked == true){
+					olhos = olhos + document.getElementById('olhos2').value + ",";
+				}
+				if(document.getElementById('olhos3').checked == true){
+					olhos = olhos + document.getElementById('olhos3').value + ",";
+				}
+				if(document.getElementById('olhos4').checked == true){
+					olhos = olhos + document.getElementById('olhos4').value + ",";
+				}
+				if(document.getElementById('olhos5').checked == true){
+					olhos = olhos + document.getElementById('olhos5').value + ",";
+				}
+				if(document.getElementById('olhos6').checked == true){
+					olhos = olhos + document.getElementById('olhos6').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(olhos.substr(olhos.length - 1) == ","){
+					olhos = olhos.substr(0, olhos.length - 1);
+				}
+				
+				
+				if(document.getElementById('ouvidos1').checked == true){
+					ouvidos = ouvidos + document.getElementById('ouvidos1').value + ",";
+				}
+				if(document.getElementById('ouvidos2').checked == true){
+					ouvidos = ouvidos + document.getElementById('ouvidos2').value + ",";
+				}
+				if(document.getElementById('ouvidos3').checked == true){
+					ouvidos = ouvidos + document.getElementById('ouvidos3').value + ",";
+				}
+				if(document.getElementById('ouvidos4').checked == true){
+					ouvidos = ouvidos + document.getElementById('ouvidos4').value + ",";
+				}
+				if(document.getElementById('ouvidos5').checked == true){
+					ouvidos = ouvidos + document.getElementById('ouvidos5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(ouvidos.substr(ouvidos.length - 1) == ","){
+					ouvidos = ouvidos.substr(0, ouvidos.length - 1);
+				}
+				
+				
+				if(document.getElementById('nariz1').checked == true){
+					nariz = nariz + document.getElementById('nariz1').value + ",";
+				}
+				if(document.getElementById('nariz2').checked == true){
+					nariz = nariz + document.getElementById('nariz2').value + ",";
+				}
+				if(document.getElementById('nariz3').checked == true){
+					nariz = nariz + document.getElementById('nariz3').value + ",";
+				}
+				if(document.getElementById('nariz4').checked == true){
+					nariz = nariz + document.getElementById('nariz4').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(nariz.substr(nariz.length - 1) == ","){
+					nariz = nariz.substr(0, nariz.length - 1);
+				}
+				
+				
+				if(document.getElementById('boca1').checked == true){
+					boca = boca + document.getElementById('boca1').value + ",";
+				}
+				if(document.getElementById('boca2').checked == true){
+					boca = boca + document.getElementById('boca2').value + ",";
+				}
+				if(document.getElementById('boca3').checked == true){
+					boca = boca + document.getElementById('boca3').value + ",";
+				}
+				if(document.getElementById('boca4').checked == true){
+					boca = boca + document.getElementById('boca4').value + ",";
+				}
+				if(document.getElementById('boca5').checked == true){
+					boca = boca + document.getElementById('boca5').value + ",";
+				}
+				if(document.getElementById('boca6').checked == true){
+					boca = boca + document.getElementById('boca6').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(boca.substr(boca.length - 1) == ","){
+					boca = boca.substr(0, boca.length - 1);
+				}
+				
+				
+				if(document.getElementById('pescoco1').checked == true){
+					pescoco = pescoco + document.getElementById('pescoco1').value + ",";
+				}
+				if(document.getElementById('pescoco2').checked == true){
+					pescoco = pescoco + document.getElementById('pescoco2').value + ",";
+				}
+				if(document.getElementById('pescoco3').checked == true){
+					pescoco = pescoco + document.getElementById('pescoco3').value + ",";
+				}
+				if(document.getElementById('pescoco4').checked == true){
+					pescoco = pescoco + document.getElementById('pescoco4').value + ",";
+				}
+				if(document.getElementById('pescoco5').checked == true){
+					pescoco = pescoco + document.getElementById('pescoco5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(pescoco.substr(pescoco.length - 1) == ","){
+					pescoco = pescoco.substr(0, pescoco.length - 1);
+				}
+				
+				
+				if(document.getElementById('torax1').checked == true){
+					torax = torax + document.getElementById('torax1').value + ",";
+				}
+				if(document.getElementById('torax2').checked == true){
+					torax = torax + document.getElementById('torax2').value + ",";
+				}
+				if(document.getElementById('torax3').checked == true){
+					torax = torax + document.getElementById('torax3').value + ",";
+				}
+				if(document.getElementById('torax4').checked == true){
+					torax = torax + document.getElementById('torax4').value + ",";
+				}
+				if(document.getElementById('torax5').checked == true){
+					torax = torax + document.getElementById('torax5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(torax.substr(torax.length - 1) == ","){
+					torax = torax.substr(0, torax.length - 1);
+				}
+				
+				
+				if(document.getElementById('mamas1').checked == true){
+					mamas = mamas + document.getElementById('mamas1').value + ",";
+				}
+				if(document.getElementById('mamas2').checked == true){
+					mamas = mamas + document.getElementById('mamas2').value + ",";
+				}
+				if(document.getElementById('mamas3').checked == true){
+					mamas = mamas + document.getElementById('mamas3').value + ",";
+				}
+				if(document.getElementById('mamas4').checked == true){
+					mamas = mamas + document.getElementById('mamas4').value + ",";
+				}
+				if(document.getElementById('mamas5').checked == true){
+					mamas = mamas + document.getElementById('mamas5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(mamas.substr(mamas.length - 1) == ","){
+					mamas = mamas.substr(0, mamas.length - 1);
+				}
+				
+				
+				if(document.getElementById('ausculta1').checked == true){
+					ausculta = ausculta + document.getElementById('ausculta1').value + ",";
+				}
+				if(document.getElementById('ausculta2').checked == true){
+					ausculta = ausculta + document.getElementById('ausculta2').value + ",";
+				}
+				if(document.getElementById('ausculta3').checked == true){
+					ausculta = ausculta + document.getElementById('ausculta3').value + ",";
+				}
+				if(document.getElementById('ausculta4').checked == true){
+					ausculta = ausculta + document.getElementById('ausculta4').value + ",";
+				}
+				if(document.getElementById('ausculta5').checked == true){
+					ausculta = ausculta + document.getElementById('ausculta5').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(ausculta.substr(ausculta.length - 1) == ","){
+					ausculta = ausculta.substr(0, ausculta.length - 1);
+				}
+				
+				
+				if(document.getElementById('oxigenacao1').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao1').value + ",";
+				}
+				if(document.getElementById('oxigenacao2').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao2').value + ",";
+				}
+				if(document.getElementById('oxigenacao3').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao3').value + ",";
+				}
+				if(document.getElementById('oxigenacao4').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao4').value + ",";
+				}
+				if(document.getElementById('oxigenacao5').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao5').value + ",";
+				}
+				if(document.getElementById('oxigenacao6').checked == true){
+					oxigenacao = oxigenacao + document.getElementById('oxigenacao6').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(oxigenacao.substr(oxigenacao.length - 1) == ","){
+					oxigenacao = oxigenacao.substr(0, oxigenacao.length - 1);
+				}
+				
+				
+				if(document.getElementById('coracao1').checked == true){
+					coracao = coracao + document.getElementById('coracao1').value + ",";
+				}
+				if(document.getElementById('coracao2').checked == true){
+					coracao = coracao + document.getElementById('coracao2').value + ",";
+				}
+				if(document.getElementById('coracao3').checked == true){
+					coracao = coracao + document.getElementById('coracao3').value + ",";
+				}
+				if(document.getElementById('coracao4').checked == true){
+					coracao = coracao + document.getElementById('coracao4').value + ",";
+				}
+				if(document.getElementById('coracao5').checked == true){
+					coracao = coracao + document.getElementById('coracao5').value + ",";
+				}
+				if(document.getElementById('coracao6').checked == true){
+					coracao = coracao + document.getElementById('coracao6').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(coracao.substr(coracao.length - 1) == ","){
+					coracao = coracao.substr(0, coracao.length - 1);
+				}
+				
+				
+				if(document.getElementById('precordio1').checked == true){
+					precordio = precordio + document.getElementById('precordio1').value + ",";
+				}
+				if(document.getElementById('precordio2').checked == true){
+					precordio = precordio + document.getElementById('precordio2').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(precordio.substr(precordio.length - 1) == ","){
+					precordio = precordio.substr(0, precordio.length - 1);
+				}
+				
+				
+				if(document.getElementById('abdome1').checked == true){
+					abdome = abdome + document.getElementById('abdome1').value + ",";
+				}
+				if(document.getElementById('abdome2').checked == true){
+					abdome = abdome + document.getElementById('abdome2').value + ",";
+				}
+				if(document.getElementById('abdome3').checked == true){
+					abdome = abdome + document.getElementById('abdome3').value + ",";
+				}
+				if(document.getElementById('abdome4').checked == true){
+					abdome = abdome + document.getElementById('abdome4').value + ",";
+				}
+				if(document.getElementById('abdome5').checked == true){
+					abdome = abdome + document.getElementById('abdome5').value + ",";
+				}
+				if(document.getElementById('abdome6').checked == true){
+					abdome = abdome + document.getElementById('abdome6').value + ",";
+				}
+				if(document.getElementById('abdome7').checked == true){
+					abdome = abdome + document.getElementById('abdome7').value + ",";
+				}
+				if(document.getElementById('abdome8').checked == true){
+					abdome = abdome + document.getElementById('abdome8').value + ",";
+				}
+				if(document.getElementById('abdome9').checked == true){
+					abdome = abdome + document.getElementById('abdome9').value + ",";
+				}
+				if(document.getElementById('abdome10').checked == true){
+					abdome = abdome + document.getElementById('abdome10').value + ",";
+				}
+				if(document.getElementById('abdome11').checked == true){
+					abdome = abdome + document.getElementById('abdome11').value + ",";
+				}
+				if(document.getElementById('abdome12').checked == true){
+					abdome = abdome + document.getElementById('abdome12').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(abdome.substr(abdome.length - 1) == ","){
+					abdome = abdome.substr(0, abdome.length - 1);
+				}
+				
+				
+				if(document.getElementById('geniturinario1').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario1').value + ",";
+				}
+				if(document.getElementById('geniturinario2').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario2').value + ",";
+				}
+				if(document.getElementById('geniturinario3').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario3').value + ",";
+				}
+				if(document.getElementById('geniturinario4').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario4').value + ",";
+				}
+				if(document.getElementById('geniturinario5').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario5').value + ",";
+				}
+				if(document.getElementById('geniturinario6').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario6').value + ",";
+				}
+				if(document.getElementById('geniturinario7').checked == true){
+					geniturinario = geniturinario + document.getElementById('geniturinario7').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(geniturinario.substr(geniturinario.length - 1) == ","){
+					geniturinario = geniturinario.substr(0, geniturinario.length - 1);
+				}
+				
+				
+				if(document.getElementById('membrossuperiores1').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores1').value + ",";
+				}
+				if(document.getElementById('membrossuperiores2').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores2').value + ",";
+				}
+				if(document.getElementById('membrossuperiores3').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores3').value + ",";
+				}
+				if(document.getElementById('membrossuperiores4').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores4').value + ",";
+				}
+				if(document.getElementById('membrossuperiores5').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores5').value + ",";
+				}
+				if(document.getElementById('membrossuperiores6').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores6').value + ",";
+				}
+				if(document.getElementById('membrossuperiores7').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores7').value + ",";
+				}
+				if(document.getElementById('membrossuperiores8').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores8').value + ",";
+				}
+				if(document.getElementById('membrossuperiores9').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores9').value + ",";
+				}
+				if(document.getElementById('membrossuperiores10').checked == true){
+					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores10').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(membrossuperiores.substr(membrossuperiores.length - 1) == ","){
+					membrossuperiores = membrossuperiores.substr(0, membrossuperiores.length - 1);
+				}
+				
+				
+				if(document.getElementById('membrosinferiores1').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores1').value + ",";
+				}
+				if(document.getElementById('membrosinferiores2').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores2').value + ",";
+				}
+				if(document.getElementById('membrosinferiores3').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores3').value + ",";
+				}
+				if(document.getElementById('membrosinferiores4').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores4').value + ",";
+				}
+				if(document.getElementById('membrosinferiores5').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores5').value + ",";
+				}
+				if(document.getElementById('membrosinferiores6').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores6').value + ",";
+				}
+				if(document.getElementById('membrosinferiores7').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores7').value + ",";
+				}
+				if(document.getElementById('membrosinferiores8').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores8').value + ",";
+				}
+				if(document.getElementById('membrosinferiores9').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores9').value + ",";
+				}
+				if(document.getElementById('membrosinferiores10').checked == true){
+					membrosinferiores = membrosinferiores + document.getElementById('membrosinferiores10').value + ",";
+				}
+				//Caso o último caractere seja uma vírgula, ela é retirada.
+				if(membrosinferiores.substr(membrosinferiores.length - 1) == ","){
+					membrosinferiores = membrosinferiores.substr(0, membrosinferiores.length - 1);
+				}
+			}
+		}
+		
+		function anamnesePsicossocial(){
+			
+		}
+		
+		function anamneseDadosEspecificos(){
+			
+		} 
 	
 		function chamaForm1() {
 			
@@ -108,6 +1107,7 @@
 	<div class="row mb-5 mt-5">
 		<?php
 			
+			/*
 			date_default_timezone_set("America/Fortaleza");
 			
 			$tipo = $_SESSION['tipo'];
@@ -132,11 +1132,26 @@
 				</h3>
 				<?php
 			}
+			*/
 			?>
 	</div>
 	<div class="row">
 	
 		<div class="col-md-8">
+		
+			<?php
+				$idinternacao = $_POST['idinternacao'];
+				?>
+				<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $idinternacao; ?>">
+				<?php
+				
+				if(!empty($_POST)){
+					$idanamnese = $_POST['idanamnese'];
+					?>
+					<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idanamnese; ?>">
+					<?php
+				}
+			?>
 		
 			<form>
 			
@@ -245,7 +1260,6 @@
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="exampleCheck1">
 						<label class="form-check-label" for="exampleCheck1">Outras</label>
 						<input type="text" class="form-control" id="fatoresriscooutros" name="fatoresriscooutros">
 					</div>
@@ -262,7 +1276,7 @@
 					<input type="text" class="form-control w-50" id="antecedentesfamiliares" name="antecedentesfamiliares">
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" id="submit1" class="btn btn-primary">Submit</button>
 				
 			</form>
 		
@@ -678,7 +1692,7 @@
 					
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" id="submit2" class="btn btn-primary" disabled>Submit</button>
 				
 			</form>
 			
@@ -1574,7 +2588,7 @@
 					
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" id="submit3" class="btn btn-primary" disabled>Submit</button>
 				
 			</form>
 			
@@ -1781,7 +2795,7 @@
 					
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" id="submit4" class="btn btn-primary" disabled>Submit</button>
 				
 			</form>
 			
@@ -1855,7 +2869,7 @@
 					
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" id="submit5" class="btn btn-primary" disabled>Submit</button>
 				
 			</form>
 			

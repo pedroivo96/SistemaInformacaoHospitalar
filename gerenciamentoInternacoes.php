@@ -178,7 +178,8 @@
 					$result = $stmt->fetchAll();
 			
 					foreach($result as $row){
-						
+				
+						$idinternacao      = $row['id'];
 						$idleito           = $row['idleito'];
 						$cpfpaciente       = $row['cpfpaciente'];
 						$diahorarioentrada = $row['diahorarioentrada'];
@@ -371,6 +372,43 @@
 												}
 											}
 										}
+										
+										
+										if($tipo == "Médico" || $tipo == "Enfermeiro"){
+											
+											
+											$sql3 = 'SELECT * FROM anamnese WHERE idinternacao = :idinternacao';
+											$stmt3 = $conn->prepare($sql3);
+											$stmt3->bindValue(':idinternacao', $idinternacao);
+											$stmt3->execute();
+											$count3 = $stmt3->rowCount();
+		
+											if($count3 > 0){
+												$result3 = $stmt3->fetchAll();
+					
+												foreach($result3 as $row3){
+													
+													$idanamnese = $row3['id'];
+													
+													?>
+													<form method="POST" action="verAnamnese.php">
+														<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $idinternacao;?>">
+														<input type="hidden" id="idanamnese" name="idanamnese"value="<?php echo $idanamnese; ?>">
+														<button class="btn btn-info btn-block">Ver anamnese</button>
+													</form>
+													<?php
+												}
+											}
+											else{
+											?>
+											<form method="POST" action="fazerAnamnese.php">
+												<input type="hidden" name="idinternacao" id="idinternacao" value="<?php echo $idinternacao;?>">
+												<button class="btn btn-primary btn-block">Fazer anamnese</button>
+											</form>
+											<?php	
+											}
+										}
+										
 										?>
 									</div>
 								</div>
