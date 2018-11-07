@@ -67,6 +67,8 @@
 								document.getElementById('submit2').disabled = false;
 								document.getElementById('submit3').disabled = false;
 								document.getElementById('submit4').disabled = false;
+								
+								document.getElementById('idanamnese').value = retorno;
 							}
 						}
 						else{
@@ -75,11 +77,16 @@
 					}
 				}
 				
-				var idinternacao          = document.getElementById('idinternacao').value;
-				var motivointernacao      = document.getElementById('motivointernacao').value;
-				var doencascronicas       = document.getElementById('doencascronicas').value;
-				var tratamentosanteriores = document.getElementById('tratamentosanteriores').value;
-				var fatoresrisco          = "";
+				var idinternacao           = document.getElementById('idinternacao').value;
+				var idanamnese             = document.getElementById('idanamnese').value;
+				var motivointernacao       = document.getElementById('motivointernacao').value;
+				var doencascronicas        = document.getElementById('doencascronicas').value;
+				var tratamentosanteriores  = document.getElementById('tratamentosanteriores').value;
+				var fatoresrisco           = "";
+				var fatoresriscooutros     = document.getElementById('fatoresriscooutros').value;
+				var medicamentosuso        = document.getElementById('medicamentosuso').value;
+				var antecedentesfamiliares = document.getElementById('antecedentesfamiliares').value;
+				var cpfprofissional        = document.getElementById('cpfprofissional').value;
 				
 				if(document.getElementById('fatoresrisco1').checked == true){
 					fatoresrisco = fatoresrisco + document.getElementById('fatoresrisco1').value + ",";
@@ -108,12 +115,9 @@
 					fatoresrisco = fatoresrisco.substr(0, fatoresrisco.length - 1);
 				}
 				
-				var fatoresriscooutros     = document.getElementById('fatoresriscooutros').value;
-				var medicamentosuso        = document.getElementById('medicamentosuso').value;
-				var antecedentesfamiliares = document.getElementById('antecedentesfamiliares').value;
-				
 				//Monta a QueryString
 				dados = 'idinternacao='+idinternacao
+				        "&idanamnese="+idanamnese+
 				        "&motivointernacao="+motivointernacao+
 						"&doencascronicas="+doencascronicas+
 						"&tratamentosanteriores="+tratamentosanteriores+
@@ -125,7 +129,7 @@
 				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
 				
 				//Faz a requisição e envio pelo método POST
-				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.open('POST', 'cadastrarInformacoesDoencaTratamento.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
 			}
@@ -152,7 +156,7 @@
 					}
 				}
 				
-				var idinternacao            = document.getElementById('idinternacao').value;
+				var idanamnese              = document.getElementById('idanamnese').value;
 				var condicoesmoradia        = "";
 				var condicoesmoradiaoutros  = document.getElementById('condicoesmoradiaoutros');
 				var cuidadocorporal         = "";
@@ -423,7 +427,8 @@
 				}
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao
+				dados = 'idinternacao='+idinternacao+
+						"&idanamnese="+idanamnese+
 				        "&condicoesmoradia="+condicoesmoradia+
 						"&condicoesmoradiaoutros="+condicoesmoradiaoutros+
 						"&cuidadocorporal="+cuidadocorporal+
@@ -448,7 +453,7 @@
 						"&atividadesexualoutros="+atividadesexualoutros;
 				
 				//Faz a requisição e envio pelo método POST
-				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.open('POST', 'cadastrarHabitos.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
 				
@@ -1240,7 +1245,17 @@
 				
 				//Monta a QueryString
 				dados = 'idinternacao='+idinternacao
-				        "&condicoesmoradia="+condicoesmoradia;
+				        "&interacaosocial="+interacaosocial+
+						"&resolucaoproblemas="+resolucaoproblemas+
+						"&apoioespiritual="+apoioespiritual+
+						"&suportefinanceiro="+suportefinanceiro+
+						"&suportefinanceirooutros="+suportefinanceirooutros+
+						"&conhecimentoproblema="+conhecimentoproblema+
+						"&conhecimentoproblemaoutros="+conhecimentoproblemaoutros+
+						"&condicoesautocuidado="+condicoesautocuidado+
+						"&condicoesautocuidadooutros="+condicoesautocuidadooutros+
+						"&mudancahumor="+mudancahumor+
+						"&mudancahumoroutros="+mudancahumoroutros;
 				
 				//Faz a requisição e envio pelo método POST
 				ajax.open('POST', 'inserirPecaBD.php', true);
@@ -1251,6 +1266,42 @@
 		}
 		
 		function anamneseDadosEspecificos(){
+			
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+							}else{
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var idinternacao = document.getElementById('idinternacao').value;
+				var anotacoes = document.getElementById('anotacoes').value;
+				var impressoes = document.getElementById('impressoes').value;
+				
+				//Monta a QueryString
+				dados = 'idinternacao='+idinternacao
+				        "&anotacoes="+anotacoes+
+						"&impressoes="+impressoes;
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+				
+			}
 			
 		} 
 	
@@ -1365,19 +1416,9 @@
 	
 		<div class="col-md-8">
 		
-			<?php
-				$idinternacao = $_POST['idinternacao'];
-				?>
-				<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $idinternacao; ?>">
-				<?php
-				
-				if(!empty($_POST)){
-					$idanamnese = $_POST['idanamnese'];
-					?>
-					<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idanamnese; ?>">
-					<?php
-				}
-			?>
+			<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $_POST['idinternacao']; ?>">
+			<input type="hidden" id="idanamnese" name="idanamnese" value="NAO">
+			<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $_SESSION['cpf']; ?>">
 		
 			<form>
 			
