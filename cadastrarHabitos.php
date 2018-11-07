@@ -28,6 +28,8 @@
 		$atividadesexual                = $_POST['atividadesexual'];
 		$atividadesexualoutros          = $_POST['atividadesexualoutros'];
 		
+		$conn = getConnection();
+		
 		$sql = 'UPDATE anamnesehabitos SET condicoesmoradia = :condicoesmoradia,
 										   condicoesmoradiaoutros = :condicoesmoradiaoutros,
 										   cuidadocorporal = :cuidadocorporal,

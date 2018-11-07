@@ -145,7 +145,7 @@
 							retorno = ajax.responseText;
 							
 							if(retorno == "ERRO"){
-								
+												
 							}else{
 								
 							}
@@ -427,8 +427,7 @@
 				}
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao+
-						"&idanamnese="+idanamnese+
+				dados = 'idanamnese='+idanamnese+
 				        "&condicoesmoradia="+condicoesmoradia+
 						"&condicoesmoradiaoutros="+condicoesmoradiaoutros+
 						"&cuidadocorporal="+cuidadocorporal+
@@ -1025,7 +1024,7 @@
 				
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao
+				dados = 'idanamnese='+idanamnese+
 				        "&pressao="+pressao+
 						"&pulso="+pulso+
 						"&frequenciacardiaca="+frequenciacardiaca+
@@ -1078,7 +1077,7 @@
 						"&outrasqueixas="+outrasqueixas;
 				
 				//Faz a requisição e envio pelo método POST
-				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.open('POST', 'cadastrarExameOrgaosSistemas.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
 			}
@@ -1244,7 +1243,7 @@
 				}
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao
+				dados = 'idanamnese='+idanamnese+
 				        "&interacaosocial="+interacaosocial+
 						"&resolucaoproblemas="+resolucaoproblemas+
 						"&apoioespiritual="+apoioespiritual+
@@ -1258,7 +1257,7 @@
 						"&mudancahumoroutros="+mudancahumoroutros;
 				
 				//Faz a requisição e envio pelo método POST
-				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.open('POST', 'cadastrarPsicossocial.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
 				
@@ -1292,12 +1291,12 @@
 				var impressoes = document.getElementById('impressoes').value;
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao
+				dados = 'idinternacao='+idinternacao+
 				        "&anotacoes="+anotacoes+
 						"&impressoes="+impressoes;
 				
 				//Faz a requisição e envio pelo método POST
-				ajax.open('POST', 'inserirPecaBD.php', true);
+				ajax.open('POST', 'cadastrarDadosEspecificados.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
 				
