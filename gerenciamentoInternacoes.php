@@ -403,6 +403,7 @@
 											?>
 											<form method="POST" action="fazerAnamnese.php">
 												<input type="hidden" name="idinternacao" id="idinternacao" value="<?php echo $idinternacao;?>">
+												<input type="hidden" name="cpfpaciente" id="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
 												<button class="btn btn-primary btn-block">Fazer anamnese</button>
 											</form>
 											<?php	

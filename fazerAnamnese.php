@@ -3,7 +3,7 @@
   <head>
   
 	<?php 
-		/*
+		
 		// Inicia sessões 
 		session_start(); 
  
@@ -13,7 +13,7 @@
 			header("Location: loginPaciente.html"); 
 			exit; 
 		} 
-		*/
+		
 	?>
   
     <meta charset="utf-8">
@@ -1382,38 +1382,44 @@
     <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<?php
-			
-			/*
 			date_default_timezone_set("America/Fortaleza");
+			
+			include './conexao.php';
 			
 			$tipo = $_SESSION['tipo'];
 			
 			$conn = getConnection();
 			
-			$idinternacao = $_SESSION['idinternacao'];
+			$idinternacao = $_POST['idinternacao'];
 			
 			if($tipo == "Médico"){
 				?>
+				<div class="col-md-12 border" align="center">
 				<h3>
 					Menu do médico
 					<small class="text-muted">Anamnese</small>
 				</h3>
+				</div>
 				<?php
 			}
 			else{
 				?>
+				<div class="col-md-12 border" align="center">
 				<h3>
 					Menu do enfermeiro
 					<small class="text-muted">Anamnese</small>
 				</h3>
+				</div>
 				<?php
 			}
-			*/
+			
 			?>
 	</div>
 	<div class="row">
 	
-		<div class="col-md-8">
+		<div class="col-md-1"></div>
+	
+		<div class="col-md-7">
 		
 			<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $_POST['idinternacao']; ?>">
 			<input type="hidden" id="idanamnese" name="idanamnese" value="NAO">
@@ -1421,47 +1427,79 @@
 		
 			<form>
 			
-				<h4 align="center">Identificação</h4>
+				<h4 align="center">Identificação do paciente</h4>
 			
-				<div class="form-group">
-					<label for="nome">Nome</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-					<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">Idade</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">RG</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">Leito</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">Profissão</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">Estado civil</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				<div class="form-group">
-					<label for="nome">Diagnóstico médico</label>
-					<input type="text" class="form-control w-50" id="nome" name="nome">
-				</div>
-				
-				
-				<button type="submit" class="btn btn-primary">Submit</button>
-				
+				<?php
+					$conn = getConnection();
+					
+					$sql = 'SELECT * FROM pacientes WHERE cpf = :cpfpaciente';
+					$stmt = $conn->prepare($sql);
+					$stmt->bindValue(':cpfpaciente', $_POST['cpfpaciente']);
+					$stmt->execute();
+					$count = $stmt->rowCount();
+		
+					if($count > 0){
+						$result = $stmt->fetchAll();
+					
+						foreach($result as $row){
+							
+							$nomepaciente   = $row['nomecompleto'];
+							$datanascimento = $row['datanascimento'];
+							$dataatual      = time();
+							
+							$idade = date("Y" , $dataatual) - date("Y" , $datanascimento);
+							
+							$profissao = $row['profissao'];							
+							$estadocivil = $row['estadocivil'];
+							$rg = $row['rg'];
+							
+							$sql1 = 'SELECT idleito FROM internacoes WHERE id = :idinternacao';
+							$stmt1 = $conn->prepare($sql1);
+							$stmt1->bindValue(':idinternacao', $_POST['idinternacao']);
+							$stmt1->execute();
+							$count1 = $stmt1->rowCount();
+		
+							if($count1 > 0){
+								$result1 = $stmt1->fetchAll();
+					
+								foreach($result1 as $row1){
+									$idleito = $row1['idleito'];
+									?>
+									<div class="form-group">
+										<label for="nome">Nome</label>
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $nomepaciente; ?>">
+									</div>
+									
+									<div class="form-group">
+										<label for="nome">Idade</label>
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $idade." anos";?>">
+									</div>
+									
+									<div class="form-group">
+										<label for="nome">RG</label>
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $rg; ?>">
+									</div>
+									
+									<div class="form-group">
+										<label for="nome">Leito</label>
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $idleito; ?>">
+									</div>
+									
+									<div class="form-group">
+										<label for="nome">Profissão</label>
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $profissao; ?>">
+									</div>
+									
+									<div class="form-group">
+										<label for="nome">Estado civil</label>
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $estadocivil; ?>">
+									</div>
+									<?php
+								}
+							}	
+						}
+					}
+				?>
 			</form>
 		
 			<button type="button" class="btn btn-warning btn-block" id="botao1" onclick="chamaForm1();">Informações sobre a doença e o tratamento</button>
@@ -3142,7 +3180,8 @@
 			
 		</div>
 		
-		<div class="col-md-4">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
 			<?php
 			if($tipo == "Enfermeiro"){
 				$cpfprofissional = $_SESSION['cpf'];
@@ -3219,6 +3258,11 @@
 			}
 			if($tipo == "Médico"){
 				?>
+				
+				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuMedico.php';">
+					Minhas informações
+				</button>
+				
 				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
 					Minhas consultas
 				</button>

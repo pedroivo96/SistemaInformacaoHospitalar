@@ -21,23 +21,8 @@
 			foreach($result as $row){
 				
 				session_start();
-				$_SESSION['cpf']                    = $row['cpf'];
-				$_SESSION['rg']                     = $row['rg'];
-				$_SESSION['nomecompleto']           = $row['nomecompleto'];
-				$_SESSION['sexo']                   = $row['sexo'];
-				$_SESSION['nomemae']                = $row['nomemae'];
-				$_SESSION['naturalidademunicipio']  = $row['naturalidademunicipio'];
-				$_SESSION['naturalidadeestado']     = $row['naturalidadeestado'];
-				$_SESSION['enderecovia']            = $row['enderecovia'];
-				$_SESSION['endereconumero']         = $row['endereconumero'];
-				$_SESSION['enderecocomplemento']    = $row['enderecocomplemento'];
-				$_SESSION['enderecobairrodistrito'] = $row['enderecobairrodistrito'];
-				$_SESSION['enderecomunicipio']      = $row['enderecomunicipio'];
-				$_SESSION['enderecoestado']         = $row['enderecoestado'];
-				$_SESSION['nomeusuario']            = $row['nomeusuario'];
-				$_SESSION['email']                  = $row['email'];
-				
-				//header("Location: menuPaciente.php");
+				$_SESSION['cpf']         = $row['cpf'];
+				$_SESSION['nomeusuario'] = $row['nomeusuario'];
 				
 				echo "OK";
 			}

@@ -33,7 +33,10 @@
     <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h5 class="display-4">Meus exames</h5>
+			<h3>
+				Menu do paciente
+				<small class="text-muted">Meus exames</small>
+			</h3>
 		</div>
 	</div>
 	<div class="row">
@@ -46,10 +49,11 @@
 					include './conexao.php';
 				
 					$cpfpaciente = $_SESSION['cpf'];
+					$haExame = false;
 					
 					$conn = getConnection();
 					
-					$sql = 'SELECT * FROM exames WHERE cpfpaciente = :cpfpaciente';
+					$sql = 'SELECT id, cpfmedico FROM consultas WHERE cpfpaciente = :cpfpaciente';
 					$stmt = $conn->prepare($sql);
 					$stmt->bindValue(':cpfpaciente', $cpfpaciente);
 					$stmt->execute();
@@ -60,79 +64,111 @@
 			
 						foreach($result as $row){
 							
-							$id                 = $row['id'];
-							$cpfmedico          = $row['cpfmedico'];
-							$nomeexame          = $row['nomeexame'];
-							$status             = $row['status'];
-							$anotacoesopcionais = $row['anotacoesopcionais'];
-							$idconsulta         = $row['idconsulta'];
+							$idconsulta = $row['id'];
+							$cpfmedico  = $row['cpfmedico'];
 							
-							$tipo = "Médico";
-							
-							$sql1 = 'SELECT nomecompleto, especialidade FROM profissionais WHERE cpf = :cpf AND tipo = :tipo';
+							$sql1 = 'SELECT idexame FROM consultaexame WHERE idconsulta = :idconsulta';
 							$stmt1 = $conn->prepare($sql1);
-							$stmt1->bindValue(':cpf' , $cpfmedico);
-							$stmt1->bindValue(':tipo', $tipo);
+							$stmt1->bindValue(':idconsulta', $idconsulta);
 							$stmt1->execute();
 							$count1 = $stmt1->rowCount();
 		
 							if($count1 > 0){
+								
+								$haExame = true;
+								
 								$result1 = $stmt1->fetchAll();
 			
 								foreach($result1 as $row1){
-									$nomemedico = $row1['nomecompleto'];
-									$especialidade = $row1['especialidade'];
-						
-									?>
-									<div class="col-sm-4 mb-3">
-										<div class="card border-secondary">
+							
+									$idexame = $row1['idexame'];
+									
+									$sql2 = 'SELECT * FROM exames WHERE id = :idexame';
+									$stmt2 = $conn->prepare($sql2);
+									$stmt2->bindValue(':idexame', $idexame);
+									$stmt2->execute();
+									$count2 = $stmt2->rowCount();
+		
+									if($count2 > 0){
+										$result2 = $stmt2->fetchAll();
+			
+										foreach($result2 as $row2){
+							
+											$nomeexame = $row2['nomeexame'];
+											$status = $row2['status'];
+											$anotacoesopcionais = $row2['anotacoesopcionais'];
+											$nomemedico = obterNomeMedico($cpfmedico);
 											
-											<div class="card-header">
-												
-												<label for="nomeexame">Nome do exame:</label>
-												<h5 class="card-title" id="nomeexame" name="nomeexame">
-													<?php echo $nomeexame; ?>
-												</h5>
-										
-											</div>
-											
-											<div class="card-body">
-												
-												<label for="anotacoesopcionais">Anotações opcionais:</label>
-												<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
-													<?php echo $anotacoesopcionais; ?>
-												</h6>
-												
-												<label for="nomemedico">Solicitado por:</label>
-												<h6 class="card-text" id="nomemedico" name="nomemedico">
-													<?php echo $nomemedico; ?>
-												</h6>
-												
-											</div>
-											
-											<?php
-												if($status == "Agendado"){
-													?>
-													<div class="card-footer bg-info text-white border-success"><?php echo $status; ?></div>
-													<?php
-												}
-												if($status == "Realizado"){
-													?>
-													<div class="card-footer bg-warning text-white border-success"><?php echo $status; ?></div>
-													<?php
-												}
-												if($status == "Resultado"){
-													?>
-													<div class="card-footer bg-success text-white border-success">Ver resultado</div>
-													<?php
-												}
 											?>
-											
-										</div>
-									</div>
-									<?php
-										
+											<div class="col-sm-4 mb-3">
+												<div class="card border-secondary">
+													<div class="card-header">
+														<label for="nomecompleto">Nome do exame:</label>
+														<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+															<?php echo $nomeexame; ?>
+														</h5>
+													</div>
+													
+													<div class="card-body">
+														<label for="exampleInputEmail1">Status:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $status; ?>
+														</h6>
+														
+														<label for="exampleInputEmail1">Anotações opcionais:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $anotacoesopcionais; ?>
+														</h6>
+														
+														<label for="exampleInputEmail1">Solicitado por:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $nomemedico; ?>
+														</h6>
+													</div>
+												</div>
+											</div>
+											<?php				
+										}
+									}
 								}
+							}
+						}
+					}
+					else{
+						?>
+						<div class="alert alert-warning" role="alert">
+							Você não foi a nenhum consulta
+							Obs: Exames são solicitados durante as consultas.
+						</div>
+						<?php
+					}
+					
+					if($haExame == false){
+						?>
+						<div class="alert alert-warning" role="alert">
+							Não há registro de exames.
+						</div>
+						<?php
+					}
+					
+					function obterNomeMedico($cpfmedico){
+						$sql = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfmedico AND tipo = :tipo';
+						
+						$conn = getConnection();
+						
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':cpfmedico', $cpfmedico);
+						$stmt->bindValue(':tipo', "Médico");
+						$stmt->execute();
+						$count = $stmt->rowCount();
+		
+						if($count > 0){
+							$result = $stmt->fetchAll();
+			
+							foreach($result as $row){
+								$nomemedico = $row['nomecompleto'];
+								
+								return $nomemedico;
 							}
 						}
 					}
@@ -142,21 +178,16 @@
 		</div>
 		
 		<div class="col-md-4">
-			<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Pesquisar médicos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
+			<?php include 'menuPacienteInclude.html'; ?>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
 		</div>
 	</div>
+	
+	<?php include 'rodape1.html'; ?>
+	
 </div>
 
     <script src="js/jquery.min.js"></script>

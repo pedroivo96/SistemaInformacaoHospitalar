@@ -337,6 +337,11 @@
 				$html = $html.'</div>';
 			}
 		}
+		else{
+			$html = $html.'<div class="w-100 bg-warning alert margin-t5">';
+			$html = $html.'<p style="text-align:center;">Nenhum registro de consulta associado a este cliente.</p>';
+			$html = $html.'</div>';
+		}
 		
 		$html = $html.'<div class="w-100 topic" style="page-break-before: always">Histórico de internações</div>'; 
 		
@@ -369,7 +374,7 @@
 				$html = $html.'<tr><th>ID da internação</th><td>'.$idinternacao.'</td></tr>';
 				$html = $html.'<tr><th>ID do leito</th><td>'.$idleito.'</td></tr>';
 				$html = $html.'<tr><th>Dia horário de entrada</th><td>'.date("d/m", $diahorarioentrada).date("h:i:s", $diahorarioentrada).'</td></tr>';
-				$html = $html.'<tr><th>Dia horário de saída</th><td>'..date("d/m", $diahorariosaida).date("h:i:s", $diahorariosaida)..'</td></tr>';
+				$html = $html.'<tr><th>Dia horário de saída</th><td>'.date("d/m", $diahorariosaida).date("h:i:s", $diahorariosaida).'</td></tr>';
 				$html = $html.'<tr><th>CPF do médico solicitante</th><td>'.$cpfmedico.'</td></tr>';
 				$html = $html.'<tr><th>Nome do médico solicitante</th><td>'.obterNomeMedico($cpfmedico).'</td></tr>';
 				$html = $html.'<tr><th>CPF do técnico responsável</th><td>'.$vezesaodia.'</td></tr>';

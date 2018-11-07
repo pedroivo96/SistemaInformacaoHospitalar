@@ -1,0 +1,17 @@
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuPaciente.php';">Minhas informações</button>
+			
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Minhas consultas</button>
+			
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Meus exames</button>
+			
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Meus procedimentos</button>
+			
+<form class="btn btn-primary btn-block" method="POST" action="gerarProntuario.php" class="btn btn-primary">
+	<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $_SESSION['cpf']; ?>">
+					
+	<button class="btn btn-primary btn-block" type="submit">
+		Gerar PDF do Prontuário
+	</button> 
+</form>
+				
+<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>

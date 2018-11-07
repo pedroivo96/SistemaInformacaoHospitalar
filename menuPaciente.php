@@ -3,7 +3,9 @@
   <head>
   
 	<?php 
-		// Inicia sessões 
+		// Inicia sessões
+		include './conexao.php';
+		
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -29,7 +31,7 @@
   </head>
   <body>
 
-    <div class="container-fluid px-5">
+    <div class="container-fluid">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -40,81 +42,121 @@
 	</div>
 	
 	<div class="row mb-5">
-		<div class="col-md-8">
-			
+		<div class="col-md-2"></div>
+		
+		<div class="col-md-5">
+		
 			<dl class="row">
-				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
+				<?php
+				
+				$conn = getConnection();
+				
+				$sql = 'SELECT * FROM pacientes WHERE cpf = :cpf';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':cpf', $_SESSION['cpf']);
+				$stmt->execute();
+				$count = $stmt->rowCount();
+		
+				if($count > 0){
+					$result = $stmt->fetchAll();
+			
+					foreach($result as $row){
+						
+						$nomecompleto           = $row['nomecompleto'];
+						$datanascimento         = date("d/m/Y" , $row['datanascimento']);
+						$estadocivil            = $row['estadocivil'];
+						$profissao              = $row['profissao'];
+						$sexo                   = $row['sexo'];
+						$nomemae                = $row['nomemae'];
+						$naturalidademunicipio  = $row['naturalidademunicipio'];
+						$naturalidadeestado     = $row['naturalidadeestado'];
+						$enderecovia            = $row['enderecovia'];
+						$endereconumero         = $row['endereconumero'];
+						$enderecocomplemento    = $row['enderecocomplemento'];
+						$enderecobairrodistrito = $row['enderecobairrodistrito'];
+						$enderecomunicipio      = $row['enderecomunicipio'];
+						$enderecoestado         = $row['enderecoestado'];
+						$rg                     = $row['rg'];
+						$nomeusuario            = $row['nomeusuario'];
+						$email                  = $row['email'];
+						
+						$dataatual = time();
+						
+						$idade = date("Y", $dataatual) - date("Y", $row['datanascimento']);
+					}
+				}
+				?>
+			
+				<dt class="col-sm-6">Nome</dt>
+				<dd class="col-sm-6"><?php echo $nomecompleto; ?></dd>
 
-				<dt class="col-sm-3">CPF</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
+				<dt class="col-sm-6">CPF</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['cpf']; ?></dd>
 				
-				<dt class="col-sm-3">RG</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
+				<dt class="col-sm-6">RG</dt>
+				<dd class="col-sm-6"><?php echo $rg; ?></dd>
 				
-				<dt class="col-sm-3">Sexo</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['sexo']; ?></dd>
+				<dt class="col-sm-6">Sexo</dt>
+				<dd class="col-sm-6"><?php echo $sexo; ?></dd>
+			
+				<dt class="col-sm-6">Data de nascimento</dt>
+				<dd class="col-sm-6"><?php echo $datanascimento; ?></dd>
 				
-				<dt class="col-sm-3">Nome da mãe</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomemae']; ?></dd>
+				<dt class="col-sm-6">Idade</dt>
+				<dd class="col-sm-6"><?php echo $idade; ?></dd>
+			
+				<dt class="col-sm-6">Nome da mãe</dt>
+				<dd class="col-sm-6"><?php echo $nomemae; ?></dd>
 				
-				<dt class="col-sm-3">Município de nascimento</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['naturalidademunicipio']; ?></dd>
+				<dt class="col-sm-6">Município de nascimento</dt>
+				<dd class="col-sm-6"><?php echo $naturalidademunicipio; ?></dd>
 				
-				<dt class="col-sm-3">Estado de nascimento</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['naturalidadeestado']; ?></dd>
+				<dt class="col-sm-6">Estado de nascimento</dt>
+				<dd class="col-sm-6"><?php echo $naturalidadeestado; ?></dd>
 				
-				<dt class="col-sm-3">Via</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['enderecovia']; ?></dd>
+				<dt class="col-sm-6">Via</dt>
+				<dd class="col-sm-6"><?php echo $enderecovia; ?></dd>
 				
-				<dt class="col-sm-3">Número</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['endereconumero']; ?></dd>
+				<dt class="col-sm-6">Número</dt>
+				<dd class="col-sm-6"><?php echo $endereconumero; ?></dd>
 				
-				<dt class="col-sm-3">Complemento</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['enderecocomplemento']; ?></dd>
+				<dt class="col-sm-6">Complemento</dt>
+				<dd class="col-sm-6"><?php echo $enderecocomplemento; ?></dd>
 				
-				<dt class="col-sm-3">Distrito/Bairro</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['enderecobairrodistrito']; ?></dd>
+				<dt class="col-sm-6">Distrito/Bairro</dt>
+				<dd class="col-sm-6"><?php echo $enderecobairrodistrito; ?></dd>
 				
-				<dt class="col-sm-3">Município</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['enderecomunicipio']; ?></dd>
+				<dt class="col-sm-6">Município</dt>
+				<dd class="col-sm-6"><?php echo $enderecomunicipio; ?></dd>
 				
-				<dt class="col-sm-3">Estado</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['enderecoestado']; ?></dd>
+				<dt class="col-sm-6">Estado</dt>
+				<dd class="col-sm-6"><?php echo $enderecoestado; ?></dd>
 				
-				<dt class="col-sm-3">Nome de usuário</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
+				<dt class="col-sm-6">Nome de usuário</dt>
+				<dd class="col-sm-6"><?php echo $nomeusuario; ?></dd>
 				
-				<dt class="col-sm-3">E-mail</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['email']; ?></dd>
+				<dt class="col-sm-6">E-mail</dt>
+				<dd class="col-sm-6"><?php echo $email; ?></dd>
+				
+				<dt class="col-sm-6">Estado civil</dt>
+				<dd class="col-sm-6"><?php echo $estadocivil; ?></dd>
+				
+				<dt class="col-sm-6">Profissão</dt>
+				<dd class="col-sm-6"><?php echo $profissao; ?></dd>
 				
 			</dl>
 			
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-2"></div>
 		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Consultas</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Procedimentos</button>
-			
-			<form class="btn btn-primary btn-block" method="POST" action="gerarProntuario.php" class="btn btn-primary">
-				<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $_SESSION['cpf']; ?>">
-					
-				<button class="btn btn-primary btn-block" type="submit">
-					Gerar PDF do Prontuário
-				</button> 
-			</form>
-				
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+		<div class="col-md-3">
+			<?php include 'menuPacienteInclude.html'; ?>
 		</div>
 	</div>
 	
-	<div class="row">
-		<?php include 'rodape.html'; ?>
-	</div>
 </div>
+
+	<?php include 'rodape1.html'; ?>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

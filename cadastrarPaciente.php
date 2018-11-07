@@ -75,7 +75,7 @@
             $stmt2->bindParam(':cpf'                   , $cpf);
 			$stmt2->bindParam(':rg'                    , $rg);
 			$stmt2->bindParam(':nomecompleto'          , $nomecompleto);
-			$stmt2->bindParam(':datanascimento'        , $datanascimento);
+			$stmt2->bindParam(':datanascimento'        , strtotime($datanascimento));
 			$stmt2->bindParam(':sexo'                  , $sexo);
 			$stmt2->bindParam(':nomemae'               , $nomemae);
 			$stmt2->bindParam(':naturalidademunicipio' , $naturalidademunicipio);

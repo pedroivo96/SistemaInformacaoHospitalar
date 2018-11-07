@@ -41,7 +41,7 @@
 	</div>
 	<div class="row">
 	
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<div class="row">
 				<?php
@@ -155,7 +155,7 @@
 			
 		</div>
 		
-		<div class="col-md-4">
+		<div class="col-md-3">
 		
 			<?php
 			
@@ -184,20 +184,12 @@
 			
 			?>
 	
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
+			<?php include 'menuPacienteInclude.html'; ?>
 		</div>
 	</div>
 </div>
+
+	<?php include 'rodape1.html'; ?>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
