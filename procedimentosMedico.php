@@ -42,58 +42,166 @@
 		<div class="col-md-8">
 			
 			<div class="row">
-			<?php
-			
-				include './conexao.php';
+				<?php
 				
-				$cpfmedico = $_SESSION['cpf'];
+					include './conexao.php';
+				
+					$cpfmedico = $_SESSION['cpf'];
+					$haExame = false;
 					
-				$conn = getConnection();
+					$conn = getConnection();
 					
-				$sql = 'SELECT * FROM procedimentos WHERE cpfmedico = :cpfmedico';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':cpfmedico', $cpfmedico);
-				$stmt->execute();
-				$count = $stmt->rowCount();
+					$sql = 'SELECT id, cpfpaciente FROM consultas WHERE cpfmedico = :cpfmedico';
+					$stmt = $conn->prepare($sql);
+					$stmt->bindValue(':cpfmedico', $cpfmedico);
+					$stmt->execute();
+					$count = $stmt->rowCount();
 		
-				if($count > 0){
-					$result = $stmt->fetchAll();
+					if($count > 0){
+						$result = $stmt->fetchAll();
 			
-					foreach($result as $row){
-						$id                 = $row['id'];
-						$cpfpaciente        = $row['cpfpaciente'];
-						$nomeprocedimento   = $row['nomeprocedimento'];
-						$status             = $row['status'];
-						$anotacoesopcionais = $row['anotacoesopcionais'];
-						$idconsulta         = $row['idconsulta'];
-						
-						?>
-						<div class="col-sm-4 mb-3">
-							<div class="card border-secondary">
-								<div class="card-header">
-									<label for="nomeprocedimento">Nome do procedimento:</label>
-									<h5 class="card-title" id="nomeprocedimento" name="nomeprocedimento">
-										<?php echo $nomeprocedimento; ?>
-									</h5>
-								</div>
+						foreach($result as $row){
+							
+							$idconsulta = $row['id'];
+							$cpfpaciente  = $row['cpfpaciente'];
+							
+							$sql1 = 'SELECT idprocedimento FROM consultaprocedimento WHERE idconsulta = :idconsulta';
+							$stmt1 = $conn->prepare($sql1);
+							$stmt1->bindValue(':idconsulta', $idconsulta);
+							$stmt1->execute();
+							$count1 = $stmt1->rowCount();
+		
+							if($count1 > 0){
 								
-								<div class="card-body">
-									<label for="anotacoesopcionais">Anotações opcionais:</label>
-									<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
-										<?php echo $anotacoesopcionais; ?>
-									</h6>
+								$haExame = true;
+								
+								$result1 = $stmt1->fetchAll();
+			
+								foreach($result1 as $row1){
+							
+									$idprocedimento = $row1['idprocedimento'];
 									
-									<label for="status">Status:</label>
-									<h6 class="card-text" id="status" name="status">
-										<?php echo $status; ?>
-									</h6>
-								</div>
-							</div>
+									$sql2 = 'SELECT * FROM procedimentos WHERE id = :idprocedimento';
+									$stmt2 = $conn->prepare($sql2);
+									$stmt2->bindValue(':idprocedimento', $idprocedimento);
+									$stmt2->execute();
+									$count2 = $stmt2->rowCount();
+		
+									if($count2 > 0){
+										$result2 = $stmt2->fetchAll();
+			
+										foreach($result2 as $row2){
+							
+											$nomeprocedimento   = $row2['nomeprocedimento'];
+											$status             = $row2['status'];
+											$anotacoesopcionais = $row2['anotacoesopcionais'];
+											$nomemedico         = obterNomeMedico($cpfmedico);
+											$nomepaciente       = obterNomePaciente($cpfpaciente);
+											
+											?>
+											<div class="col-sm-4 mb-3">
+												<div class="card border-secondary">
+													<div class="card-header">
+														<label for="nomecompleto">Nome do procedimento:</label>
+														<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+															<?php echo $nomeprocedimento; ?>
+														</h5>
+													</div>
+													
+													<div class="card-body">
+														
+														<label for="exampleInputEmail1">Anotações opcionais:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $anotacoesopcionais; ?>
+														</h6>
+														
+														<label for="exampleInputEmail1">Solicitado ao paciente:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $nomepaciente; ?>
+														</h6>
+													</div>
+													
+													<?php
+													if($status == "Solicitado"){
+														?>
+														<div class="card-footer bg-dark text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													if($status == "Resultado"){
+														?>
+														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													?>
+												</div>
+											</div>
+											<?php				
+										}
+									}
+								}
+							}
+						}
+					}
+					else{
+						?>
+						<div class="alert alert-warning w-100 text-center" role="alert">
+							<b>Você não foi a nenhum consulta<br/>
+							Obs: Procedimentos são solicitados durante as consultas.</b>
 						</div>
 						<?php
 					}
-				}	
-			?>
+					
+					if($haExame == false){
+						?>
+						<div class="alert alert-warning w-100 text-center" role="alert">
+							<b>Não há registro de procedimentos.</b>
+						</div>
+						<?php
+					}
+					
+					function obterNomeMedico($cpfmedico){
+						$sql = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfmedico AND tipo = :tipo';
+						
+						$conn = getConnection();
+						
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':cpfmedico', $cpfmedico);
+						$stmt->bindValue(':tipo', "Médico");
+						$stmt->execute();
+						$count = $stmt->rowCount();
+		
+						if($count > 0){
+							$result = $stmt->fetchAll();
+			
+							foreach($result as $row){
+								$nomemedico = $row['nomecompleto'];
+								
+								return $nomemedico;
+							}
+						}
+					}
+					
+					function obterNomePaciente($cpfpaciente){
+						$sql = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
+						
+						$conn = getConnection();
+						
+						$stmt = $conn->prepare($sql);
+						$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+						$stmt->execute();
+						$count = $stmt->rowCount();
+		
+						if($count > 0){
+							$result = $stmt->fetchAll();
+			
+							foreach($result as $row){
+								$nomepaciente = $row['nomecompleto'];
+								
+								return $nomepaciente;
+							}
+						}
+					}
+				?>
 			</div>
 			
 		</div>

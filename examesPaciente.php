@@ -30,7 +30,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -41,7 +41,7 @@
 	</div>
 	<div class="row">
 	
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<div class="row">
 				<?php
@@ -110,10 +110,6 @@
 													</div>
 													
 													<div class="card-body">
-														<label for="exampleInputEmail1">Status:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
-															<?php echo $status; ?>
-														</h6>
 														
 														<label for="exampleInputEmail1">Anotações opcionais:</label>
 														<h6 class="card-text" id="especialidade" name="especialidade">
@@ -125,6 +121,20 @@
 															<?php echo $nomemedico; ?>
 														</h6>
 													</div>
+													
+													<?php
+													if($status == "Solicitado"){
+														?>
+														<div class="card-footer bg-dark text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													if($status == "Resultado"){
+														?>
+														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													?>
+				
 												</div>
 											</div>
 											<?php				
@@ -136,17 +146,17 @@
 					}
 					else{
 						?>
-						<div class="alert alert-warning" role="alert">
-							Você não foi a nenhum consulta
-							Obs: Exames são solicitados durante as consultas.
+						<div class="alert alert-warning w-100 text-center" role="alert">
+							<b>Você não foi a nenhum consulta<br/>
+							Obs: Exames são solicitados durante as consultas.</b>
 						</div>
 						<?php
 					}
 					
 					if($haExame == false){
 						?>
-						<div class="alert alert-warning" role="alert">
-							Não há registro de exames.
+						<div class="alert alert-warning w-100 text-center" role="alert">
+							<b>Não há registro de exames.</b>
 						</div>
 						<?php
 					}
@@ -177,8 +187,8 @@
 			
 		</div>
 		
-		<div class="col-md-4">
-			<?php include 'menuPacienteInclude.html'; ?>
+		<div class="col-md-3">
+			<?php include 'menuPacienteInclude.php'; ?>
 		</div>
 	</div>
 	<div class="row">
@@ -186,12 +196,11 @@
 		</div>
 	</div>
 	
-	<?php include 'rodape1.html'; ?>
-	
 </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
+	
   </body>
 </html>

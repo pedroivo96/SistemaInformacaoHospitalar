@@ -31,7 +31,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -150,13 +150,11 @@
 		<div class="col-md-2"></div>
 		
 		<div class="col-md-3">
-			<?php include 'menuPacienteInclude.html'; ?>
+			<?php include 'menuPacienteInclude.php'; ?>
 		</div>
 	</div>
 	
 </div>
-
-	<?php include 'rodape1.html'; ?>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

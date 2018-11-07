@@ -39,18 +39,18 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<div class="row">
 			<?php
-			
 				include './conexao.php';
 				
 				$cpfmedico = $_SESSION['cpf'];
 					
 				$conn = getConnection();
+				$haExame = false;
 					
-				$sql = 'SELECT * FROM exames WHERE cpfmedico = :cpfmedico';
+				$sql = 'SELECT id FROM consultas WHERE cpfmedico = :cpfmedico';
 				$stmt = $conn->prepare($sql);
 				$stmt->bindValue(':cpfmedico', $cpfmedico);
 				$stmt->execute();
@@ -60,68 +60,169 @@
 					$result = $stmt->fetchAll();
 			
 					foreach($result as $row){
-						$id                 = $row['id'];
-						$cpfpaciente        = $row['cpfpaciente'];
-						$nomeexame          = $row['nomeexame'];
-						$status             = $row['status'];
-						$anotacoesopcionais = $row['anotacoesopcionais'];
-						$idconsulta         = $row['idconsulta'];
+						$idconsulta = $row['id'];
 						
-						?>
-						<div class="col-sm-4 mb-3">
-							<div class="card border-secondary">
-								<div class="card-header">
-									<label for="nomeexame">Nome do exame:</label>
-									<h5 class="card-title" id="nomeexame" name="nomeexame">
-										<?php echo $nomeexame; ?>
-									</h5>
-								</div>
-								
-								<div class="card-body">
-									<label for="anotacoesopcionais">Anotações:</label>
-									<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
-										<?php echo $anotacoesopcionais; ?>
-									</h6>
-									
-									<label for="status">Status:</label>
-									<h6 class="card-text" id="status" name="status">
-										<?php echo $status; ?>
-									</h6>
-								</div>
-							</div>
-						</div>
-						<?php
+						$sql1 = 'SELECT idexame FROM consultaexame WHERE idconsulta = :idconsulta';
+						$stmt1 = $conn->prepare($sql1);
+						$stmt1->bindValue(':idconsulta', $idconsulta);
+						$stmt1->execute();
+						$count1 = $stmt1->rowCount();
+		
+						if($count1 > 0){
+							
+							$haExame = true;
+							$result1 = $stmt1->fetchAll();
+			
+							foreach($result1 as $row1){
+								$idexame = $row1['idexame'];
+						
+								$sql2 = 'SELECT * FROM exames WHERE id = :idexame';
+								$stmt2 = $conn->prepare($sql2);
+								$stmt2->bindValue(':idexame', $idexame);
+								$stmt2->execute();
+								$count2 = $stmt2->rowCount();
+		
+								if($count2 > 0){
+									$result2 = $stmt2->fetchAll();
+			
+									foreach($result2 as $row2){
+										$nomeexame          = $row2['nomeexame'];
+										$status             = $row2['status'];
+										$anotacoesopcionais = $row2['anotacoesopcionais'];
+										$nomemedico         = obterNomeMedico($cpfmedico);
+											
+										?>
+											<div class="col-sm-4 mb-3">
+												<div class="card border-secondary">
+													<div class="card-header">
+														<label for="nomecompleto">Nome do exame:</label>
+														<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+															<?php echo $nomeexame; ?>
+														</h5>
+													</div>
+													
+													<div class="card-body">
+														
+														<label for="exampleInputEmail1">Anotações opcionais:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $anotacoesopcionais; ?>
+														</h6>
+														
+														<label for="exampleInputEmail1">Solicitado por:</label>
+														<h6 class="card-text" id="especialidade" name="especialidade">
+															<?php echo $nomemedico; ?>
+														</h6>
+													</div>
+													
+													<?php
+													if($status == "Solicitado"){
+														?>
+														<div class="card-footer bg-dark text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													if($status == "Resultado"){
+														?>
+														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<?php
+													}
+													?>
+				
+												</div>
+											</div>
+											<?php
+									}
+								}
+							}
+						}
 					}
 				}	
+				else{
+					?>
+					<div class="alert alert-warning w-100 text-center" role="alert">
+						<b>Você não realizou nenhuma consulta<br/>
+						Obs: Exames são solicitados durante as consultas.</b>
+					</div>
+					<?php
+				}
+					
+				if($haExame == false){
+					?>
+					<div class="alert alert-warning w-100 text-center" role="alert">
+						<b>Não há registro de exames.</b>
+					</div>
+					<?php
+				}
+				
+				function obterNomeMedico($cpfmedico){
+					$sql = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfmedico AND tipo = :tipo';
+						
+					$conn = getConnection();
+						
+					$stmt = $conn->prepare($sql);
+					$stmt->bindValue(':cpfmedico', $cpfmedico);
+					$stmt->bindValue(':tipo', "Médico");
+					$stmt->execute();
+					$count = $stmt->rowCount();
+		
+					if($count > 0){
+						$result = $stmt->fetchAll();
+			
+						foreach($result as $row){
+							$nomemedico = $row['nomecompleto'];
+								
+							return $nomemedico;
+						}
+					}
+				}
 			?>
 			</div>
 			
 		</div>
-		<div class="col-md-4">
-		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
+		<div class="col-md-3">
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuMedico.php';">
+				Minhas informações
+			</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
+				Minhas consultas
+			</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
+				Minhas consultas
+			</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">
+				Meus exames
+			</button>
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">
+				Meus procedimentos
+			</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">
+				Meus pacientes
+			</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">
+				Minhas anamneses
+			</button>
+			
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">
+				Minhas evoluções
+			</button>
 			
 			<?php
-				include './conexao.php';
 			
 				$cpfmedico  = $_SESSION['cpf'];
 				$diahorario = time();
 				
 				$conn = getConnection();
 				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
+				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
 				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
+				$stmt->bindValue(':diahorario1', $diahorario);
+				$stmt->bindValue(':diahorario2', $diahorario);
 				$stmt->execute();
 				$count = $stmt->rowCount();
 		

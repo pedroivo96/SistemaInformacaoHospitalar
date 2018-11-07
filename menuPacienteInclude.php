@@ -1,29 +1,29 @@
 <?php
 			
-				$conn = getConnection();
+	$conn = getConnection();
 				
-				$cpfpaciente = $_SESSION['cpf'];
+	$cpfpaciente = $_SESSION['cpf'];
 		
-				$sql = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':cpfpaciente', $cpfpaciente);
-				$stmt->execute();
-				$count = $stmt->rowCount();
+	$sql = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
+	$stmt = $conn->prepare($sql);
+	$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+	$stmt->execute();
+	$count = $stmt->rowCount();
 		
-				if($count > 0){
-					?>
-					<div class="alert alert-primary btn-block" role="alert">
-						Você está internado!
-					</div>
-					<?php
-				}
-				else{
-					?>
-					<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
-					<?php
-				}
+	if($count > 0){
+		?>
+		<div class="alert alert-primary w-100 text-center" role="alert">
+			Você está internado!
+		</div>
+		<?php
+	}
+	else{
+		?>
+		<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
+		<?php
+	}
 			
-			?>
+?>
 
 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuPaciente.php';">Minhas informações</button>
 			
