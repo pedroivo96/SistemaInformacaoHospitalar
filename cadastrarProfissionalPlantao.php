@@ -17,15 +17,10 @@
 		$stmt->bindParam(':idplantao'      , $idplantao);
 			
 		if($stmt->execute()){
-			echo '<div class="alert alert-success">
-					<strong>Profissional cadastrado em um plantão com sucesso!</strong>
-                  </div>';
-			header("Location: admin.php");
+			echo 'SUCESSO';
 		}
 		else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro!</strong> Falha no banco de dados.
-                  </div>';
+			echo 'ERRO';
 		}
 	}
 ?>

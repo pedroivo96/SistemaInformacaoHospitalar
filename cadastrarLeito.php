@@ -3,7 +3,7 @@
 
     if(!empty($_POST)){
 		
-		$idsetor = $_POST['setor'];
+		$idsetor = $_POST['idsetor'];
 		$status  = "Livre";
 		
 		$conn = getConnection();
@@ -15,16 +15,12 @@
 		$stmt->bindParam(':status' , $status);
 			
 		if($stmt->execute()){
-			echo   '<div class="alert alert-success">
-						<strong>Cadastrado realizado!</strong> Leito cadastrado com sucesso.
-                    </div>';
-					
-			header("Location: admin.php");
+			
+			echo "SUCESSO";
 		}
 		else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro no cadastro!</strong> Falha no banco de dados.
-                  </div>';
+			
+			echo "ERRO";
 		}
 	}
 ?>

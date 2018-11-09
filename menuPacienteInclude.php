@@ -25,13 +25,25 @@
 			
 ?>
 
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuPaciente.php';">Minhas informações</button>
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuPaciente.php';">
+	Minhas informações
+</button>
+
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">
+	Buscar médico
+</button>
 			
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Minhas consultas</button>
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">
+	Minhas consultas
+</button>
 			
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Meus exames</button>
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">
+	Meus exames
+</button>
 			
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">Meus procedimentos</button>
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosPaciente.php';">
+	Meus procedimentos
+</button>
 			
 <form class="btn btn-primary btn-block" method="POST" action="gerarProntuario.php" class="btn btn-primary">
 	<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $_SESSION['cpf']; ?>">

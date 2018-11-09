@@ -24,9 +24,7 @@
         $count = $stmt->rowCount();
 
         if($count > 0){
-            echo '<div class="alert alert-danger">
-					<strong>Erro no cadastro!</strong> CPF ou RG ou Registro ou Nome de usuário já cadastrado.
-				  </div>';
+			echo 'ERRO1';
         }else{
 			
 			$sql2 = 'INSERT INTO profissionais (cpf, 
@@ -55,15 +53,9 @@
 			$stmt2->bindParam(':senha'         , $senha);
 			
 			if($stmt2->execute()){
-                echo '<div class="alert alert-success">
-						<strong>Cadastrado realizado!</strong> Profissional cadastrado com sucesso.
-                      </div>';
-					  
-					  header("Location: admin.php");
+                echo "SUCESSO";
             }else{
-                echo '<div class="alert alert-danger">
-						<strong>Erro no cadastro!</strong> Falha no banco de dados.
-                      </div>';
+				echo "ERRO2";
             }
 			
 		}

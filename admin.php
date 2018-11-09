@@ -14,6 +14,306 @@
     <link href="css/style.css" rel="stylesheet">
 	
 	<script src="js/jquery-3.3.1.min.js"></script>
+	
+	<script>
+	
+		function iniciaAjax(){
+			var ajax;
+			
+			if(window.XMLHttpRequest){       //Mozilla, Safari ...
+				ajax = new XMLHttpRequest();
+			} else if(windows.ActiveXObject){ //Internet Explorer
+				ajax = new ActiveXObject("Msxml2.XMLHTTP");
+				
+				if(!ajax){
+					ajax = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			}
+			else{
+				alert("Seu navegador não possui suporte a essa aplicação.");
+			}
+			
+			return ajax;
+		}
+		
+		function cadastrarProfissional(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO1"){
+								
+								divResposta = document.getElementById('resposta1');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "CPF ou RG ou Registro ou Nome de usuário já cadastrado.";
+								
+							}else if(retorno == "ERRO2"){
+								
+								divResposta = document.getElementById('resposta1');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "Erro na base de dados.";
+								
+							}else{//retorno == "SUCESSO"
+							
+								divResposta = document.getElementById('resposta1');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-sucess";
+								divResposta.innerHTML = "Sucesso!";
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var cpf           = document.getElementById('cpf').value;
+				var rg            = document.getElementById('rg').value;
+				var nomecompleto  = document.getElementById('nomecompleto').value;
+				var registro      = document.getElementById('registro').value;
+				var nomeusuario   = document.getElementById('nomeusuario').value;
+				var senha         = document.getElementById('senha').value;
+				var especialidade = document.getElementById('especialidade').value;
+				var tipo          = "";
+			
+				if(document.getElementById('radio1').checked == true){
+					//alert(document.getElementById('radio1').value);
+					tipo = "Médico";
+				}
+				if(document.getElementById('radio2').checked == true){
+					//alert(document.getElementById('radio2').value);
+					tipo = "Enfermeiro";
+				}
+				if(document.getElementById('radio3').checked == true){
+					//alert(document.getElementById('radio3').value);
+					tipo = "Técnico em Enfermagem";
+				}
+				
+				//Monta a QueryString
+				dados = 'cpf='+cpf+
+				        "&rg="+rg+
+				        "&nomecompleto="+nomecompleto+
+						"&registro="+registro+
+						"&nomeusuario="+nomeusuario+
+						"&senha="+senha+
+						"&especialidade="+especialidade+
+						"&tipo="+tipo;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'cadastrarProfissional.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function cadastrarPlantao(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+								divResposta = document.getElementById('resposta2');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "Erro no banco de dados.";
+								
+							}else{//Retorno é igual ao ID do Plantão inserido
+								
+								divResposta = document.getElementById('resposta2');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-success";
+								divResposta.innerHTML = "Plantão cadastrado com sucesso e ID = "+retorno;
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var diahorarioinicio = document.getElementById('diahorarioinicio').value;
+				var diahorariofim    = document.getElementById('diahorariofim').value;
+				
+				//Monta a QueryString
+				dados = 'diahorarioinicio='+diahorarioinicio+
+				        "&diahorariofim="+diahorariofim;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'cadastrarPlantao.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function cadastrarProfissionalPlantao(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+								divResposta = document.getElementById('resposta3');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "Erro no banco de dados.";
+								
+							}else{//Retorno é igual ao ID do Plantão inserido
+								
+								divResposta = document.getElementById('resposta3');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-success";
+								divResposta.innerHTML = "Profissional cadastrado com sucesso no plantão.";
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var cpfprofissional = document.getElementById('cpfprofissional').value;
+				var idplantao       = document.getElementById('idplantao').value;
+				
+				//Monta a QueryString
+				dados = 'cpfprofissional='+cpfprofissional+
+				        "&idplantao="+idplantao;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'cadastrarProfissionalPlantao.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function cadastrarSetor(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+								divResposta = document.getElementById('resposta4');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "Erro no banco de dados.";
+								
+							}else{//Retorno é igual ao ID do Plantão inserido
+								
+								divResposta = document.getElementById('resposta4');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-success";
+								divResposta.innerHTML = "Setor cadastrado com sucesso.";
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var nomesetor = document.getElementById('nomesetor').value;
+				
+				//Monta a QueryString
+				dados = 'nomesetor='+nomesetor;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'cadastrarSetor.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+		function cadastrarLeitoSetor(){
+			ajax = iniciaAjax();	
+			
+			if(ajax){
+				ajax.onreadystatechange = function(){
+					if(ajax.readyState == 4){
+						if(ajax.status == 200){
+							retorno = ajax.responseText;
+							
+							if(retorno == "ERRO"){
+								
+								divResposta = document.getElementById('resposta5');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-danger";
+								divResposta.innerHTML = "Erro no banco de dados.";
+								
+							}else{
+								
+								divResposta = document.getElementById('resposta5');
+								divResposta.style.display = "block";
+								divResposta.className = "alert alert-success";
+								divResposta.innerHTML = "Leito cadastrado com sucesso.";
+								
+							}
+						}
+						else{
+							alert(ajax.statusText);
+						}
+					}
+				}
+				
+				var setores = document.getElementsByName('setor');
+				var idSetor = "";
+				
+				
+				for (var i = 0, length = setores.length; i < length; i++){
+					
+					if (setores[i].checked){
+						// do whatever you want with the checked radio
+						//alert(setores[i].value);
+						
+						idSetor = setores[i].value;
+
+						// only one radio can be logically checked, don't check the rest
+						break;
+					}
+				}
+				
+				//Monta a QueryString
+				dados = 'idsetor='+idSetor;
+				
+				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
+				
+				//Faz a requisição e envio pelo método POST
+				ajax.open('POST', 'cadastrarLeito.php', true);
+				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				ajax.send(dados);
+			}
+		}
+		
+	</script>
 
   </head>
   <body>
@@ -30,34 +330,15 @@
 	</div>
 	
 	<div class="row mb-5">
-		<div class="col-md-4 border pt-2 pb-2">
-			<p class="h4" align="center">Cadastrar horário</p>
-			
-			<form method="post" action="cadastrarHorario.php">
-				<div class="form-group">
-					<label for="cpf">CPF do profissional</label>
-					<input type="text" class="form-control" id="cpf" name="cpf">
-				</div>
-				
-				<div class="form-group">
-					<label for="cpf">Dia e horário de início</label>
-					<input type="datetime-local" class="form-control" id="diahorarioinicio" name="diahorarioinicio">
-				</div>
-				
-				<div class="form-group">
-					<label for="cpf">Dia e horário de fim</label>
-					<input type="datetime-local" class="form-control" id="diahorariofim" name="diahorariofim">
-				</div>
-				
-				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
-			</form>
-		
-		</div>
 		
 		<div class="col-md-4 border pt-2 pb-2">
 			<p class="h4" align="center">Cadastrar profissional</p>
 			
-			<form method="post" action="cadastrarProfissional.php">
+			<div id="resposta1" class="alert alert-primary w-100 d-none" role="alert">
+				This is a primary alert—check it out!
+			</div>
+			
+			<form method="post" action="">
 				<div class="form-group">
 					<label for="cpf">CPF</label>
 					<input type="text" class="form-control" id="cpf" name="cpf">
@@ -109,14 +390,18 @@
 				</div>
 				
 				
-				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+				<button type="button" class="btn btn-primary btn-block" onclick="cadastrarProfissional();">Cadastrar</button>
 			</form>
 		</div>
 		
 		<div class="col-md-4 border pt-2 pb-2">
 			<p class="h4" align="center">Cadastrar plantão</p>
 			
-			<form method="post" action="cadastrarPlantao.php">
+			<div id="resposta2" class="alert alert-primary w-100 d-none" role="alert">
+				This is a primary alert—check it out!
+			</div>
+			
+			<form method="post" action="">
 				
 				<div class="form-group">
 					<label for="diahorarioinicio">Dia e horário de início</label>
@@ -128,7 +413,7 @@
 					<input type="datetime-local" class="form-control" id="diahorariofim" name="diahorariofim">
 				</div>
 				
-				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+				<button type="button" class="btn btn-primary btn-block" onclick="cadastrarPlantao();">Cadastrar</button>
 			</form>
 		
 		</div>
@@ -138,7 +423,11 @@
 		<div class="col-md-4 border pt-2 pb-2 mb-5">
 			<p class="h4" align="center">Cadastrar profissional em um plantão</p>
 			
-			<form method="post" action="cadastrarProfissionalPlantao.php">
+			<div id="resposta3" class="alert alert-primary w-100 d-none" role="alert">
+				This is a primary alert—check it out!
+			</div>
+			
+			<form method="post" action="">
 				
 				<div class="form-group">
 					<label for="cpfprofissional">CPF do profissional</label>
@@ -150,13 +439,17 @@
 					<input type="text" class="form-control" id="idplantao" name="idplantao">
 				</div>
 				
-				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+				<button type="button" onclick="cadastrarProfissionalPlantao();" class="btn btn-primary btn-block">Cadastrar</button>
 			</form>
 		
 		</div>
 		
 		<div class="col-md-4 border pt-2 pb-2 mb-5">
 			<p class="h4" align="center">Cadastrar novo setor</p>
+			
+			<div id="resposta4" class="alert alert-primary w-100 d-none" role="alert">
+				This is a primary alert—check it out!
+			</div>
 			
 			<form method="post" action="cadastrarSetor.php">
 				
@@ -173,7 +466,11 @@
 		<div class="col-md-4 border pt-2 pb-2 mb-5">
 			<p class="h4" align="center">Cadastrar leito em um setor</p>
 			
-			<form method="post" action="cadastrarLeito.php">
+			<div id="resposta5" class="alert alert-primary w-100 d-none" role="alert">
+				This is a primary alert—check it out!
+			</div>
+			
+			<form method="post" action="">
 				
 				<div class="form-group">
 					<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
@@ -215,7 +512,7 @@
 				<?php
 				if($submit == 1){
 					?>
-					<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+					<button type="button" onclick="cadastrarLeitoSetor();" class="btn btn-primary btn-block">Cadastrar</button>
 					<?php
 				}
 				?>

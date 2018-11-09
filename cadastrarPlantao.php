@@ -22,15 +22,12 @@
 		$stmt->bindParam(':diahorariofim'   , $timefim);
 			
 		if($stmt->execute()){
-			echo '<div class="alert alert-success">
-					<strong>Plantão realizado!</strong>
-                  </div>';
-			header("Location: admin.php");
+			
+			$id = $conn->lastInsertId();
+			echo $id;
 		}
 		else{
-			echo '<div class="alert alert-danger">
-					<strong>Erro no cadastro!</strong> Falha no banco de dados.
-                  </div>';
+			echo 'ERRO';
 		}
 	}
 ?>
