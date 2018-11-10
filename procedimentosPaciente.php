@@ -103,21 +103,21 @@
 											<div class="col-sm-4 mb-3">
 												<div class="card border-secondary">
 													<div class="card-header">
-														<label for="nomecompleto">Nome do procedimento:</label>
-														<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+														<label for="nomeprocedimento">Nome do procedimento:</label>
+														<h5 class="card-title" id="nomeprocedimento" name="nomeprocedimento">
 															<?php echo $nomeprocedimento; ?>
 														</h5>
 													</div>
 													
 													<div class="card-body">
 														
-														<label for="exampleInputEmail1">Anotações opcionais:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
+														<label for="anotacoesopcionais">Anotações opcionais:</label>
+														<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
 															<?php echo $anotacoesopcionais; ?>
 														</h6>
 														
-														<label for="exampleInputEmail1">Solicitado por:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
+														<label for="nomemedico">Solicitado por:</label>
+														<h6 class="card-text" id="nomemedico" name="nomemedico">
 															<?php echo $nomemedico; ?>
 														</h6>
 													</div>
@@ -130,7 +130,14 @@
 													}
 													if($status == "Resultado"){
 														?>
-														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<form method="POST" action="verResultadosProcedimento.php">
+														
+															<input type="hidden" id="idprocedimento" name="idprocedimento" value="<?php echo $idprocedimento; ?>">
+														
+															<button type="submit" class="btn btn-success btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+																Ver resultados
+															</button>
+														</form>
 														<?php
 													}
 													?>

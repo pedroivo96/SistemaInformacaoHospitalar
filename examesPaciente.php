@@ -111,12 +111,12 @@
 													
 													<div class="card-body">
 														
-														<label for="exampleInputEmail1">Anotações opcionais:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
+														<label for="anotacoesopcionais">Anotações opcionais:</label>
+														<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
 															<?php echo $anotacoesopcionais; ?>
 														</h6>
 														
-														<label for="exampleInputEmail1">Solicitado por:</label>
+														<label for="especialidade">Solicitado por:</label>
 														<h6 class="card-text" id="especialidade" name="especialidade">
 															<?php echo $nomemedico; ?>
 														</h6>
@@ -130,11 +130,17 @@
 													}
 													if($status == "Resultado"){
 														?>
-														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<form method="POST" action="verResultadosExame.php">
+														
+															<input type="hidden" id="idexame" name="idexame" value="<?php echo $idexame; ?>">
+														
+															<button type="submit" class="btn btn-success btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+																Ver resultados
+															</button>
+														</form>
 														<?php
 													}
 													?>
-				
 												</div>
 											</div>
 											<?php				

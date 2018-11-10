@@ -4,9 +4,10 @@
 	
 	include './conexao.php';
 	
-	if(!empty($_POST)){
+	if(empty($_POST)){
 		
-		$cpfpaciente = $_POST['cpfpaciente'];
+		session_start();
+		$cpfpaciente = $_SESSION['cpf'];
 		$conn   = getConnection();
 		
 		$html = '<html>
@@ -187,10 +188,18 @@
 						if($count1AB > 0){
 						
 							$result1AB = $stmt1AB->fetchAll();
+							
+							$html = $html.'<div class=" margin-l10 margin-t5 margin b5">';
 						
 							foreach($result1AB as $row1AB){
 								
+								$nomeimagem = $row1AB['nomeimagem'];
+								
+								$html = $html.'<img class="w-50" src="'.$nomeimagem.'">';
+								
 							}
+							
+							$html = $html.'</div>';
 						}
 						else{
 							$html = $html.'<div class="alert bg-warning margin-l10 margin-t5">';
@@ -254,19 +263,27 @@
 						}
 						
 						//Busca o resultado do procedimento, caso esteja disponível
-						$sql1BB = 'SELECT * FROM resultadosexames WHERE id = :idprocedimento';
+						$sql1BB = 'SELECT * FROM resultadosprocedimentos WHERE id = :idprocedimento';
 						$stmt1BB = $conn->prepare($sql1BB);
 						$stmt1BB->bindValue(':idprocedimento', $idprocedimento);
 						$stmt1BB->execute();
 						$count1BB = $stmt1BB->rowCount();
 					
-						if($count1AB > 0){
+						if($count1BB > 0){
 						
-							$result1AB = $stmt1AB->fetchAll();
+							$result1BB = $stmt1BB->fetchAll();
 						
-							foreach($result1AB as $row1AB){
+							$html = $html.'<div class=" margin-l10 margin-t5 margin b5">';
+						
+							foreach($result1BB as $row1BB){
+								
+								$nomeimagem = $row1BB['nomeimagem'];
+								
+								$html = $html.'<img class="w-50" src="'.$nomeimagem.'">';
 								
 							}
+							
+							$html = $html.'</div>';
 						}
 						else{
 							$html = $html.'<div class="alert bg-warning margin-l10 margin-t5">';
@@ -325,7 +342,6 @@
 								$html = $html.'</table>';
 								
 								$html = $html.'</div>';
-								
 							}
 						}
 					}
@@ -343,7 +359,7 @@
 			$html = $html.'</div>';
 		}
 		
-		$html = $html.'<div class="w-100 topic" style="page-break-before: always">Histórico de internações</div>'; 
+		$html = $html.'<div class="w-100 topic margin-b5" style="page-break-before: always">Histórico de internações</div>'; 
 		
 		//Buscar os registros de internações associadas a este paciente
 		$sql2 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
@@ -354,7 +370,7 @@
 					
 		if($count2 > 0){
 			
-			$html = $html.'<div class="margin-l10">';
+			$html = $html.'<div class="w-100">';
 			
 			$result2 = $stmt2->fetchAll();
 						
@@ -373,8 +389,8 @@
 				
 				$html = $html.'<tr><th>ID da internação</th><td>'.$idinternacao.'</td></tr>';
 				$html = $html.'<tr><th>ID do leito</th><td>'.$idleito.'</td></tr>';
-				$html = $html.'<tr><th>Dia horário de entrada</th><td>'.date("d/m", $diahorarioentrada).date("h:i:s", $diahorarioentrada).'</td></tr>';
-				$html = $html.'<tr><th>Dia horário de saída</th><td>'.date("d/m", $diahorariosaida).date("h:i:s", $diahorariosaida).'</td></tr>';
+				$html = $html.'<tr><th>Dia horário de entrada</th><td>'.date("d/m/Y", $diahorarioentrada)." às ".date("h:i:s", $diahorarioentrada).'</td></tr>';
+				$html = $html.'<tr><th>Dia horário de saída</th><td>'.date("d/m/Y", $diahorariosaida)." às ".date("h:i:s", $diahorariosaida).'</td></tr>';
 				$html = $html.'<tr><th>CPF do médico solicitante</th><td>'.$cpfmedico.'</td></tr>';
 				$html = $html.'<tr><th>Nome do médico solicitante</th><td>'.obterNomeMedico($cpfmedico).'</td></tr>';
 				$html = $html.'<tr><th>CPF do técnico responsável</th><td>'.$vezesaodia.'</td></tr>';
@@ -383,7 +399,9 @@
 				
 				$html = $html.'</table>';
 				
+				$html = $html.'<div class="margin-l10">';
 				$html = $html.'<p class="subTopic">Anamnese</p>';
+				$html = $html.'</div>';
 			}
 			
 			$html = $html.'</div>';
@@ -409,6 +427,8 @@
 	}
 	
 	function obterNomeMedico($cpfmedico){
+		
+		$conn = getConnection();
 	
 		$sql = 'SELECT nomecompleto FROM profissionais WHERE cpf = :cpfmedico AND tipo = :tipo';
 		$stmt = $conn->prepare($sql);
@@ -428,7 +448,10 @@
 	}
 	
 	function obterNomeSetor($idsetor){
-		$sql = 'SELECT nome FROM profissionais WHERE id = :idsetor';
+		
+		$conn = getConnection();
+		
+		$sql = 'SELECT nome FROM setores WHERE id = :idsetor';
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(':idsetor', $idsetor);
 		$stmt->execute();

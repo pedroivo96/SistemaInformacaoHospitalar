@@ -9,15 +9,18 @@
 		// File upload path
 		$targetDir      = "img/";
 		$fileName       = basename($_FILES["conteudo"]["name"]);
+		$fileNameNew    = time();
 		$targetFilePath = $targetDir . $fileName;
 		$fileType       = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+		
+		$newFilePath = $targetDir.$fileNameNew.".".$fileType;
 		
 		if(isset($_POST["submit"]) && !empty($_FILES["conteudo"]["name"])){
 			// Allow certain file formats
 			$allowTypes = array('jpg','png','jpeg','gif','pdf');
 			if(in_array($fileType, $allowTypes)){
 				// Upload file to server
-				if(move_uploaded_file($_FILES["conteudo"]["tmp_name"], $targetFilePath)){
+				if(move_uploaded_file($_FILES["conteudo"]["tmp_name"], $newFilePath)){
 			
 					$conn = getConnection();
 		
@@ -28,7 +31,7 @@
 		
 					$stmt = $conn->prepare($sql);
 					$stmt->bindParam(':id'      , $id);
-					$stmt->bindParam(':nomeimagem', $fileName);
+					$stmt->bindParam(':nomeimagem', $newFilePath);
 			
 					if($stmt->execute()){
 						echo '<div class="alert alert-success">

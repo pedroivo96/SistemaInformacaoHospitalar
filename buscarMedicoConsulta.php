@@ -109,7 +109,7 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 		
 			<div class="alert alert-primary d-block" role="alert">
 				Resultado da busca
@@ -124,11 +124,6 @@
 					$especialidade = $_POST['especialidade'];
 					$diahorariotemp    = $_POST['diahorario'];
 					$diahorario = strtotime($diahorariotemp);
-					
-					/*
-					echo $diahorario;
-					echo date("d-m-y", $diahorario);
-					*/
 					
 					$tipo = "Médico";
 					
@@ -166,10 +161,10 @@
 									
 									$cpfprofissional = $row1['cpfprofissional'];
 									
-									$sql2 = 'SELECT * FROM profissionais WHERE  cpf = :cpfprofissional AND especialidade = :especialidade AND tipo = :tipo';
+									$sql2 = 'SELECT * FROM profissionais WHERE  cpf = :cpfprofissional AND especialidade LIKE :especialidade AND tipo = :tipo';
 									$stmt2 = $conn->prepare($sql2);
 									$stmt2->bindValue(':cpfprofissional', $cpfprofissional);
-									$stmt2->bindValue(':especialidade'  , $especialidade);
+									$stmt2->bindValue(':especialidade'  , "%".$especialidade."%");
 									$stmt2->bindValue(':tipo'           , $tipo);
 									$stmt2->execute();
 									$count2 = $stmt2->rowCount();
@@ -180,76 +175,76 @@
 		
 										foreach($result2 as $row2){
 											
-											$nomemedico = $row2['nomecompleto'];
+											$nomemedico     = $row2['nomecompleto'];
+											$especialidade1 = $row2['especialidade'];
 											
 											?>
-											<div class="card">
-												<form method="post" action="agendarConsulta.php">
+											<div class="col-sm-4 mb-3">
+												<div class="card">
+													<form method="post" action="agendarConsulta.php">
 											
-													<div class="card-body">
+														<div class="card-body">
 													
-														<div class="form-group">
-															<label for="exampleInputEmail1">Nome do médico:</label>
-															<h5 class="card-title" id="nomecompleto" name="nomecompleto">
-																<?php echo $nomemedico; ?>
-															</h5>
+															<div class="form-group">
+																<label for="exampleInputEmail1">Nome do médico:</label>
+																<h5 class="card-title" id="nomecompleto" name="nomecompleto">
+																	<?php echo $nomemedico; ?>
+																</h5>
+															</div>
+													
+															<input type="hidden" id="cpf"              name="cpf"              value="<?php echo $cpfprofissional; ?>">
+															<input type="hidden" id="diahorarioinicio" name="diahorarioinicio" value="<?php echo $diahorarioinicio; ?>">
+															<input type="hidden" id="diahorariofim"    name="diahorariofim"    value="<?php echo $diahorariofim; ?>">
+													
+															<div class="form-group">
+																<label for="exampleInputEmail1">Especialidade:</label>
+																<h6 class="card-text" id="especialidade" name="especialidade">
+																	<?php echo $especialidade1; ?>
+																</h6>
+															</div>
+													
+															<button type="submit" class="btn btn-primary btn-block">Agendar</button>
 														</div>
-													
-														<input type="hidden" id="cpf"              name="cpf"              value="<?php echo $cpfprofissional; ?>">
-														<input type="hidden" id="diahorarioinicio" name="diahorarioinicio" value="<?php echo $diahorarioinicio; ?>">
-														<input type="hidden" id="diahorariofim"    name="diahorariofim"    value="<?php echo $diahorariofim; ?>">
-													
-														<div class="form-group">
-															<label for="exampleInputEmail1">Especialidade:</label>
-															<h6 class="card-text" id="especialidade" name="especialidade">
-																<?php echo $especialidade; ?>
-															</h6>
-														</div>
-													
-														<button type="submit" class="btn btn-primary btn-block">Agendar</button>
-													</div>
-												</form>	
+													</form>	
+												</div>
 											</div>
 											<?php
 										}
 									}
 									else{
-										echo '<div class="alert alert-warning">
+										echo 
+											'<div class="alert alert-warning">
 												<strong>Nenhum médico dessa especialidade cadastrado nesse plantão!</strong>
-											  </div>';
+											</div>';
 									}
 									break;
 								}
 								
 							}
 							else{
-								echo '<div class="alert alert-warning">
+								echo 
+									'<div class="alert alert-warning">
 										<strong>Nenhum profissional cadastrado nesse plantão!</strong>
-									  </div>';
+									</div>';
 							}
 							break;
 						}
 			
 					}else{
-						echo '<div class="alert alert-warning">
-										<strong>Nenhum plantão cadastrado nesse horário!</strong>
-									  </div>';
+						echo 
+							'<div class="alert alert-warning">
+								<strong>Nenhum plantão cadastrado nesse horário!</strong>
+						    </div>';
 					}
 				}
 			?>
 		
 		</div>
-		<div class="col-md-4">
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasPaciente.php';">Consultas</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesPaciente.php';">Exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block">Prontuário</button>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+		
+		<div class="col-md-3">
+			<?php include 'menuPacienteInclude.php'; ?>
 		</div>
+		
 	</div>
 	<div class="row">
 		<div class="col-md-12">

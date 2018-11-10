@@ -545,19 +545,19 @@
 		<div class="col-md-4 border pt-2 pb-2 mb-5">
 			<p class="h4" align="center">Cadastrar resultados de procedimento</p>
 			
-			<form method="post" action="cadastrarResultadoProcedimento.php">
+			<form method="post" action="cadastrarResultadoProcedimento.php" enctype="multipart/form-data">
 				
 				<div class="form-group">
-					<label for="cpfprofissional">ID do exame</label>
+					<label for="cpfprofissional">ID do procedimento</label>
 					<input type="text" class="form-control" id="id" name="id">
 				</div>
 				
 				<div class="form-group">
-					<label for="idplantao">Arquivo</label>
+					<label for="conteudo">Arquivo</label>
 					<input type="file" class="form-control" id="conteudo" name="conteudo">
 				</div>
 				
-				<button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+				<button type="submit" name="submit" class="btn btn-primary btn-block">Cadastrar</button>
 			</form>
 		
 		</div>
