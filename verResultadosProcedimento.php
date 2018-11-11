@@ -4,6 +4,7 @@
   
 	<?php 
 		// Inicia sessões 
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -34,7 +35,18 @@
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
-				Menu do paciente
+				<?php
+				if(!isset($_SESSION["especialidade"])){
+					?>
+					Menu do paciente
+					<?php
+				}
+				else{
+					?>
+					Menu do médico
+					<?php
+				}
+				?>
 				<small class="text-muted">Resultados dos procedimentos</small>
 			</h3>
 		</div>
@@ -43,7 +55,6 @@
 	
 		<div class="col-md-9">
 			<?php
-				include './conexao.php';
 			
 				if(!empty($_POST)){
 		
@@ -139,7 +150,14 @@
 		</div>
 		
 		<div class="col-md-3">
-			<?php include 'menuPacienteInclude.php'; ?>
+			<?php 
+			if(!isset($_SESSION["especialidade"])){
+				include 'menuPacienteInclude.php';
+			}
+			else{
+				include 'menuMedicoInclude.php';
+			}
+			?>
 		</div>
 	</div>
 	<div class="row">

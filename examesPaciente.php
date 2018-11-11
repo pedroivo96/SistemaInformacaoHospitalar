@@ -196,6 +196,7 @@
 		<div class="col-md-3">
 			<?php include 'menuPacienteInclude.php'; ?>
 		</div>
+		
 	</div>
 	<div class="row">
 		<div class="col-md-12">

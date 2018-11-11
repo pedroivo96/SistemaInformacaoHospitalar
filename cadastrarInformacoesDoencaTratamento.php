@@ -12,6 +12,7 @@
 		$fatoresriscooutros     = $_POST['fatoresriscooutros'];
 		$medicamentosuso        = $_POST['medicamentosuso'];
 		$antecedentesfamiliares = $_POST['antecedentesfamiliares'];
+		$cpfprofissional        = $_POST['cpfprofissional'];
 		
 		$data = time();
 		
@@ -34,6 +35,8 @@
 			
 			if($stmt->execute()){
 				//Retorno o ID da Anamnese
+				
+				$idanamnese = $conn->lastInsertId();
 				
 				$sql1 = 'INSERT INTO anamneseinformacoesdoencatratamento (idanamnese,
 																		  motivointernacao, 
@@ -65,12 +68,10 @@
 				if($stmt1->execute()){
 					//Retorno o ID da Anamnese
 					
-					$idanamnese = $conn->lastInsertId();
-					
 					//Criar os registros referentes às outras sessões da Anamnese
 			
 					//Tabelas Hábitos
-					$sql2 = 'INSERT INTO anamnesehabitos idanamnese VALUES :idanamnese';
+					$sql2 = 'INSERT INTO anamnesehabitos (idanamnese) VALUES (:idanamnese)';
 														
 					$stmt2 = $conn->prepare($sql2);
 					$stmt2->bindParam(':idanamnese', $idanamnese);
@@ -83,7 +84,7 @@
 					}
 			
 					//Tabela Exame Física, órgãos e sistemas
-					$sql3 = 'INSERT INTO anamneseexameorgaossistemas idanamnese VALUES :idanamnese';
+					$sql3 = 'INSERT INTO anamneseexameorgaossistemas (idanamnese) VALUES (:idanamnese)';
 														
 					$stmt3 = $conn->prepare($sql3);
 					$stmt3->bindParam(':idanamnese', $idanamnese);
@@ -96,7 +97,7 @@
 					}
 			
 					//Tabela Psicossocial
-					$sql4 = 'INSERT INTO anamnesepsicossocial idanamnese VALUES :idanamnese';
+					$sql4 = 'INSERT INTO anamnesepsicossocial (idanamnese) VALUES (:idanamnese)';
 														
 					$stmt4 = $conn->prepare($sql4);
 					$stmt4->bindParam(':idanamnese', $idanamnese);
@@ -109,7 +110,7 @@
 					}
 			
 					//Tabela Dados especificados
-					$sql5 = 'INSERT INTO anamnesedadosespecificados idanamnese VALUES :idanamnese';
+					$sql5 = 'INSERT INTO anamnesedadosespecificados (idanamnese) VALUES (:idanamnese)';
 														
 					$stmt5 = $conn->prepare($sql5);
 					$stmt5->bindParam(':idanamnese', $idanamnese);

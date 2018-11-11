@@ -4,6 +4,7 @@
   
 	<?php 
 		// Inicia sessões 
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -29,7 +30,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -39,12 +40,10 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<div class="row">
 				<?php
-				
-					include './conexao.php';
 				
 					$cpfmedico = $_SESSION['cpf'];
 					$haExame = false;
@@ -129,7 +128,14 @@
 													}
 													if($status == "Resultado"){
 														?>
-														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<form method="POST" action="verResultadosProcedimento.php">
+														
+															<input type="hidden" id="idprocedimento" name="idprocedimento" value="<?php echo $idprocedimento; ?>">
+														
+															<button type="submit" class="btn btn-success btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+																Ver resultados
+															</button>
+														</form>
 														<?php
 													}
 													?>
@@ -205,71 +211,8 @@
 			</div>
 			
 		</div>
-		<div class="col-md-4">
-		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
-			
-			<?php
-				include './conexao.php';
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$conn = getConnection();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
-								Realizar internação
-							</button>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado para o plantão atual
-							</div>
-							<?php
-						}
-						
-					}
-				}
-			?>
+		<div class="col-md-3">
+			<?php include 'menuMedicoInclude.php'?>	
 		</div>
 	</div>
 	<div class="row">

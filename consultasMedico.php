@@ -40,7 +40,7 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<p class="h4 border-bottom">Consultas agendadas</p>
 			
@@ -48,8 +48,28 @@
 			
 			<?php
 				include './conexao.php';
+				date_default_timezone_set("America/Fortaleza");
 				
-				date_default_timezone_set("America/Fortaleza"); 
+				//Essa função diz se uma determinada data corresponde a ONTEM, HOJE ou AMANHÃ
+				function diaParaNome($timestamp){
+					$atual = time();
+					
+					$diaParametro = date("d", $timestamp);
+					$diaHoje      = date("d", $atual);
+					
+					if($diaParametro == $diaHoje){
+						return "Hoje";
+					}
+					if($diaParametro == ($diaHoje-1)){
+						return "Ontem";
+					}
+					if($diaParametro == ($diaHoje+1)){
+						return "Amanhã";
+					}
+					else{
+						return date("d/m/Y", $timestamp);
+					}
+				} 
 				
 				$cpfmedico = $_SESSION['cpf'];
 				$status    = "Agendada";
@@ -57,7 +77,7 @@
 				
 				$conn = getConnection();
 		
-				$sql = 'SELECT * FROM consultas WHERE cpfmedico = :cpfmedico AND status = :status';
+				$sql = 'SELECT * FROM consultas WHERE cpfmedico = :cpfmedico AND status = :status ORDER BY id DESC';
 				$stmt = $conn->prepare($sql);
 				$stmt->bindValue(':cpfmedico', $cpfmedico);
 				$stmt->bindValue(':status'   , $status);
@@ -92,6 +112,7 @@
 						?>
 						
 						<div class="col-sm-4 mb-3">
+						
 							<div class="card border-secondary">
 											
 								<div class="card-header">
@@ -101,79 +122,82 @@
 										<?php echo $nomepaciente; ?>
 									</h5>
 										
-									</div>
+								</div>
 											
-									<div class="card-body">
+								<div class="card-body">
 										
-										<form  method="post" action="atenderPaciente.php">
+									<form  method="post" action="">
 										
-											<input type="hidden" id="id"              name="id"             value="<?php echo $id; ?>">
-											<input type="hidden" id="cpfmedico"       name="cpfmedico"      value="<?php echo $cpfmedico; ?>">
-											<input type="hidden" id="cpfpaciente"     name="cpfpaciente"    value="<?php echo $cpfpaciente; ?>">
-											<input type="hidden" id="nomemedico"      name="nomemedico"     value="<?php echo $nomemedico; ?>">
-											<input type="hidden" id="nomepaciente"    name="nomepaciente"   value="<?php echo $nomepaciente; ?>">
-										
-											<label for="exampleInputEmail1">Especialidade:</label>
-											<h6 class="card-text" id="especialidade" name="especialidade">
-												<?php echo $especialidade; ?>
-											</h6>
+										<label for="especialidade">Especialidade:</label>
+										<h6 class="card-text" id="especialidade" name="especialidade">
+											<?php echo $especialidade; ?>
+										</h6>
 												
-											<label for="exampleInputEmail1">Dia:</label>
-											<h6 class="card-text" id="especialidade" name="especialidade">
-												<?php echo date("d/m/y",$diahorarioinicio); ?>
-											</h6>
+										<label for="dia">Dia:</label>
+										<h6 class="card-text" id="dia" name="dia">
+											<?php echo diaParaNome($diahorarioinicio); ?>
+										</h6>
 												
-											<label for="exampleInputEmail1">Horário:</label>
-											<h6 class="card-text" id="especialidade" name="especialidade">
-												<?php echo "Das ".date("H:i:s",$diahorarioinicio)." às ".date("H:i:s",$diahorariofim); ?>
-											</h6>
-										
-											<?php
-											$diahorario = time();
+										<label for="horario">Horário:</label>
+										<h6 class="card-text" id="horario" name="horario">
+											<?php echo "Das ".date("H:i:s",$diahorarioinicio)." às ".date("H:i:s",$diahorariofim); ?>
+										</h6>
+								</div>
+								
+									<?php
+									$diahorario = time();
 											
-											/*echo $diahorario;
-											echo date("H:i:s",$diahorario);*/
-				
-											$sql2 = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-											$stmt2 = $conn->prepare($sql2);
-											$stmt2->bindValue(':diahorario1', $diahorario);
-											$stmt2->bindValue(':diahorario2', $diahorario);
-											$stmt2->execute();
-											$count2 = $stmt2->rowCount();
+									
+									$sql2 = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
+									$stmt2 = $conn->prepare($sql2);
+									$stmt2->bindValue(':diahorario1', $diahorario);
+									$stmt2->bindValue(':diahorario2', $diahorario);
+									$stmt2->execute();
+									$count2 = $stmt2->rowCount();
 		
-											if($count2 > 0){
-												$result2 = $stmt2->fetchAll();
+									if($count2 > 0){
+										$result2 = $stmt2->fetchAll();
 			
-												foreach($result2 as $row2){
-													$idplantao = $row2['id'];
+										foreach($result2 as $row2){
+											$idplantao = $row2['id'];
 													
-													$sql3 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-													$stmt3 = $conn->prepare($sql3);
-													$stmt3->bindValue(':idplantao'      , $idplantao);
-													$stmt3->bindValue(':cpfprofissional', $cpfmedico);
-													$stmt3->execute();
-													$count3 = $stmt3->rowCount();
+											$sql3 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
+											$stmt3 = $conn->prepare($sql3);
+											$stmt3->bindValue(':idplantao'      , $idplantao);
+											$stmt3->bindValue(':cpfprofissional', $cpfmedico);
+											$stmt3->execute();
+											$count3 = $stmt3->rowCount();
 		
-													if($count3 > 0){
-													?>
-														<button type="submit" class="btn btn-primary btn-block">Atender</button>
-													<?php
-													}
-													else{
-														//Não está escalado para o plantão atual, portanto não pode Atender um paciente.
-													}
-												}
+											if($count3 > 0){
+											?>
+												<form  method="post" action="atenderPaciente.php">
+										
+													<input type="hidden" id="id"              name="id"             value="<?php echo $id; ?>">
+													<input type="hidden" id="cpfmedico"       name="cpfmedico"      value="<?php echo $cpfmedico; ?>">
+													<input type="hidden" id="cpfpaciente"     name="cpfpaciente"    value="<?php echo $cpfpaciente; ?>">
+													<input type="hidden" id="nomemedico"      name="nomemedico"     value="<?php echo $nomemedico; ?>">
+													<input type="hidden" id="nomepaciente"    name="nomepaciente"   value="<?php echo $nomepaciente; ?>">
+													
+													<button type="submit" class="btn btn-primary btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+														Atender
+													</button>
+												</form>
+											<?php
 											}
 											else{
-												?>
-												<div class="alert alert-primary" role="alert">
-													Não há um plantão cadastrado para o horário atual.
-												</div>
-												<?php
+												//Não está escalado para o plantão atual, portanto não pode Atender um paciente.
 											}
-											?>
-										</form>
-									</div>
+										}
+									}
+									else{
+										?>
+										<div class="alert alert-primary" role="alert">
+											Não há um plantão cadastrado para o horário atual.
+										</div>
+										<?php
+									}
+									?>
+									</form>
 							</div>
 						</div>
 						<?php
@@ -253,13 +277,13 @@
 												<?php echo $especialidade; ?>
 											</h6>
 												
-											<label for="exampleInputEmail1">Dia:</label>
-											<h6 class="card-text" id="especialidade" name="especialidade">
+											<label for="diahorarioinicio">Dia:</label>
+											<h6 class="card-text" id="diahorarioinicio" name="diahorarioinicio">
 												<?php echo date("d/m/y",$diahorarioinicio); ?>
 											</h6>
 												
-											<label for="exampleInputEmail1">Horário:</label>
-											<h6 class="card-text" id="especialidade" name="especialidade">
+											<label for="horario">Horário:</label>
+											<h6 class="card-text" id="horario" name="horario">
 												<?php echo "Das ".date("H:i:s",$diahorarioinicio)." às ".date("H:i:s",$diahorariofim); ?>
 											</h6>
 										</form>
@@ -271,79 +295,15 @@
 				}
 			?>
 			</div>
-			
 		</div>
-		<div class="col-md-4">
 		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
-			
-			<?php
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
-								Realizar internação
-							</button>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado para o plantão atual
-							</div>
-							<?php
-						}
-						
-					}
-				}
-			?>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">Sair</button>
+		<div class="col-md-3">
+			<?php include 'menuMedicoInclude.php'?>	
 		</div>
+		
 	</div>
 	
 </div>
-
-	<?php include 'rodape1.html'; ?>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

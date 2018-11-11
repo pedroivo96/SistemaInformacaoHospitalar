@@ -34,48 +34,42 @@
 	<div class="row mb-4 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
-				Menu do médico
-				<small class="text-muted">Informações pessoais</small>
+				<?php
+				$tipo = $_SESSION['tipo'];
+				
+				if($tipo == "Médico"){
+					?>
+					Menu do médico
+					<?php
+				}
+				else{
+					?>
+					Menu do enfermeiro
+					<?php
+				}
+				?>
+				<small class="text-muted">Minhas anamneses</small>
 			</h3>
 		</div>
 	</div>
 	<div class="row">
 	
-		<div class="col-md-2"></div>
+		<div class="col-md-9">
 		
-		<div class="col-md-5">
-		
-		
-			<dl class="row">
-				<dt class="col-sm-6">Nome</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['nomecompleto']; ?></dd>
-
-				<dt class="col-sm-6">CPF</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['cpf']; ?></dd>
-				
-				<dt class="col-sm-6">RG</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['rg']; ?></dd>
-				
-				<dt class="col-sm-6">Tipo</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['tipo']; ?></dd>
-				
-				<dt class="col-sm-6">Nome de usuário</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['nomeusuario']; ?></dd>
-				
-				<dt class="col-sm-6">Registro</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['registro']; ?></dd>
-				
-				<dt class="col-sm-6">Especialidade</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['especialidade']; ?></dd>
-				
-			</dl>
-			
 		</div>
 		
-		<div class="col-md-2"></div>
-		
 		<div class="col-md-3">
-			<?php include 'menuMedicoInclude.php'?>	
+		
+			<?php
+			$tipo = $_SESSION['tipo'];
+				
+			if($tipo == "Médico"){
+				include 'menuMedicoInclude.php';
+			}
+			else{
+				include 'menuEnfermeiroInclude.php';
+			}
+			?>
 		</div>
 		
 	</div>

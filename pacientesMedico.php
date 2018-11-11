@@ -3,7 +3,8 @@
   <head>
   
 	<?php 
-		// Inicia sessões 
+		// Inicia sessões
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -29,7 +30,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -39,20 +40,19 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 		
 			<p class="h3 border-bottom">Atualmente internados</p>
 			
 				<div class="row">
 				<?php
-					include './conexao.php';
 				
 					$cpfmedico = $_SESSION['cpf'];
 					$status = "Realizada";
 					
 					$conn = getConnection();
 					
-					$sql = 'SELECT cpfpaciente FROM consultas WHERE cpfmedico = :cpfmedico LIMIT 1';
+					$sql = 'SELECT cpfpaciente FROM consultas WHERE cpfmedico = :cpfmedico GROUP BY cpfpaciente';
 					
 					$stmt = $conn->prepare($sql);
 					$stmt->bindValue(':cpfmedico', $cpfmedico);
@@ -65,7 +65,7 @@
 						foreach($result as $row){
 							$cpfpaciente = $row['cpfpaciente'];
 							
-							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente WHERE status = :status';
+							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente AND status = :status';
 					
 							$stmt1 = $conn->prepare($sql1);
 							$stmt1->bindValue(':cpfpaciente', $cpfpaciente);
@@ -83,8 +83,7 @@
 									$diahorariosaida   = $row1['diahorariosaida'];
 									$status            = $row1['status'];
 									
-									$sql2 = 'SELECT nomecompleto FROM pacientes WHERE cpfpaciente = :cpfpaciente';
-					
+									$sql2 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
 									$stmt2 = $conn->prepare($sql2);
 									$stmt2->bindValue(':cpfpaciente', $cpfpaciente);
 									$stmt2->execute();
@@ -123,13 +122,14 @@
 				?>
 				</div>
 			
-			<p class="h3 border-bottom">Com internação solicitada ou com Alta</p>
+			<p class="h3 border-bottom">Com internação solicitada</p>
 			
 				<div class="row">
 				<?php
 					$cpfmedico = $_SESSION['cpf'];
 					
-					$status = "Realizada";
+					$status = "Solicitada";
+					$flag1 = 0;//Caso continue em 0, então nenhum dos pacientes teve internação solicitada
 					
 					$sql = 'SELECT cpfpaciente FROM consultas WHERE cpfmedico = :cpfmedico LIMIT 1';
 					
@@ -144,15 +144,18 @@
 						foreach($result as $row){
 							$cpfpaciente = $row['cpfpaciente'];
 							
-							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente WHERE status != :status';
+							$sql1 = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente AND status = :status';
 					
 							$stmt1 = $conn->prepare($sql1);
-							$stmt1->bindValue(':cpfmedico', $cpfmedico);
-							$stmt1->bindValue(':status', $status);
+							$stmt1->bindValue(':cpfpaciente', $cpfpaciente);
+							$stmt1->bindValue(':status'   , $status);
 							$stmt1->execute();
 							$count1 = $stmt1->rowCount();
 		
 							if($count1 > 0){
+								
+								$flag1 = 1;
+								
 								//Paciente não internados, cuja internação foi solicitada, ou que já tiveram alta
 								$result1 = $stmt1->fetchAll();
 			
@@ -163,7 +166,7 @@
 									$diahorariosaida   = $row1['diahorariosaida'];
 									$status            = $row1['status'];
 									
-									$sql2 = 'SELECT nomecompleto FROM pacientes WHERE cpfpaciente = :cpfpaciente';
+									$sql2 = 'SELECT nomecompleto FROM pacientes WHERE cpf = :cpfpaciente';
 					
 									$stmt2 = $conn->prepare($sql2);
 									$stmt2->bindValue(':cpfpaciente', $cpfpaciente);
@@ -209,9 +212,19 @@
 								}
 							}
 						}
+						
+						if($flag1 == 0){
+							?>
+							<div class="alert alert-warning w-100" role="alert">
+								<b>Nenhum dos seus pacientes teve internação solicitada.</b>
+							</div>
+							<?php
+						}
 					}	
 				?>
 				</div>
+				
+			<p class="h3 border-bottom">Já tiveram alta</p>
 			
 			<p class="h3 border-bottom">Nunca internados</p>
 			
@@ -282,71 +295,9 @@
 				?>
 				</div>
 		</div>
-		<div class="col-md-4">
 		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">Minhas consultas</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">Meus exames</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">Meus procedimentos</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">Meus pacientes</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">Minhas anamneses</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">Minhas evoluções</button>
-			
-			<?php
-				include './conexao.php';
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$conn = getConnection();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario AND diahorariofim > :diahorario';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
-								Realizar internação
-							</button>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado para o plantão atual
-							</div>
-							<?php
-						}
-						
-					}
-				}
-			?>
+		<div class="col-md-3">
+			<?php include 'menuMedicoInclude.php'?>	
 		</div>
 	</div>
 	<div class="row">

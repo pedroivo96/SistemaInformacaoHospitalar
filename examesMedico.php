@@ -3,7 +3,8 @@
   <head>
   
 	<?php 
-		// Inicia sessões 
+		// Inicia sessões
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -43,7 +44,6 @@
 			
 			<div class="row">
 			<?php
-				include './conexao.php';
 				
 				$cpfmedico = $_SESSION['cpf'];
 					
@@ -60,6 +60,7 @@
 					$result = $stmt->fetchAll();
 			
 					foreach($result as $row){
+						
 						$idconsulta = $row['id'];
 						
 						$sql1 = 'SELECT idexame FROM consultaexame WHERE idconsulta = :idconsulta';
@@ -103,13 +104,13 @@
 													
 													<div class="card-body">
 														
-														<label for="exampleInputEmail1">Anotações opcionais:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
+														<label for="anotacoesopcionais">Anotações opcionais:</label>
+														<h6 class="card-text" id="anotacoesopcionais" name="anotacoesopcionais">
 															<?php echo $anotacoesopcionais; ?>
 														</h6>
 														
-														<label for="exampleInputEmail1">Solicitado por:</label>
-														<h6 class="card-text" id="especialidade" name="especialidade">
+														<label for="nomemedico">Solicitado por:</label>
+														<h6 class="card-text" id="nomemedico" name="nomemedico">
 															<?php echo $nomemedico; ?>
 														</h6>
 													</div>
@@ -122,7 +123,14 @@
 													}
 													if($status == "Resultado"){
 														?>
-														<div class="card-footer bg-sucess text-white border-success"><?php echo $status; ?></div>
+														<form method="POST" action="verResultadosExame.php">
+														
+															<input type="hidden" id="idexame" name="idexame" value="<?php echo $idexame; ?>">
+														
+															<button type="submit" class="btn btn-success btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+																Ver resultados
+															</button>
+														</form>
 														<?php
 													}
 													?>
@@ -179,90 +187,7 @@
 			
 		</div>
 		<div class="col-md-3">
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuMedico.php';">
-				Minhas informações
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
-				Minhas consultas
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
-				Minhas consultas
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">
-				Meus exames
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">
-				Meus procedimentos
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">
-				Meus pacientes
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">
-				Minhas anamneses
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">
-				Minhas evoluções
-			</button>
-			
-			<?php
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$conn = getConnection();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'realizarInternacao.php';">
-								Realizar internação
-							</button>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado para o plantão atual
-							</div>
-							<?php
-						}
-						
-					}
-				}
-			?>
+			<?php include 'menuMedicoInclude.php'?>	
 		</div>
 	</div>
 	<div class="row">

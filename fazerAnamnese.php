@@ -5,6 +5,7 @@
 	<?php 
 		
 		// Inicia sessões 
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -20,7 +21,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Anamnese</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -63,6 +64,9 @@
 							if(retorno == "ERRO"){
 								
 							}else{
+								
+								alert(retorno);
+								
 								document.getElementById('submit1').disabled = false;
 								document.getElementById('submit2').disabled = false;
 								document.getElementById('submit3').disabled = false;
@@ -116,7 +120,7 @@
 				}
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao
+				dados = 'idinternacao='+idinternacao+
 				        "&idanamnese="+idanamnese+
 				        "&motivointernacao="+motivointernacao+
 						"&doencascronicas="+doencascronicas+
@@ -124,7 +128,8 @@
 						"&fatoresrisco="+fatoresrisco+
 						"&fatoresriscooutros="+fatoresriscooutros+
 						"&medicamentosuso="+medicamentosuso+
-						"&antecedentesfamiliares="+antecedentesfamiliares;
+						"&antecedentesfamiliares="+antecedentesfamiliares+
+						"&cpfprofissional="+cpfprofissional;
 				
 				//Observação: esse formulário deve ser o primeiro a ser preenchido desse modo, ele habilitará os outros.
 				
@@ -1384,8 +1389,6 @@
 		<?php
 			date_default_timezone_set("America/Fortaleza");
 			
-			include './conexao.php';
-			
 			$tipo = $_SESSION['tipo'];
 			
 			$conn = getConnection();
@@ -1502,9 +1505,9 @@
 				?>
 			</form>
 		
-			<button type="button" class="btn btn-warning btn-block" id="botao1" onclick="chamaForm1();">Informações sobre a doença e o tratamento</button>
+			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao1" onclick="chamaForm1();">Informações sobre a doença e o tratamento</button>
 			
-			<form id="form1" method="post" action="cadastrarInformacoesDoencaTratamento.php">
+			<form class="border p-2" id="form1" method="post" action="">
 				<h4 align="center">Informações sobre a doença e o tratamento</h4>
 				
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
@@ -1580,13 +1583,13 @@
 					<input type="text" class="form-control w-50" id="antecedentesfamiliares" name="antecedentesfamiliares">
 				</div>
 				
-				<button type="submit" id="submit1" class="btn btn-primary">Submit</button>
+				<button type="button" onclick="anamneseInformacoesDoencasTratamento();" id="submit1" class="btn btn-info mx-auto d-block w-50">Cadastrar</button>
 				
 			</form>
 		
-			<button type="button" class="btn btn-warning btn-block" id="botao2" onclick="chamaForm2();">Hábitos</button>
+			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao2" onclick="chamaForm2();">Hábitos</button>
 			
-			<form id="form2" method="post" action="cadastrarHabitos.php">
+			<form class="border p-2" id="form2" method="post" action="cadastrarHabitos.php">
 				<h4 align="center">Hábitos</h4>
 				
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
@@ -1996,14 +1999,14 @@
 					
 				</div>
 				
-				<button type="submit" id="submit2" class="btn btn-primary" disabled>Submit</button>
+				<button type="submit" id="submit2" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
-			<button type="button" class="btn btn-warning btn-block" id="botao3" onclick="chamaForm3();">Exame físico/Informações sobre órgãos e sistemas</button>
+			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao3" onclick="chamaForm3();">Exame físico/Informações sobre órgãos e sistemas</button>
 			
-			<form id="form3" method="post" action="cadastrarExameOrgaosSistemas.php">
+			<form class="border p-2" id="form3" method="post" action="cadastrarExameOrgaosSistemas.php">
 				<h4 align="center">Exame físico/ informações relevantes sobre órgãos e sistemas</h4>
 				
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
@@ -2892,14 +2895,14 @@
 					
 				</div>
 				
-				<button type="submit" id="submit3" class="btn btn-primary" disabled>Submit</button>
+				<button type="submit" id="submit3" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
-			<button type="button" class="btn btn-warning btn-block" id="botao4" onclick="chamaForm4();">Psicossocial</button>
+			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao4" onclick="chamaForm4();">Psicossocial</button>
 			
-			<form id="form4" method="post" action="cadastrarPsicossocial.php">
+			<form class="border p-2" id="form4" method="post" action="cadastrarPsicossocial.php">
 				<h4 align="center">Psicossocial</h4>
 				
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
@@ -3099,14 +3102,14 @@
 					
 				</div>
 				
-				<button type="submit" id="submit4" class="btn btn-primary" disabled>Submit</button>
+				<button type="submit" id="submit4" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
-			<button type="button" class="btn btn-warning btn-block" id="botao5" onclick="chamaForm5();">Dados especificados de cada área</button>
+			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao5" onclick="chamaForm5();">Dados especificados de cada área</button>
 			
-			<form id="form5" method="post" action="cadastrarDadosEspecificados.php">
+			<form class="border p-2" id="form5" method="post" action="cadastrarDadosEspecificados.php">
 				<h4 align="center">Dados específicos de cada área</h4>
 				
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
@@ -3173,7 +3176,7 @@
 					
 				</div>
 				
-				<button type="submit" id="submit5" class="btn btn-primary" disabled>Submit</button>
+				<button type="submit" id="submit5" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
@@ -3183,161 +3186,13 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-3">
 			<?php
-			if($tipo == "Enfermeiro"){
-				$cpfprofissional = $_SESSION['cpf'];
+			$tipo = $_SESSION['tipo'];
 				
-				//$conn = getConnection();
-				
-				$diahorario = time();
-		
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						$chefe = 1;
-							
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							$result1 = $stmt1->fetchAll();
-			
-							foreach($result1 as $row1){
-							
-								$idplantao = $row1['idplantao'];
-								$chefe = $row1['chefe'];
-						
-								$chefe = 1;
-						
-								if($chefe == 1){
-									?>
-									<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
-									<?php
-								}
-								else{
-									//Está escalado para o plantão porém não é o chefe, portanto não pode gerenciar internações
-								}
-							}
-						}
-						else{
-							//Não esta escalado para o plantão atual
-						}
-					}
-				}
-			?>
-		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
-				Minhas evoluções
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
-				Meus diagnósticos
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamneseEnfermeiro.php';">
-				Minhas anamneses
-			</button>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
-				Sair
-			</button>
-			
-			<?php	
-			}
 			if($tipo == "Médico"){
-				?>
-				
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'menuMedico.php';">
-					Minhas informações
-				</button>
-				
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
-					Minhas consultas
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">
-					Meus exames
-				</button>
-				
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">
-					Meus procedimentos
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">
-					Meus pacientes
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">
-					Minhas anamneses
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">
-					Minhas evoluções
-				</button>
-			
-				<?php
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$conn = getConnection();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado(a) para o plantão atual
-							</div>
-							<?php
-						}	
-					}
-				}
-				?>
-				<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
-					Sair
-				</button>
-				<?php
+				include 'menuMedicoInclude.php';
+			}
+			else{
+				include 'menuEnfermeiroInclude.php';
 			}
 			?>
 		</div>

@@ -4,6 +4,7 @@
   
 	<?php 
 		// Inicia sessões 
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -17,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gerenciamento de Internações</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -48,7 +49,7 @@
 		
 		function listarTecnicos(cpfpaciente){
 	
-			alert(cpfpaciente);
+			//alert(cpfpaciente);
 	
 			listaTecnicos = document.getElementById(cpfpaciente);
 		
@@ -76,25 +77,7 @@
 								alertErro.style.display = "block";
 								
 							}else{
-								
-								/*
-								//Botão de listar tecnicos some
-								listarTecnicosButton = document.getElementById("listarTecnicosButton");
-								listarTecnicosButton.style.display = "none"; 
-								
-								//A lista de técnicos também some
-								listaTecnicos = document.getElementById("listatecnicos");
-								listaTecnicos.style.display = "none";
-								
-								//Cria a TAG que mostrar o técnico responsável
-								tecnico = document.getElementById("tecnico");
-								nometecnicoNode = document.createTextNode(nometecnico);
-								tecnico.appendChild(nometecnicoNode);
-								tecnico.style.display = "block";
-								*/
-								
-								location.reload();
-																
+								location.reload();								
 							}
 						}
 						else{
@@ -103,8 +86,7 @@
 						
 					}
 				}
-				
-				
+			
 				//Monta a QueryString
 				dados = 'cpfpaciente='+cpfpaciente+"&cpftecnico="+cpftecnico+"&nometecnico="+nometecnico;
 				
@@ -152,7 +134,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			
 			<p class="h5">Internados</p>
 			
@@ -161,8 +143,6 @@
 			<?php
 				$cpfprofissional = $_SESSION['cpf'];
 				$tipo            = $_SESSION['tipo'];
-				
-				include './conexao.php';
 				
 				$status = "Realizada";
 				
@@ -202,9 +182,11 @@
 								?>
 								<div class="col-sm-4 mb-3">
 								<div class="card">
+								
 									<div class="card-header">
 										<?php echo $nomepaciente; ?>
 									</div>
+									
 									<div class="card-body px-2">
 									
 										<?php
@@ -241,7 +223,49 @@
 												
 												<?php
 											}
+										
+										if($tipo == "Médico" || $tipo == "Enfermeiro"){
 											
+											
+											$sql3 = 'SELECT * FROM anamnese WHERE idinternacao = :idinternacao';
+											$stmt3 = $conn->prepare($sql3);
+											$stmt3->bindValue(':idinternacao', $idinternacao);
+											$stmt3->execute();
+											$count3 = $stmt3->rowCount();
+		
+											if($count3 > 0){
+												$result3 = $stmt3->fetchAll();
+					
+												foreach($result3 as $row3){
+													
+													$idanamnese = $row3['id'];
+													
+													?>
+													<form method="POST" action="verAnamnese.php">
+														<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $idinternacao;?>">
+														<input type="hidden" id="idanamnese" name="idanamnese"value="<?php echo $idanamnese; ?>">
+														
+														<button class="btn btn-info btn-block mb-1">
+															Ver anamnese
+														</button>
+													</form>
+													<?php
+												}
+											}
+											else{
+											?>
+											<form method="POST" action="fazerAnamnese.php">
+												<input type="hidden" name="idinternacao" id="idinternacao" value="<?php echo $idinternacao;?>">
+												<input type="hidden" name="cpfpaciente" id="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+												
+												<button class="btn btn-primary btn-block mb-1">
+													Fazer anamnese
+												</button>
+											</form>
+											<?php	
+											}
+										}
+										
 										if($tipo == "Enfermeiro"){
 											
 											$diahorarioatual = time();
@@ -373,43 +397,7 @@
 											}
 										}
 										
-										
-										if($tipo == "Médico" || $tipo == "Enfermeiro"){
-											
-											
-											$sql3 = 'SELECT * FROM anamnese WHERE idinternacao = :idinternacao';
-											$stmt3 = $conn->prepare($sql3);
-											$stmt3->bindValue(':idinternacao', $idinternacao);
-											$stmt3->execute();
-											$count3 = $stmt3->rowCount();
-		
-											if($count3 > 0){
-												$result3 = $stmt3->fetchAll();
-					
-												foreach($result3 as $row3){
-													
-													$idanamnese = $row3['id'];
-													
-													?>
-													<form method="POST" action="verAnamnese.php">
-														<input type="hidden" id="idinternacao" name="idinternacao" value="<?php echo $idinternacao;?>">
-														<input type="hidden" id="idanamnese" name="idanamnese"value="<?php echo $idanamnese; ?>">
-														<button class="btn btn-info btn-block">Ver anamnese</button>
-													</form>
-													<?php
-												}
-											}
-											else{
-											?>
-											<form method="POST" action="fazerAnamnese.php">
-												<input type="hidden" name="idinternacao" id="idinternacao" value="<?php echo $idinternacao;?>">
-												<input type="hidden" name="cpfpaciente" id="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
-												<button class="btn btn-primary btn-block">Fazer anamnese</button>
-											</form>
-											<?php	
-											}
-										}
-										
+						
 										?>
 									</div>
 								</div>
@@ -506,159 +494,17 @@
 			?>
 		</div>
 		
-		<div class="col-md-4">
-		
+		<div class="col-md-3">
 			<?php
-			if($tipo == "Enfermeiro"){
-				$cpfprofissional = $_SESSION['cpf'];
+			$tipo = $_SESSION['tipo'];
 				
-				//$conn = getConnection();
-				
-				$diahorario = time();
-		
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						$chefe = 1;
-							
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE cpfprofissional = :cpfprofissional AND idplantao = :idplantao';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':cpfprofissional', $cpfprofissional);
-						$stmt1->bindValue(':idplantao', $idplantao);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							$result1 = $stmt1->fetchAll();
-			
-							foreach($result1 as $row1){
-							
-								$idplantao = $row1['idplantao'];
-								$chefe = $row1['chefe'];
-						
-								$chefe = 1;
-								
-								?>
-								<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">Gerenciar internações</button>
-								<?php
-								
-							
-							}
-						}
-						else{
-							//Não esta escalado para o plantão atual
-						}
-						
-					}
-				}
-			?>
-		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
-				Minhas evoluções
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
-				Meus diagnósticos
-			</button>
-			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'anamneseEnfermeiro.php';">
-				Minhas anamneses
-			</button>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
-				Sair
-			</button>
-			
-			<?php	
-			}
 			if($tipo == "Médico"){
-				?>
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'consultasMedico.php';">
-					Minhas consultas
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'examesMedico.php';">
-					Meus exames
-				</button>
-				
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'procedimentosMedico.php';">
-					Meus procedimentos
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'pacientesMedico.php';">
-					Meus pacientes
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasAnamneses.php';">
-					Minhas anamneses
-				</button>
-			
-				<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'minhasEvolucoes.php';">
-					Minhas evoluções
-				</button>
-			
-				<?php
-			
-				$cpfmedico  = $_SESSION['cpf'];
-				$diahorario = time();
-				
-				$sql = 'SELECT * FROM plantoes WHERE diahorarioinicio < :diahorario1 AND diahorariofim > :diahorario2';
-				$stmt = $conn->prepare($sql);
-				$stmt->bindValue(':diahorario1', $diahorario);
-				$stmt->bindValue(':diahorario2', $diahorario);
-				$stmt->execute();
-				$count = $stmt->rowCount();
-		
-				if($count > 0){
-					$result = $stmt->fetchAll();
-			
-					foreach($result as $row){
-						
-						$idplantao = $row['id'];
-						
-						$sql1 = 'SELECT * FROM profissionaisplantao WHERE idplantao = :idplantao AND cpfprofissional = :cpfprofissional';
-						$stmt1 = $conn->prepare($sql1);
-						$stmt1->bindValue(':idplantao'      , $idplantao);
-						$stmt1->bindValue(':cpfprofissional', $cpfmedico);
-						$stmt1->execute();
-						$count1 = $stmt1->rowCount();
-		
-						if($count1 > 0){
-							//Está escalado para o plantão atual, portanto pode realizar internações.
-							?>
-							
-							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'gerenciamentoInternacoes.php';">
-								Gerenciar internações
-							</button>
-							<?php
-						}
-						else{
-							?>
-							<div class="alert alert-primary" role="alert">
-								Você não está escalado(a) para o plantão atual
-							</div>
-							<?php
-						}	
-					}
-				}
-				?>
-				<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
-					Sair
-				</button>
-				<?php
+				include 'menuMedicoInclude.php';
+			}
+			else{
+				include 'menuEnfermeiroInclude.php';
 			}
 			?>
-		
 		</div>
 	</div>
 	<div class="row">
