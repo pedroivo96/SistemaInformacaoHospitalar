@@ -10,8 +10,8 @@
 		$conn = getConnection();
 		
 		$sql = 'UPDATE anamnesedadosespecificados SET anotacoes = :anotacoes,
-                           		                      impressoes = :impressoes,
-													  WHERE idanamnese = :idanamnese'
+                           		                      impressoes = :impressoes
+													  WHERE idanamnese = :idanamnese';
 		
 		$stmt = $conn->prepare($sql);
         $stmt->bindParam(':idanamnese'     , $idanamnese);

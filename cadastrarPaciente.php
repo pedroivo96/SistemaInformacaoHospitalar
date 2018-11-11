@@ -8,6 +8,8 @@
         $rg                     = $_POST['rg'];
 		$nomecompleto           = $_POST['nomecompleto'];
 		$datanascimento         = $_POST['datanascimento'];
+		$estadocivil            = $_POST['estadocivil'];
+		$profissao              = $_POST['profissao'];
 		$sexo                   = $_POST['sexo'];
 		$nomemae                = $_POST['nomemae'];
 		$naturalidademunicipio  = $_POST['naturalidademunicipio'];
@@ -41,7 +43,9 @@
             $sql2 = 'INSERT INTO pacientes (cpf, 
 			                                rg, 
 											nomecompleto, 
-											datanascimento, 
+											datanascimento,
+											estadocivil,
+											profissao, 
 											sexo, 
 											nomemae, 
 											naturalidademunicipio,
@@ -58,6 +62,8 @@
 											              :rg, 
 														  :nomecompleto,
 														  :datanascimento,
+														  :estadocivil,
+														  :profissao,
 														  :sexo,
 														  :nomemae,
 														  :naturalidademunicipio,
@@ -76,6 +82,8 @@
 			$stmt2->bindParam(':rg'                    , $rg);
 			$stmt2->bindParam(':nomecompleto'          , $nomecompleto);
 			$stmt2->bindParam(':datanascimento'        , strtotime($datanascimento));
+			$stmt2->bindParam(':estadocivil'           , $estadocivil);
+			$stmt2->bindParam(':profissao'             , $profissao);
 			$stmt2->bindParam(':sexo'                  , $sexo);
 			$stmt2->bindParam(':nomemae'               , $nomemae);
 			$stmt2->bindParam(':naturalidademunicipio' , $naturalidademunicipio);
@@ -111,6 +119,7 @@
 					  $_SESSION['enderecoestado']         = $enderecoestado;
 					  $_SESSION['nomeusuario']            = $nomeusuario;
 					  $_SESSION['email']                  = $email;
+					  
 					  header("Location: menuPaciente.php");
             }else{
                 echo '<div class="alert alert-danger">

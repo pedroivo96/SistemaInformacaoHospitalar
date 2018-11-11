@@ -71,6 +71,7 @@
 								document.getElementById('submit2').disabled = false;
 								document.getElementById('submit3').disabled = false;
 								document.getElementById('submit4').disabled = false;
+								document.getElementById('submit5').disabled = false;
 								
 								document.getElementById('idanamnese').value = retorno;
 							}
@@ -152,7 +153,7 @@
 							if(retorno == "ERRO"){
 												
 							}else{
-								
+								alert(retorno);
 							}
 						}
 						else{
@@ -161,29 +162,30 @@
 					}
 				}
 				
-				var idanamnese              = document.getElementById('idanamnese').value;
-				var condicoesmoradia        = "";
-				var condicoesmoradiaoutros  = document.getElementById('condicoesmoradiaoutros');
-				var cuidadocorporal         = "";
-				var periodobanho            = "";
-				var atividadetrabalho       = "";
-				var atividadetrabalhooutros = document.getElementById('atividadetrabalhooutros').value;
-				var sonorepouso             = "";
-				var horasdormidas           = document.getElementById('horasdormidas').value;
-				var insoniauti              = document.getElementById('insoniauti').value;
-				var exerciciosprogramados   = "";
-				var vezesexercicios         = "";
-				var recreacaolazer          = "";
-				var recreacaolazeroutros    = document.getElementById('recreacaolazeroutros').value;
-				var comerfrequencia         = "";
-				var comerfrequenciaoutros   = document.getElementById('comerfrequenciaoutros').value;
-				var eliminacaourinaria      = document.getElementById('eliminacaourinaria').value;
-				var eliminacaointestinal    = "";
+				var idanamnese                     = document.getElementById('idanamnese').value;
+				var condicoesmoradia               = "";
+				var condicoesmoradiaoutros         = document.getElementById('condicoesmoradiaoutros').value;
+				var cuidadocorporal                = "";
+				var periodobanho                   = "";
+				var atividadetrabalho              = "";
+				var atividadetrabalhooutros        = document.getElementById('atividadetrabalhooutros').value;
+				var sonorepouso                    = "";
+				var horasdormidas                  = document.getElementById('horasdormidas').value;
+				var insoniauti                     = document.getElementById('insoniauti').value;
+				var exerciciosprogramados          = "";
+				var vezesexercicios                = "";
+				var recreacaolazer                 = "";
+				var recreacaolazeroutros           = document.getElementById('recreacaolazeroutros').value;
+				var comerfrequencia                = "";
+				var numerorefeicoes                = document.getElementById('numerorefeicoes').value;
+				var comerfrequenciaoutros          = document.getElementById('comerfrequenciaoutros').value;
+				var eliminacaourinaria             = "";
+				var eliminacaointestinal           = "";
 				var eliminacaointestinalfrequencia = document.getElementById('eliminacaointestinalfrequencia').value;
-				var ciclomenstrual          = "";
-				var ciclomenstrualoutros    = document.getElementById('ciclomenstrualoutros').value;
-				var atividadesexual         = "";
-				var atividadesexualoutros   = document.getElementById('atividadesexualoutros').value;
+				var ciclomenstrual                 = "";
+				var ciclomenstrualoutros           = document.getElementById('ciclomenstrualoutros').value;
+				var atividadesexual                = "";
+				var atividadesexualoutros          = document.getElementById('atividadesexualoutros').value;
 				
 				if(document.getElementById('condicoesmoradia1').checked == true){
 					condicoesmoradia = condicoesmoradia + document.getElementById('condicoesmoradia1').value + ",";
@@ -447,6 +449,7 @@
 						"&recreacaolazer="+recreacaolazer+
 						"&recreacaolazeroutros="+recreacaolazeroutros+
 						"&comerfrequencia="+comerfrequencia+
+						"&numerorefeicoes="+numerorefeicoes+
 						"&comerfrequenciaoutros="+comerfrequenciaoutros+
 						"&eliminacaourinaria="+eliminacaourinaria+
 						"&eliminacaointestinal="+eliminacaointestinal+
@@ -460,8 +463,6 @@
 				ajax.open('POST', 'cadastrarHabitos.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				ajax.send(dados);
-				
-				
 			}
 		}
 		
@@ -475,9 +476,9 @@
 							retorno = ajax.responseText;
 							
 							if(retorno == "ERRO"){
-								
+								alert(retorno);
 							}else{
-								
+								alert(retorno);
 							}
 						}
 						else{
@@ -486,7 +487,7 @@
 					}
 				}
 				
-				var idinternacao 			= document.getElementById('idinternacao').value;
+				var idanamnese 			    = document.getElementById('idanamnese').value;
 				var pressao      			= document.getElementById('pressao').value;
 				var pulso        			= document.getElementById('pulso').value;
 				var frequenciacardiaca 		= document.getElementById('frequenciacardiaca').value;
@@ -986,6 +987,7 @@
 				if(document.getElementById('membrossuperiores10').checked == true){
 					membrossuperiores = membrossuperiores + document.getElementById('membrossuperiores10').value + ",";
 				}
+				
 				//Caso o último caractere seja uma vírgula, ela é retirada.
 				if(membrossuperiores.substr(membrossuperiores.length - 1) == ","){
 					membrossuperiores = membrossuperiores.substr(0, membrossuperiores.length - 1);
@@ -1026,7 +1028,6 @@
 				if(membrosinferiores.substr(membrosinferiores.length - 1) == ","){
 					membrosinferiores = membrosinferiores.substr(0, membrosinferiores.length - 1);
 				}
-				
 				
 				//Monta a QueryString
 				dados = 'idanamnese='+idanamnese+
@@ -1109,7 +1110,7 @@
 					}
 				}
 				
-				var idinternacao               = document.getElementById('idinternacao').value;
+				var idanamnese                 = document.getElementById('idanamnese').value;
 				var interacaosocial            = "";
 				var resolucaoproblemas         = "";
 				var apoioespiritual            = "";
@@ -1280,9 +1281,9 @@
 							retorno = ajax.responseText;
 							
 							if(retorno == "ERRO"){
-								
+								alert(retorno);
 							}else{
-								
+								alert(retorno);
 							}
 						}
 						else{
@@ -1291,12 +1292,12 @@
 					}
 				}
 				
-				var idinternacao = document.getElementById('idinternacao').value;
-				var anotacoes = document.getElementById('anotacoes').value;
+				var idanamnese = document.getElementById('idanamnese').value;
+				var anotacoes  = document.getElementById('anotacoes').value;
 				var impressoes = document.getElementById('impressoes').value;
 				
 				//Monta a QueryString
-				dados = 'idinternacao='+idinternacao+
+				dados = 'idanamnese='+idanamnese+
 				        "&anotacoes="+anotacoes+
 						"&impressoes="+impressoes;
 				
@@ -1394,6 +1395,7 @@
 			$conn = getConnection();
 			
 			$idinternacao = $_POST['idinternacao'];
+			$cpfpaciente  = $_POST['cpfpaciente'];
 			
 			if($tipo == "Médico"){
 				?>
@@ -1470,32 +1472,32 @@
 									?>
 									<div class="form-group">
 										<label for="nome">Nome</label>
-										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $nomepaciente; ?>">
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $nomepaciente; ?>" readonly>
 									</div>
 									
 									<div class="form-group">
 										<label for="nome">Idade</label>
-										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $idade." anos";?>">
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $idade." anos";?>" readonly>
 									</div>
 									
 									<div class="form-group">
 										<label for="nome">RG</label>
-										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $rg; ?>">
+										<input type="text" class="form-control" id="nome" name="nome" value="<?php echo $rg; ?>" readonly>
 									</div>
 									
 									<div class="form-group">
 										<label for="nome">Leito</label>
-										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $idleito; ?>">
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $idleito; ?>" readonly>
 									</div>
 									
 									<div class="form-group">
 										<label for="nome">Profissão</label>
-										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $profissao; ?>">
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $profissao; ?>" readonly>
 									</div>
 									
 									<div class="form-group">
 										<label for="nome">Estado civil</label>
-										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $estadocivil; ?>">
+										<input type="text" class="form-control w-50" id="nome" name="nome" value="<?php echo $estadocivil; ?>" readonly>
 									</div>
 									<?php
 								}
@@ -1513,17 +1515,17 @@
 				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 			
 				<div class="form-group">
-					<label for="nome">Motivo da internação</label>
+					<label for="motivointernacao">Motivo da internação</label>
 					<input type="text" class="form-control w-50" id="motivointernacao" name="motivointernacao">
 				</div>
 				
 				<div class="form-group">
-					<label for="nome">Doenças crônicas</label>
+					<label for="doencascronicas">Doenças crônicas</label>
 					<input type="text" class="form-control w-50" id="doencascronicas" name="doencascronicas">
 				</div>
 				
 				<div class="form-group">
-					<label for="nome">Tratamentos anteriores</label>
+					<label for="tratamentosanteriores">Tratamentos anteriores</label>
 					<input type="text" class="form-control w-50" id="tratamentosanteriores" name="tratamentosanteriores">
 				</div>
 				
@@ -1589,10 +1591,9 @@
 		
 			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao2" onclick="chamaForm2();">Hábitos</button>
 			
-			<form class="border p-2" id="form2" method="post" action="cadastrarHabitos.php">
+			<form class="border p-2" id="form2" method="post" action="">
+			
 				<h4 align="center">Hábitos</h4>
-				
-				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 			
 				<div class="form-group w-50 p-2 border">
 					<label for="nome">Condições de moradia</label>
@@ -1628,7 +1629,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="nome">Outros</label>
+						<label for="condicoesmoradiaoutros">Outros</label>
 						<input type="text" class="form-control" id="condicoesmoradiaoutros" name="condicoesmoradiaoutros">
 					</div>
 					
@@ -1694,17 +1695,17 @@
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="atividadetrabalho1" name="atividadetrabalho1" value="Em pé">
-						<label class="form-check-label" for="exampleCheck1">Em pé</label>
+						<label class="form-check-label" for="atividadetrabalho1">Em pé</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="atividadetrabalho2" name="atividadetrabalho2" value="Sentado">
-						<label class="form-check-label" for="exampleCheck1">Sentado</label>
+						<label class="form-check-label" for="atividadetrabalho2">Sentado</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="atividadetrabalho3" name="atividadetrabalho3" value="Aposentado">
-						<label class="form-check-label" for="exampleCheck1">Aposentado</label>
+						<label class="form-check-label" for="atividadetrabalho3">Aposentado</label>
 					</div>
 					
 					<div class="form-group">
@@ -1819,47 +1820,47 @@
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia1" name="comerfrequencia1" value="Frutas, verduras cruas">
-						<label class="form-check-label" for="exampleCheck1">Frutas, verduras cruas</label>
+						<label class="form-check-label" for="comerfrequencia1">Frutas, verduras cruas</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia2" name="comerfrequencia2" value="Frutas, verduras cozidas">
-						<label class="form-check-label" for="exampleCheck1">Frutas, verduras cozidas</label>
+						<label class="form-check-label" for="comerfrequencia2">Frutas, verduras cozidas</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia3" name="comerfrequencia3" value="Carne: vermelha">
-						<label class="form-check-label" for="exampleCheck1">Carne: vermelha</label>
+						<label class="form-check-label" for="comerfrequencia3">Carne: vermelha</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia4" name="comerfrequencia4" value="Carne: frango">
-						<label class="form-check-label" for="exampleCheck1">Carne: frango</label>
+						<label class="form-check-label" for="comerfrequencia4">Carne: frango</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia5" name="comerfrequencia5" value="Carne: peixe">
-						<label class="form-check-label" for="exampleCheck1">Carne: peixe</label>
+						<label class="form-check-label" for="comerfrequencia5">Carne: peixe</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia6" name="comerfrequencia6" value="Água">
-						<label class="form-check-label" for="exampleCheck1">Água</label>
+						<label class="form-check-label" for="comerfrequencia6">Água</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia7" name="comerfrequencia7" value="Café">
-						<label class="form-check-label" for="exampleCheck1">Café</label>
+						<label class="form-check-label" for="comerfrequencia7">Café</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia8" name="comerfrequencia8" value="Chá">
-						<label class="form-check-label" for="exampleCheck1">Chá</label>
+						<label class="form-check-label" for="comerfrequencia8">Chá</label>
 					</div>
 					
 					<div class="form-group form-check">
 						<input type="checkbox" class="form-check-input" id="comerfrequencia9" name="comerfrequencia9" value="Leite">
-						<label class="form-check-label" for="exampleCheck1">Leite</label>
+						<label class="form-check-label" for="comerfrequencia9">Leite</label>
 					</div>
 					
 					<div class="form-group">
@@ -1999,18 +2000,16 @@
 					
 				</div>
 				
-				<button type="submit" id="submit2" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
+				<button type="button" id="submit2" onclick="anamneseHabitos();" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
 			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao3" onclick="chamaForm3();">Exame físico/Informações sobre órgãos e sistemas</button>
 			
-			<form class="border p-2" id="form3" method="post" action="cadastrarExameOrgaosSistemas.php">
+			<form class="border p-2" id="form3" method="post" action="">
 				<h4 align="center">Exame físico/ informações relevantes sobre órgãos e sistemas</h4>
 				
-				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
-			
 				<div class="form-group w-50 p-2 border">
 					<label for="nome"></label>
 					
@@ -2820,52 +2819,52 @@
 					<label for="nome">Membros inferiores</label>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores1" name="membrosinferiores1" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores1" name="membrosinferiores1" value="Sensibilidade e força motora preservadas em todas as extremidades">
 						<label class="form-check-label" for="membrosinferiores1">Sensibilidade e força motora preservadas em todas as extremidades</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores2" name="membrosinferiores2" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores2" name="membrosinferiores2" value="Pulsos periféricos palpáveis">
 						<label class="form-check-label" for="membrosinferiores2">Pulsos periféricos palpáveis</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores3" name="membrosinferiores3" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores3" name="membrosinferiores3" value="Paresia">
 						<label class="form-check-label" for="membrosinferiores3">Paresia</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores4" name="membrosinferiores4" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores4" name="membrosinferiores4" value="Plegia">
 						<label class="form-check-label" for="membrosinferiores4">Plegia</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores5" name="membrosinferiores5" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores5" name="membrosinferiores5" value="Edema">
 						<label class="form-check-label" for="membrosinferiores5">Edema</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores6" name="membrosinferiores6" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores6" name="membrosinferiores6" value="Amputações">
 						<label class="form-check-label" for="membrosinferiores6">Amputações</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores7" name="membrosinferiores7" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores7" name="membrosinferiores7" value="Gesso">
 						<label class="form-check-label" for="membrosinferiores7">Gesso</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores8" name="membrosinferiores8" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores8" name="membrosinferiores8" value="Tala gessada">
 						<label class="form-check-label" for="membrosinferiores8">Tala gessada</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores9" name="membrosinferiores9" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores9" name="membrosinferiores9" value="Dispositivo venoso">
 						<label class="form-check-label" for="membrosinferiores9">Dispositivo venoso</label>
 					</div>
 					
 					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="membrosinferiores10" name="membrosinferiores10" value="">
+						<input type="checkbox" class="form-check-input" id="membrosinferiores10" name="membrosinferiores10" value="Lesões">
 						<label class="form-check-label" for="membrosinferiores10">Lesões</label>
 					</div>
 					
@@ -2895,17 +2894,15 @@
 					
 				</div>
 				
-				<button type="submit" id="submit3" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
+				<button type="button" id="submit3" onclick="anamneseExameOrgaosSistemas();" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
 			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao4" onclick="chamaForm4();">Psicossocial</button>
 			
-			<form class="border p-2" id="form4" method="post" action="cadastrarPsicossocial.php">
+			<form class="border p-2" id="form4" method="post" action="">
 				<h4 align="center">Psicossocial</h4>
-				
-				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 				
 				<div class="form-group w-50 p-2 border">
 					<label for="nome">Interação social</label>
@@ -3102,17 +3099,15 @@
 					
 				</div>
 				
-				<button type="submit" id="submit4" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
+				<button type="button" id="submit4" onclick="anamnesePsicossocial();" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			
 			
 			<button type="button" class="btn btn-primary btn-block mt-2 mb-2" id="botao5" onclick="chamaForm5();">Dados especificados de cada área</button>
 			
-			<form class="border p-2" id="form5" method="post" action="cadastrarDadosEspecificados.php">
+			<form class="border p-2" id="form5" method="post" action="">
 				<h4 align="center">Dados específicos de cada área</h4>
-				
-				<input type="hidden" id="idanamnese" name="idanamnese" value="<?php echo $idinternacao; ?>">
 				
 				<div class="form-group w-50 p-2 border">
 					
@@ -3163,7 +3158,7 @@
 					<?php
 						$diahorarioatual = time();
 						
-						$diahorarioformatado = date("d/m/Y às H:i", $diahorarioatual);
+						$diahorarioformatado = date("d/m/Y", $diahorarioatual)." às ".date("H:i", $diahorarioatual);
 						?>
 						<div class="form-group">
 							<label for="data">Data e horário</label>
@@ -3176,7 +3171,7 @@
 					
 				</div>
 				
-				<button type="submit" id="submit5" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
+				<button type="button" id="submit5" onclick="anamneseDadosEspecificos();" class="btn btn-info mx-auto d-block w-50" disabled>Cadastrar</button>
 				
 			</form>
 			

@@ -40,7 +40,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h5 class="display-4">Cadastro</h5>
@@ -55,42 +55,56 @@
 				<p class="h3">1. Informações pessoais</p>
 			
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="cpf">
 						CPF
 					</label>
 					<input type="text" class="form-control" id="cpf" name="cpf">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="rg">
 						RG
 					</label>
 					<input type="text" class="form-control" id="rg" name="rg">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="nomecompleto">
 						Nome completo
 					</label>
 					<input type="text" class="form-control" id="nomecompleto" name="nomecompleto">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="datanascimento">
 						Data de nascimento
 					</label>
 					<input type="date" class="form-control" id="datanascimento" name="datanascimento">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="estadocivil">
+						Estado civil
+					</label>
+					<input type="text" class="form-control" id="estadocivil" name="estadocivil">
+				</div>
+				
+				<div class="form-group">
+					<label for="profissao">
+						Profissão
+					</label>
+					<input type="text" class="form-control" id="profissao" name="profissao">
+				</div>
+				
+				<div class="form-group">
+					<label for="sexo">
 						Sexo
 					</label>
 					<input type="text" class="form-control" id="sexo" name="sexo">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="nomemae">
 						Nome da mãe
 					</label>
 					<input type="text" class="form-control" id="nomemae" name="nomemae">
@@ -99,14 +113,14 @@
 				<p class="h3">2. Naturalidade</p>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="naturalidademunicipio">
 						Município
 					</label>
 					<input type="text" class="form-control" id="naturalidademunicipio" name="naturalidademunicipio">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="naturalidadeestado">
 						Estado
 					</label>
 					<input type="text" class="form-control" id="naturalidadeestado" name="naturalidadeestado">
@@ -115,42 +129,42 @@
 				<p class="h3">3. Endereço</p>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="enderecovia">
 						Via
 					</label>
 					<input type="text" class="form-control" id="enderecovia" name="enderecovia">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="endereconumero">
 						Número
 					</label>
 					<input type="text" class="form-control" id="endereconumero" name="endereconumero">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="enderecocomplemento">
 						Complemento
 					</label>
 					<input type="text" class="form-control" id="enderecocomplemento" name="enderecocomplemento">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="enderecobairrodistrito">
 						Bairro/Distrito
 					</label>
 					<input type="text" class="form-control" id="enderecobairrodistrito" name="enderecobairrodistrito">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="enderecomunicipio">
 						Município
 					</label>
 					<input type="text" class="form-control" id="enderecomunicipio" name="enderecomunicipio">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="enderecoestado">
 						Estado
 					</label>
 					<input type="text" class="form-control" id="enderecoestado" name="enderecoestado">
@@ -159,24 +173,24 @@
 				<p class="h3">4. Informações de acesso ao sistema</p>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="email">
 						E-mail
 					</label>
-					<input type="text" class="form-control" id="email" name="email">
+					<input type="email" class="form-control" id="email" name="email">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="nomeusuario">
 						Nome de usuário
 					</label>
 					<input type="text" class="form-control" id="nomeusuario" name="nomeusuario">
 				</div>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="senha">
 						Senha
 					</label>
-					<input type="text" class="form-control" id="senha" name="senha" onkeyup="check_pass();">
+					<input type="password" class="form-control" id="senha" name="senha" onkeyup="check_pass();">
 				</div>
 				
 				<label for="senhaNovamente" class="text-danger" id="senhaNaoIguais">
@@ -184,10 +198,10 @@
 				</label>
 				
 				<div class="form-group">
-					<label for="exampleInputEmail1">
+					<label for="senhanovamente">
 						Digite sua senha novamente
 					</label>
-					<input type="text" class="form-control" id="senhanovamente" name="senhanovamente" onkeyup="check_pass();">
+					<input type="password" class="form-control" id="senhanovamente" name="senhanovamente" onkeyup="check_pass();">
 				</div>
 				
 				<button type="submit" class="btn btn-primary btn-block mb-5" id="submit" disabled>
