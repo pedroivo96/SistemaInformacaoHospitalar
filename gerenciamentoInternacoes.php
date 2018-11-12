@@ -93,10 +93,8 @@
 				//Faz a requisição e envio pelo método POST
 				ajax.open('POST', 'associarTecnico1.php', true);
 				ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-				ajax.send(dados);
-				
+				ajax.send(dados);	
 			}
-			
 		}
 		
 	</script>
@@ -221,7 +219,7 @@
 													<input type="hidden" id="cpfprofissional" name="cpfprofissional" value="<?php echo $cpfprofissional; ?>">
 													<input type="hidden" id="tipo"            name="tipo"            value="<?php echo $tipo; ?>">
 											
-													<button type="submit" class="btn btn-primary btn-block mt-2 mb-1">Evoluir</button>
+													<button type="submit" class="btn btn-primary btn-block mt-2">Evoluir</button>
 												</form>												
 												<?php
 											}
@@ -233,8 +231,20 @@
 											<form method="post" action="verEvoluçõesPaciente.php">
 												<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
 												
-												<button type="submit" class="btn btn-primary btn-block mt-2 mb-1">Ver evoluções</button>
+												<button type="submit" class="btn btn-primary btn-block mt-1 mb-1">Ver evoluções</button>
 											</form>	
+											
+											<form method="post" action="gerarProntuario.php">
+												<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+												
+												<button type="submit" class="btn btn-primary btn-block mt-1 mb-1">Ver prontuário</button>
+											</form>
+											
+											<form method="post" action="cadastroDiagnostico.php">
+												<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+												
+												<button type="submit" class="btn btn-primary btn-block mt-1 mb-1">Cadastrar diagnóstico</button>
+											</form>
 											<?php
 											
 											

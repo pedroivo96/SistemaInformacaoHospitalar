@@ -3,10 +3,12 @@
 	$conn = getConnection();
 				
 	$cpfpaciente = $_SESSION['cpf'];
-		
-	$sql = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente';
+	$status      = "Realizada";
+	
+	$sql = 'SELECT * FROM internacoes WHERE cpfpaciente = :cpfpaciente AND status = :status';
 	$stmt = $conn->prepare($sql);
 	$stmt->bindValue(':cpfpaciente', $cpfpaciente);
+	$stmt->bindValue(':status'     , $status);
 	$stmt->execute();
 	$count = $stmt->rowCount();
 		
