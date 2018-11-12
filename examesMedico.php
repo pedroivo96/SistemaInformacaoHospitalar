@@ -30,7 +30,7 @@
   </head>
   <body>
 
-    <div class="container-fluid px-5">
+    <div class="container-fluid px-5 pb-5">
 	
 	<?php include 'campoPesquisaPaciente.html'?>	
 	

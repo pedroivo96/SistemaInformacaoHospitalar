@@ -30,11 +30,11 @@
   </head>
   <body>
 
-    <div class="container-fluid px-5">
+    <div class="container-fluid px-5 pb-5">
 	
 	<?php include 'campoPesquisaPaciente.html'?>	
 	
-	<div class="row mb-5">
+	<div class="row mb-5 mt-2">
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
@@ -228,8 +228,8 @@
 						
 						if($flag2 == 0){
 							?>
-							<div class="alert alert-warning w-100" role="alert">
-								<b>Nenhum dos seus pacientes teve internação solicitada.</b>
+							<div class="alert alert-primary w-100" role="alert">
+								Nenhum dos seus pacientes teve internação solicitada.
 							</div>
 							<?php
 						}
