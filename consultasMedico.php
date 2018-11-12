@@ -31,7 +31,10 @@
   <body>
 
     <div class="container-fluid px-5">
-	<div class="row mb-5 mt-5">
+	
+	<?php include 'campoPesquisaPaciente.html'?>	
+	
+	<div class="row mb-5 mt-2">
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico
@@ -204,6 +207,13 @@
 						<?php
 					}
 				}
+				else{
+					?>
+					<div class="alert alert-primary w-100" role="alert">
+						Você não tem nenhuma consulta agendada.
+					</div>
+					<?php
+				}
 			?>
 			
 			</div>
@@ -293,6 +303,13 @@
 						</div>
 						<?php
 					}
+				}
+				else{
+					?>
+					<div class="alert alert-primary w-100" role="alert">
+						Você não tem nenhuma consulta realizada.
+					</div>
+					<?php
 				}
 			?>
 			</div>

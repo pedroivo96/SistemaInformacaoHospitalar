@@ -32,19 +32,7 @@
 
     <div class="container-fluid px-5">
 	
-	<div class="row pt-2">
-		<form method="POST" class="w-75 mx-auto" action="pesquisarPacientes.php">
-		
-			<div class="input-group w-100">
-				<div class="input-group-prepend">
-					<button class="btn btn-primary" type="submit">Pesquisar</button>
-				</div>
-				
-				<input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar pacientes pelo nome ..." aria-label="" aria-describedby="basic-addon1">
-			</div>
-			
-		</form>
-	</div>
+	<?php include 'campoPesquisaPaciente.html'?>	
 	
 	<div class="row mb-4 mt-2">
 		<div class="col-md-12 border" align="center">

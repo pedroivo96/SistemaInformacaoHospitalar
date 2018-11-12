@@ -18,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Meus procedimentos</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -31,7 +31,10 @@
   <body>
 
     <div class="container-fluid px-5">
-	<div class="row mb-5 mt-5">
+	
+	<?php include 'campoPesquisaPaciente.html'?>	
+	
+	<div class="row mb-5 mt-2">
 		<div class="col-md-12 border" align="center">
 			<h3>
 				Menu do médico

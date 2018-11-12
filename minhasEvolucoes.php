@@ -30,8 +30,11 @@
   </head>
   <body>
 
-    <div class="container-fluid">
-	<div class="row mb-5 mt-5">
+    <div class="container-fluid px-5">
+	
+	<?php include 'campoPesquisaPaciente.html'?>	
+	
+	<div class="row mb-5 mt-2">
 		<div class="col-md-12 border" align="center">
 			<h3>
 				<?php
