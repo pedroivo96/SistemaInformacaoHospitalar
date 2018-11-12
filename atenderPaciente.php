@@ -212,7 +212,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -357,23 +357,8 @@
 										<strong>Erro!</strong> Não existem setores com vagas.
 									  </div>';
 							}
-													?>
-						
-						
-						<!--
-						<div class="form-group">
-							<label for="especialidade"></label>
-							<div class="btn-group-vertical btn-group-toggle btn-block" data-toggle="buttons">
-								<label class="btn btn-secondary btn-block">
-									<input type="radio" id="radio1" name="altainternacao" autocomplete="off" value="Alta"> Alta
-								</label>
-								<label class="btn btn-secondary btn-block">
-									<input type="radio" id="radio2" name="altainternacao" autocomplete="off" value="Internação"> Internação
-								</label>
-							</div>
-						</div>
-						-->
-				
+							?>
+					
 						<button type="submit" class="btn btn-primary btn-block mt-5">Finalizar</button>
 					</form>
 				</div>
@@ -393,8 +378,8 @@
 						<div class="alert alert-danger d-none" role="alert" id="erro1">
 							Erro! Falha no banco de dados.
 						</div>
-					
-						<input type="hidden" id="idconsulta"   name="idconsulta"   value="<?php echo $id; ?>">
+						
+						<input type="hidden" id="idconsulta" name="idconsulta" value="<?php echo $id; ?>">
 									
 						<div class="form-group">
 							<label for="nomeexame">Nome do exame</label>
@@ -402,11 +387,14 @@
 						</div>
 						
 						<div class="form-group">
-							<label for="nomeexame">Anotações opcionais</label>
+							<label for="anotacoesopcionais1">Anotações opcionais</label>
 							<input type="text" class="form-control" id="anotacoesopcionais1" name="anotacoesopcionais">
 						</div>
 				
-						<button type="button" onclick="processaExame();" class="btn btn-primary  btn-block">Solicitar</button>
+						<button type="button" onclick="processaExame();" class="btn btn-primary  btn-block">
+							Solicitar
+						</button>
+						
 					</form>
 				</div>
 				
@@ -435,7 +423,10 @@
 							<input type="text" class="form-control" id="anotacoesopcionais2" name="anotacoesopcionais">
 						</div>
 				
-						<button type="button" onclick="processaProcedimento();" class="btn btn-primary  btn-block">Solicitar</button>
+						<button type="button" onclick="processaProcedimento();" class="btn btn-primary  btn-block">
+							Solicitar
+						</button>
+						
 					</form>
 				</div>
 				

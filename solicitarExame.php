@@ -3,25 +3,22 @@
 	
 	if(!empty($_POST)){
 		
-		$idconsulta         = $_POST['idconsulta'];
 		$nomeexame          = $_POST['nomeexame'];
 		$anotacoesopcionais = $_POST['anotacoesopcionais'];
 		$status             = "Solicitado";
+		$idconsulta         = $_POST['idconsulta'];
 		
 		$conn = getConnection();
 		
 		$sql = 'INSERT INTO exames (nomeexame, 
 									status,
-									anotacoesopcionais,
-									idconsulta) VALUES(:nomeexame,
-												       :status,
-													   :anotacoesopcionais,
-													   :idconsulta)';
+									anotacoesopcionais) VALUES(:nomeexame,
+												               :status,
+													           :anotacoesopcionais)';
         $stmt = $conn->prepare($sql);
 		$stmt->bindParam(':nomeexame'          , $nomeexame);
 		$stmt->bindParam(':status'             , $status);
 		$stmt->bindParam(':anotacoesopcionais' , $anotacoesopcionais);
-		$stmt->bindParam(':idconsulta'         , $idconsulta);
 			
 		if($stmt->execute()){
 			
