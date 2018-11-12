@@ -3,7 +3,8 @@
   <head>
   
 	<?php 
-		// Inicia sessões 
+		// Inicia sessões
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -17,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do Médico</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -47,7 +48,6 @@
 			<div class="row">
 			
 			<?php
-				include './conexao.php';
 				date_default_timezone_set("America/Fortaleza");
 				
 				//Essa função diz se uma determinada data corresponde a ONTEM, HOJE ou AMANHÃ
@@ -142,6 +142,7 @@
 										<h6 class="card-text" id="horario" name="horario">
 											<?php echo "Das ".date("H:i:s",$diahorarioinicio)." às ".date("H:i:s",$diahorariofim); ?>
 										</h6>
+									</form>
 								</div>
 								
 									<?php
@@ -170,7 +171,7 @@
 		
 											if($count3 > 0){
 											?>
-												<form  method="post" action="atenderPaciente.php">
+												<form method="POST" action="atenderPaciente.php">
 										
 													<input type="hidden" id="id"              name="id"             value="<?php echo $id; ?>">
 													<input type="hidden" id="cpfmedico"       name="cpfmedico"      value="<?php echo $cpfmedico; ?>">
@@ -197,7 +198,7 @@
 										<?php
 									}
 									?>
-									</form>
+									
 							</div>
 						</div>
 						<?php

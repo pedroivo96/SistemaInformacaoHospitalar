@@ -219,12 +219,20 @@
 													<input type="hidden" id="tipo"            name="tipo"            value="<?php echo $tipo; ?>">
 											
 													<button type="submit" class="btn btn-primary btn-block mt-2 mb-1">Evoluir</button>
-												</form>
-												
+												</form>												
 												<?php
 											}
+												
 										
 										if($tipo == "Médico" || $tipo == "Enfermeiro"){
+											
+											?>
+											<form method="post" action="verEvoluçõesPaciente.php">
+												<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $cpfpaciente; ?>">
+												
+												<button type="submit" class="btn btn-primary btn-block mt-2 mb-1">Ver evoluções</button>
+											</form>	
+											<?php
 											
 											
 											$sql3 = 'SELECT * FROM anamnese WHERE idinternacao = :idinternacao';

@@ -4,6 +4,7 @@
   
 	<?php 
 		// Inicia sessões 
+		include './conexao.php';
 		session_start(); 
  
 		// Verifica se existe os dados da sessão de login 
@@ -18,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Atendimento</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -226,7 +227,6 @@
 		<div class="col-md-9">
 			
 			<?php
-				include './conexao.php';
 	
 				if(!empty($_POST)){
 					
@@ -485,10 +485,9 @@
 					
 						$status = "Solicitado";
 		
-						$sql = 'SELECT nomeexame FROM exames WHERE idconsulta = :idconsulta AND status = :status';
+						$sql = 'SELECT idexame FROM consultaexame WHERE idconsulta = :idconsulta';
 						$stmt = $conn->prepare($sql);
 						$stmt->bindValue(':idconsulta' , $id);
-						$stmt->bindValue(':status'     , $status);
 						$stmt->execute();
 						$count = $stmt->rowCount();
 		
@@ -496,11 +495,27 @@
 							$result = $stmt->fetchAll();
 			
 							foreach($result as $row){
-								$nomeexame = $row['nomeexame'];
 								
-								?>
-								<li class="list-group-item"><?php echo $nomeexame; ?></li>
-								<?php
+								$idexame = $row['idexame'];
+								
+								$sql1 = 'SELECT nomeexame FROM exames WHERE id = :idexame AND status = :status';
+								$stmt1 = $conn->prepare($sql1);
+								$stmt1->bindValue(':idexame', $idexame);
+								$stmt1->bindValue(':status' , $status);
+								$stmt1->execute();
+								$count1 = $stmt1->rowCount();
+		
+								if($count1 > 0){
+									$result1 = $stmt1->fetchAll();
+			
+									foreach($result1 as $row1){
+										$nomeexame = $row1['nomeexame'];
+								
+										?>
+										<li class="list-group-item"><?php echo $nomeexame; ?></li>
+										<?php
+									}
+								}
 							}
 						}
 					?>
@@ -517,10 +532,9 @@
 					
 						$status = "Solicitado";
 		
-						$sql = 'SELECT nomeprocedimento FROM procedimentos WHERE idconsulta = :idconsulta AND status = :status';
+						$sql = 'SELECT idprocedimento FROM consultaprocedimento WHERE idconsulta = :idconsulta';
 						$stmt = $conn->prepare($sql);
 						$stmt->bindValue(':idconsulta' , $id);
-						$stmt->bindValue(':status'     , $status);
 						$stmt->execute();
 						$count = $stmt->rowCount();
 		
@@ -528,14 +542,31 @@
 							$result = $stmt->fetchAll();
 			
 							foreach($result as $row){
-								$nomeprocedimento = $row['nomeprocedimento'];
 								
-								?>
-								<li class="list-group-item"><?php echo $nomeprocedimento; ?></li>
-								<?php
+								$idprocedimento = $row['idprocedimento'];
+								
+								$sql1 = 'SELECT nomeprocedimento FROM procedimentos WHERE id = :idprocedimento AND status = :status';
+								$stmt1 = $conn->prepare($sql1);
+								$stmt1->bindValue(':idprocedimento', $idprocedimento);
+								$stmt1->bindValue(':status' , $status);
+								$stmt1->execute();
+								$count1 = $stmt1->rowCount();
+		
+								if($count1 > 0){
+									$result1 = $stmt1->fetchAll();
+			
+									foreach($result1 as $row1){
+										$nomeprocedimento = $row1['nomeprocedimento'];
+								
+										?>
+										<li class="list-group-item"><?php echo $nomeprocedimento; ?></li>
+										<?php
+									}
+								}
 							}
 						}
 					?>
+					
 					
 					</ul>
 				</div>

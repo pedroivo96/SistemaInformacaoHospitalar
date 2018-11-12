@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Menu do técnico em enfermagem</title>
+    <title>SIH</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -29,7 +29,7 @@
   </head>
   <body>
 
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
@@ -39,52 +39,47 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
+	
+		<div class="col-md-2"></div>
+	
+		<div class="col-md-5">
 			
 			<dl class="row">
-				<dt class="col-sm-3">Nome</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomecompleto']; ?></dd>
+				<dt class="col-sm-6">Nome</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['nomecompleto']; ?></dd>
 
-				<dt class="col-sm-3">CPF</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['cpf']; ?></dd>
+				<dt class="col-sm-6">CPF</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['cpf']; ?></dd>
 				
-				<dt class="col-sm-3">RG</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['rg']; ?></dd>
+				<dt class="col-sm-6">RG</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['rg']; ?></dd>
 				
-				<dt class="col-sm-3">Tipo</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['tipo']; ?></dd>
+				<dt class="col-sm-6">Tipo</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['tipo']; ?></dd>
 				
-				<dt class="col-sm-3">Nome de usuário</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['nomeusuario']; ?></dd>
+				<dt class="col-sm-6">Nome de usuário</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['nomeusuario']; ?></dd>
 				
-				<dt class="col-sm-3">Registro</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['registro']; ?></dd>
+				<dt class="col-sm-6">Registro</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['registro']; ?></dd>
 				
-				<dt class="col-sm-3">Especialidade</dt>
-				<dd class="col-sm-9"><?php echo $_SESSION['especialidade']; ?></dd>
+				<dt class="col-sm-6">Especialidade</dt>
+				<dd class="col-sm-6"><?php echo $_SESSION['especialidade']; ?></dd>
 				
 			</dl>
 			
 		</div>
-		<div class="col-md-4">
 		
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'evolucoesEnfermeiro.php';">
-				Meus pacientes
-			</button>
+		<div class="col-md-2"></div>
+		
+		<div class="col-md-3">
 			
-			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href = 'diagnosticoEnfermeiro.php';">
-				Minhas anotações
-			</button>
-			
-			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="location.href = 'sair.php';">
-				Sair
-			</button>
+			<?php include 'menuTecnicoInclude.html'?>	
 			
 		</div>
+		
 	</div>
-	<div class="row">
-		<?php include 'rodape.html'; ?>
-	</div>
+	
 </div>
 
     <script src="js/jquery.min.js"></script>

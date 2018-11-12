@@ -53,15 +53,21 @@
 				$sql1 = 'INSERT INTO internacoes (cpfmedico, 
 			                                      cpfpaciente, 
 									              status,
-												  idsetor) VALUES(:cpfmedico, 
+												  idsetor,
+												  idconsulta,
+												  diagnostico) VALUES(:cpfmedico, 
 											                      :cpfpaciente, 
 												                  :status,
-																  :idsetor)';
+																  :idsetor,
+																  :idconsulta,
+																  :diagnostico)';
 				$stmt1 = $conn->prepare($sql1);
 				$stmt1->bindParam(':cpfmedico'       , $cpfmedico);
 				$stmt1->bindParam(':cpfpaciente'     , $cpfpaciente);
 				$stmt1->bindParam(':status'          , $status1);
 				$stmt1->bindParam(':idsetor'         , $idsetor);
+				$stmt1->bindParam(':idconsulta'      , $idconsulta);
+				$stmt1->bindParam(':diagnostico'     , $diagnosticoprovavel);
 			
 				if($stmt1->execute()){
 					echo '<div class="alert alert-success">

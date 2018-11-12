@@ -40,7 +40,7 @@
 					<button class="btn btn-primary" type="submit">Pesquisar</button>
 				</div>
 				
-				<input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar pacientes pelo nome ..." aria-label="" aria-describedby="basic-addon1">
+				<input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar pacientes ..." aria-label="" aria-describedby="basic-addon1">
 			</div>
 			
 		</form>
@@ -56,38 +56,61 @@
 	</div>
 	<div class="row">
 	
-		<div class="col-md-2"></div>
+		<div class="col-md-9">
 		
-		<div class="col-md-5">
-		
-		
-			<dl class="row">
-				<dt class="col-sm-6">Nome</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['nomecompleto']; ?></dd>
+			<div class="row">
+			
+			<?php
+			if(!empty($_POST)){
+				
+				$pesquisa = $_POST['pesquisa'];
+				
+				$conn = getConnection();
+				
+				$sql = 'SELECT cpf, nomecompleto FROM pacientes WHERE nomecompleto LIKE :pesquisa';
+				$stmt = $conn->prepare($sql);
+				$stmt->bindValue(':pesquisa', "%".$pesquisa."%");
+				$stmt->execute();
+				$count = $stmt->rowCount();
 
-				<dt class="col-sm-6">CPF</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['cpf']; ?></dd>
-				
-				<dt class="col-sm-6">RG</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['rg']; ?></dd>
-				
-				<dt class="col-sm-6">Tipo</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['tipo']; ?></dd>
-				
-				<dt class="col-sm-6">Nome de usuário</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['nomeusuario']; ?></dd>
-				
-				<dt class="col-sm-6">Registro</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['registro']; ?></dd>
-				
-				<dt class="col-sm-6">Especialidade</dt>
-				<dd class="col-sm-6"><?php echo $_SESSION['especialidade']; ?></dd>
-				
-			</dl>
+				if($count > 0){
+						
+					$result = $stmt->fetchAll();
+						
+					foreach($result as $row){
+						?>
+						<div class="col-sm-4 mb-3">
+							<div class="card">
+								<div class="card-header">
+									<?php echo $row['nomecompleto']; ?>
+								</div>
+								
+								<form method="POST" action="gerarProntuario.php">
+									<input type="hidden" id="cpfpaciente" name="cpfpaciente" value="<?php echo $row['cpf']; ?>">
+													
+									<button type="submit" class="btn btn-primary btn-block" style="padding: 0.75rem 1.25rem; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);">
+										Ver prontuário
+									</button>
+								</form>
+								
+							</div>
+						</div>
+						<?php
+					}
+				}
+				else{
+					?>
+					<div class="alert alert-primary w-100" role="alert">
+						A pesquisa não retornou resultados.
+					</div>
+					<?php
+				}
+			}
+			?>
+			
+			</div>
 			
 		</div>
-		
-		<div class="col-md-2"></div>
 		
 		<div class="col-md-3">
 			<?php include 'menuMedicoInclude.php'?>	

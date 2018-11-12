@@ -19,7 +19,7 @@
 	}
 	else{
 		?>
-		<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.html';">Nova consulta</button>
+		<button type="button" class="btn btn-success btn-lg btn-block" onclick="location.href = 'buscarMedico.php';">Nova consulta</button>
 		<?php
 	}
 			

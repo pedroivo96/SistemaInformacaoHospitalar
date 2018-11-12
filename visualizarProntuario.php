@@ -33,10 +33,24 @@
     <div class="container-fluid px-5">
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
-			<h3>
+			<?php
+			if(isset($_SESSION['tipo'])){
+				?>
+				<h3>
+				Menu do médico
+					<small class="text-muted">Prontuário do paciente</small>
+				</h3>
+				<?php
+			}
+			else{
+				?>
+				<h3>
 				Menu do paciente
-				<small class="text-muted">Prontuário</small>
-			</h3>
+					<small class="text-muted">Prontuário</small>
+				</h3>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 	
@@ -50,6 +64,13 @@
 				date_default_timezone_set("America/Fortaleza"); 
 				
 				$cpfpaciente = $_SESSION['cpf'];
+				
+				if(isset($_SESSION["cpf"])){
+					$cpfpaciente = $_SESSION['cpf']; 
+				}
+				else{
+					$cpfpaciente = $_POST['cpfpaciente'];
+				}
 					
 				$conn = getConnection();
 				
