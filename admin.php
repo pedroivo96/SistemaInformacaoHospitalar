@@ -323,6 +323,7 @@
 	<div class="row mb-5 mt-5">
 		<div class="col-md-12 border" align="center">
 			<h3>
+				<button class="btn btn-primary d-inline float-left mt-1 mb-1" onclick="location.href = 'index.php';">Página inicial</button>
 				Administrador
 				<small class="text-muted">Painel de controle</small>
 			</h3>

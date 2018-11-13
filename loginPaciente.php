@@ -112,6 +112,7 @@
 			
 			<button type="button" class="btn btn-dark btn-block mt-3" onclick="location.href = 'cadastro.html';">Ainda não é usuário ?</button>
 			
+			<button type="button" onclick="location.href = 'index.php';" class="btn btn-secondary btn-block">Voltar</button>
 		</div>
 		<div class="col-md-4">
 		</div>

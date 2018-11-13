@@ -115,6 +115,8 @@
 				</div>
 				
 				<button type="button" onclick="processa();" class="btn btn-primary btn-block">Login</button>
+				
+				<button type="button" onclick="location.href = 'index.php';" class="btn btn-secondary btn-block">Voltar</button>
 			</form>
 			
 		</div>
